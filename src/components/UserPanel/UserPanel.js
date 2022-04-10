@@ -1,0 +1,33 @@
+import React from 'react';
+import {Button, Card, Col, Image} from "react-bootstrap";
+import Row from "react-bootstrap/Row";
+import * as PropTypes from "prop-types";
+import {faHome, faUser} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+export class UserPanel extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <Card className="shadow p-3 mb-5 bg-white rounded">
+                <Row className="justify-content-start d-flex">
+                    <Col className="col-2">
+                        <Image src="/python.png" style={{width: "100%"}}/>
+                    </Col>
+                    <Col>
+                        <span style={{fontSize: "1.2vw", color: "#1E4172"}}>USERNAME</span>
+                        <h3 style={{fontSize: "0.8vw"}}>USER0000@GMAIL.COM</h3>
+
+                        <span style={{fontSize: "0.8vw"}}>PROGRESS</span>
+                        <h3 style={{fontSize: "0.8vw"}}>JAVA 80%</h3>
+
+                    </Col>
+                </Row>
+            </Card>
+        );
+    }
+}
