@@ -13,6 +13,7 @@ import {
 
 import {Dashboard} from "./components/Dashboard/Dashboard";
 import {Navbar} from "./components/Navbar/Navbar";
+import {Levels} from "./components/Levels/Levels";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                   <Router>
                       <Routes>
                           <Route  path="/" element={<Dashboard />}/>
+                          <Route  path="/levels" element={<Levels />}/>
                       </Routes>
                   </Router>
               </Row>
