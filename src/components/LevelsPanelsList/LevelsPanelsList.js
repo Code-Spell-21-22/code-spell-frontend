@@ -9,6 +9,7 @@ export class LevelsPanelsList extends React.Component {
         this.state = {
             levels: this.props.levels,
             selectedLevel: undefined,
+            currentLevel: {"id": "4", "nLv": 2.4, "title": 'More on Classes'}
         };
     }
 
@@ -39,14 +40,23 @@ export class LevelsPanelsList extends React.Component {
 
             if (this.state.selectedLevel !== undefined && level.id === this.state.selectedLevel.id) {
                 levelPanels.push(
-                    <Card className="shadow p-3 mb-3 rounded text-center" style={{backgroundColor: "#4b86e0", border: "none"}} onClick={this.levelPanelClicked.bind(this, level)}>
-                        <span style={{fontSize: "0.8vw", color: "white"}}>{level.title}</span>
+                    <Card className="shadow p-3 mb-3 rounded text-center"
+                          style={{backgroundColor: "#4b86e0", border: "none"}}
+                          onClick={this.levelPanelClicked.bind(this, level)}>
+                        <span style={{fontSize: "0.8vw", color: "white"}}>{level.nLv} {level.title}</span>
                     </Card>
                 )
+            } else if (this.state.currentLevel !== undefined && level.nLv > this.state.currentLevel.nLv) {
+                levelPanels.push(
+                    <Card className="shadow p-3 mb-3 bg-white rounded text-center" style={{opacity: "0.6"}}>
+                        <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.nLv} {level.title}</span>
+                    </Card>
+                )
+
             } else {
                 levelPanels.push(
                     <Card className="shadow p-3 mb-3 bg-white rounded text-center" onClick={this.levelPanelClicked.bind(this, level)}>
-                        <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.title}</span>
+                        <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.nLv} {level.title}</span>
                     </Card>
                 )
             }
