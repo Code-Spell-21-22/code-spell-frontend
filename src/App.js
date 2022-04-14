@@ -15,9 +15,9 @@ import {Dashboard} from "./components/Dashboard/Dashboard";
 import {Navbar} from "./components/Navbar/Navbar";
 import {Login} from "./components/Login/Login";
 import {SignUp} from "./components/SignUp/SignUp";
+import {Levels} from "./components/Levels/Levels";
 
 let logged_in = false;
-import {Levels} from "./components/Levels/Levels";
 
 function App() {
 
