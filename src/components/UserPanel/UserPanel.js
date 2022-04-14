@@ -1,9 +1,6 @@
 import React from 'react';
 import {Button, Card, Col, Image} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
-import * as PropTypes from "prop-types";
-import {faHome, faUser} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export class UserPanel extends React.Component {
 

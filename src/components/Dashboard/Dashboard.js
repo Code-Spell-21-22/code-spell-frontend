@@ -19,26 +19,31 @@ export class Dashboard extends React.Component {
                     <Col className="col-2 mx-2">
                         <SquarePanel icon={faPlay}
                                      title={'PLAY'}
+                                     link="/levels"
                         />
                     </Col>
                     <Col className="col-2 mx-2">
                         <SquarePanel icon={faEdit}
                                      title={'CREATE'}
+
                         />
                     </Col>
                     <Col className="col-2 mx-2">
                         <SquarePanel icon={faTrophy}
                                      title={'LEADERBOARDS'}
+                                     link="/leaderboards"
                         />
                     </Col>
                     <Col className="col-2 mx-2">
                         <SquarePanel icon={faRocket}
                                      title={'ACHIEVEMENTS'}
+                                     link="/achievements"
                         />
                     </Col>
                     <Col className="col-2 mx-2">
                         <SquarePanel icon={faGear}
                                      title={'SETTINGS'}
+                                     link="/settings"
                         />
                     </Col>
                 </Row>
