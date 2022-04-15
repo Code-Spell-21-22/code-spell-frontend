@@ -12,8 +12,8 @@ export class UserPanel extends React.Component {
         return (
             <Card className="shadow p-3 mb-5 bg-white rounded">
                 <Row className="justify-content-start d-flex">
-                    <Col className="col-2">
-                        <Image src="/python.png" style={{width: "100%"}}/>
+                    <Col className="col-3 align-items-center d-flex">
+                        <Image src="/python.png" style={{width: "100%", maxWidth: "140px"}}/>
                     </Col>
                     <Col>
                         <span style={{fontSize: "1.2vw", color: "#1E4172"}}>USERNAME</span>

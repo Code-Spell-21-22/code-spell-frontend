@@ -14,25 +14,24 @@ import {
 import {Dashboard} from "./components/Dashboard/Dashboard";
 import {Navbar} from "./components/Navbar/Navbar";
 import {Levels} from "./components/Levels/Levels";
+import {Level} from "./components/Level/Level";
 
 function App() {
+
+
+
   return (
       <div style={{backgroundImage: "url(/Background_2.png)",
-          backgroundRepeat:"no-repeat", backgroundSize:"cover", height: "100vh", width: "100vw"}}>
-          <Container>
-              <Row className="mx-5">
-                  <Navbar />
-              </Row>
-              <Row className="mx-5">
-                  <Router>
-                      <Routes>
-                          <Route  path="/" element={<Dashboard />}/>
-                          <Route  path="/levels" element={<Levels />}/>
-                      </Routes>
-                  </Router>
-              </Row>
-          </Container>
-
+          backgroundRepeat:"no-repeat", backgroundSize:"cover", minHeight: "100vh", minWidth: "100vw"}}>
+          <Row className="mx-5">
+              <Router>
+                  <Routes>
+                      <Route  path="/" element={<Dashboard />}/>
+                      <Route  path="/levels" element={<Levels />}/>
+                      <Route  path="/level" element={<Level />}/>
+                  </Routes>
+              </Router>
+          </Row>
       </div>
 
   );
