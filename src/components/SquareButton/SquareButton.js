@@ -13,9 +13,10 @@ export class SquareButton extends React.Component {
 
     render() {
         return (
-            <Col className="text-center">
-                <Button className="shadow p-3 mb-5 bg-white p-5 justify-content-center d-flex" style={{border: "none", borderRadius: "20px"}}>
-                    <FontAwesomeIcon icon={this.props.icon || faHome} style={{fontSize: "4vw", color: "#1E4172"}}/>
+            <Col>
+                <Button className="shadow mb-4 bg-white justify-content-center align-items-center d-flex"
+                        style={{border: "none", borderRadius: "10px", width: "5vw", height: "5vw", maxHeight: "70px", maxWidth: "70px"}}>
+                    <FontAwesomeIcon icon={this.props.icon || faHome} style={{fontSize: "1.5vw", color: "#1E4172"}}/>
                 </Button>
             </Col>
         );

@@ -28,7 +28,7 @@ function App() {
                   <Routes>
                       <Route  path="/" element={<Dashboard />}/>
                       <Route  path="/levels" element={<Levels />}/>
-                      <Route  path="/level" element={<Level />}/>
+                      <Route  path="/levels/1" element={<Level />}/>
                   </Routes>
               </Router>
           </Row>
