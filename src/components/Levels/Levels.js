@@ -74,7 +74,7 @@ export class Levels extends React.Component {
             <Container>
                 <Container className="container-fluid">
                     <Row className="justify-content-center d-flex">
-                        <Navbar />
+                        <Navbar title={"Levels"} />
                     </Row>
                     <Row className="my-4 justify-content-center d-flex">
                         <ChapterPanelsList on_chapter_changed={this.chapterChangedHandler.bind(this)}/>

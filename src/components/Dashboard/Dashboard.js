@@ -18,7 +18,7 @@ export class Dashboard extends React.Component {
             <Container>
                 <Container className="container-fluid">
                     <Row className="justify-content-center d-flex">
-                        <Navbar/>
+                        <Navbar title={"Dashboard"} />
                     </Row>
                     <Row className="my-4 justify-content-center d-flex">
                         <Col className="col-2 mx-2">

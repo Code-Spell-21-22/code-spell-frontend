@@ -42,7 +42,7 @@ export class GenericModal extends React.Component {
         }
 
         return (
-            <Card className="shadow px-5 pt-4 pb-5 mb-4 bg-white rounded">
+            <Card className="shadow px-5 pt-4 pb-5 mb-4 bg-white rounded" style={{minHeight: "91vh"}}>
                 <Row className="justify-content-end d-flex">
                     <Button className="col-1" style={{backgroundColor: "white", border: "none"}}
                             onClick={this.closeClicked.bind(this)}>

@@ -53,7 +53,8 @@ export class Level extends React.Component {
                             <FontAwesomeIcon icon={faBars} style={{fontSize: "1.5vw", color: "white"}}/>
                         </Button>
                         <div className={fadeInNavbar}>
-                            <NavbarVertical is_disabled={!this.state.navbarOpen} on_option_changed={this.optionHandler.bind(this)}/>
+                            <NavbarVertical is_disabled={!this.state.navbarOpen}
+                                            on_option_changed={this.optionHandler.bind(this)}/>
                         </div>
                     </Col>
                     <Col className="col-6">
@@ -97,8 +98,9 @@ export class Level extends React.Component {
                                             height: "6vh",
                                             minHeight: "50px"
                                         }}>
-                                    <span style={{color: "white"}}><FontAwesomeIcon icon={faGreaterThan}
-                                                                                    style={{color: "white"}}/> NEXT LEVEL</span>
+                                    <span style={{color: "white"}}>NEXT LEVEL <FontAwesomeIcon icon={faGreaterThan}
+                                                                                               style={{color: "white"}}/>
+                                    </span>
                                 </Button>
                             </Col>
                         </Row>

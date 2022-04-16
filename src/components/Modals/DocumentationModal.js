@@ -62,7 +62,7 @@ export class DocumentationModal extends React.Component {
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                             </p>
                             <h3 className="align-items-center d-flex" style={{fontSize: "0.8vw", color: "#3f73c2"}}>Learn More
-                                <FontAwesomeIcon className="rounded-circle text-white p-1 ms-2"
+                                <FontAwesomeIcon className="rounded-circle text-white p-2 ms-2"
                                                  style={{fontSize: "0.4vw", backgroundColor: "#3f73c2"}}
                                                  icon={faGreaterThan}/></h3>
                         </Card>
@@ -75,7 +75,7 @@ export class DocumentationModal extends React.Component {
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                             </p>
                             <h3 className="align-items-center d-flex" style={{fontSize: "0.8vw", color: "#3f73c2"}}>Learn More
-                                <FontAwesomeIcon className="rounded-circle text-white p-1 ms-2"
+                                <FontAwesomeIcon className="rounded-circle text-white p-2 ms-2"
                                                  style={{fontSize: "0.4vw", backgroundColor: "#3f73c2"}}
                                                  icon={faGreaterThan}/></h3>
                         </Card>
