@@ -107,10 +107,10 @@ export class Level extends React.Component {
 
                     </Col>
                     <Col className={"col-4 ms-4 " + fadeIn}>
-                        {this.state.selectedOption &&
-                            <GenericModal content_type={this.state.selectedOption}
+
+                            <GenericModal className={fadeIn} content_type={this.state.selectedOption}
                                           on_option_changed={this.optionHandler.bind(this)}/>
-                        }
+
                     </Col>
                 </Row>
 
