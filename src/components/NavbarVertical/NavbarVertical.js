@@ -16,19 +16,25 @@ export class NavbarVertical extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            menuOpen: false
+            selectedOption: undefined
         }
+    }
+
+    buttonClicked(option) {
+        this.setState({ selectedOption: option });
+        if (this.props.on_option_changed !== undefined)
+            this.props.on_option_changed(option);
     }
 
     render() {
         return (
             <Col className="col-1">
-                <SquareButton icon={faCheck}  />
-                <SquareButton icon={faLightbulb}/>
-                <SquareButton icon={faTrophy}/>
-                <SquareButton icon={faFile}/>
+                <SquareButton icon={faCheck} click_behaviour={this.buttonClicked.bind(this, "goals")} is_disabled={this.props.is_disabled}/>
+                <SquareButton icon={faLightbulb} click_behaviour={this.buttonClicked.bind(this, "tips")} is_disabled={this.props.is_disabled}/>
+                <SquareButton icon={faTrophy} click_behaviour={this.buttonClicked.bind(this, "leaderboard")} is_disabled={this.props.is_disabled}/>
+                <SquareButton icon={faFile} click_behaviour={this.buttonClicked.bind(this, "documentation")} is_disabled={this.props.is_disabled}/>
                 <Link to="/">
-                    <SquareButton icon={faSignOut}/>
+                    <SquareButton icon={faSignOut} is_disabled={this.props.is_disabled}/>
                 </Link>
             </Col>
         );

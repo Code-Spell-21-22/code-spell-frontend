@@ -12,6 +12,15 @@ code {
     monospace;
 }
 
-span, h1, h2, h3, h4, h5, h6 {
+p, span, h1, h2, h3, h4, h5, h6 {
   font-family: 'Oxygen', 'Roboto', Helvetica, sans-serif;
+}
+
+.fadein {
+  transition: opacity 0.5s;
+  opacity: 1;
+}
+.fadein.hide {
+  transition: opacity 0.5s;
+  opacity: 0;
 }

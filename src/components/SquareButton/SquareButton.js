@@ -12,6 +12,29 @@ export class SquareButton extends React.Component {
     }
 
     render() {
+
+        if (this.props.is_disabled) {
+            return (
+                <Col>
+                    <Button className="shadow mb-4 bg-white justify-content-center align-items-center d-flex disabled"
+                            style={{border: "none", borderRadius: "10px", width: "5vw", height: "5vw", maxHeight: "70px", maxWidth: "70px"}}>
+                        <FontAwesomeIcon icon={this.props.icon || faHome} style={{fontSize: "1.5vw", color: "#1E4172"}}/>
+                    </Button>
+                </Col>
+            );
+        }
+
+        if (this.props.click_behaviour !== undefined) {
+            return (
+                <Col>
+                    <Button className="shadow mb-4 bg-white justify-content-center align-items-center d-flex" onClick={this.props.click_behaviour}
+                            style={{border: "none", borderRadius: "10px", width: "5vw", height: "5vw", maxHeight: "70px", maxWidth: "70px"}}>
+                        <FontAwesomeIcon icon={this.props.icon || faHome} style={{fontSize: "1.5vw", color: "#1E4172"}}/>
+                    </Button>
+                </Col>
+            );
+        }
+
         return (
             <Col>
                 <Button className="shadow mb-4 bg-white justify-content-center align-items-center d-flex"
