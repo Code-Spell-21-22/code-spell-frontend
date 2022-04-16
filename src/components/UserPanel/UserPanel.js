@@ -21,7 +21,6 @@ export class UserPanel extends React.Component {
 
                         <span style={{fontSize: "0.8vw"}}>PROGRESS</span>
                         <h3 style={{fontSize: "0.8vw"}}>JAVA 80%</h3>
-
                     </Col>
                 </Row>
             </Card>

@@ -1,18 +1,20 @@
 import React from 'react';
 import {Button, Card, Col, Container, Image} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
-import {faBars, faGreaterThan, faHome, faPlay, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faBars, faClose, faGreaterThan, faHome, faPlay, faUser} from "@fortawesome/free-solid-svg-icons";
 import {SquarePanel} from "../SquarePanel/SquarePanel";
 import {SquareButton} from "../SquareButton/SquareButton";
 import {NavbarVertical} from "../NavbarVertical/NavbarVertical";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {LevelModal} from "../LevelModal/LevelModal";
 
 export class Level extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            navbarOpen: false
+            navbarOpen: false,
+            optionOpen: true
         }
     }
 
@@ -20,6 +22,14 @@ export class Level extends React.Component {
         let newState = !(this.state.navbarOpen)
         this.setState({
                 navbarOpen: newState
+            }
+        )
+    }
+
+    optionHandler() {
+        let newState = !(this.state.navbarOpen)
+        this.setState({
+                optionOpen: newState
             }
         )
     }
@@ -36,7 +46,7 @@ export class Level extends React.Component {
                             <FontAwesomeIcon icon={faBars} style={{fontSize: "1.5vw", color: "white"}}/>
                         </Button>
                         {this.state.navbarOpen &&
-                            <NavbarVertical/>
+                            <NavbarVertical />
                         }
                     </Col>
                     <Col className="col-6">
@@ -74,7 +84,10 @@ export class Level extends React.Component {
                         </Row>
 
                     </Col>
-                    <Col className="mt-2">
+                    <Col className="col-4 ms-4">
+                        {this.state.optionOpen &&
+                            <LevelModal/>
+                        }
                     </Col>
                 </Row>
 

@@ -58,7 +58,7 @@ export class Levels extends React.Component {
         if (this.state.selectedChapter !== undefined && this.state.selectedLevel !== undefined) {
             start =
                 <Button className="shadow w-75 justify-content-center align-items-center d-flex" style={{backgroundColor: "#3f73c2", border: "none", height: "6vh"}}
-                href={"/level/" + this.state.selectedLevel.id}>
+                href={"/levels/" + this.state.selectedLevel.id}>
                     <span style={{color: "white"}}>START</span>
                 </Button>;
         } else {

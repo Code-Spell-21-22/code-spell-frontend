@@ -9,6 +9,7 @@ import {
     faTrophy
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Link} from "react-router-dom";
 
 export class NavbarVertical extends React.Component {
 
@@ -22,13 +23,14 @@ export class NavbarVertical extends React.Component {
     render() {
         return (
             <Col className="col-1">
-                <SquareButton icon={faCheck}/>
+                <SquareButton icon={faCheck}  />
                 <SquareButton icon={faLightbulb}/>
                 <SquareButton icon={faTrophy}/>
                 <SquareButton icon={faFile}/>
-                <SquareButton icon={faSignOut}/>
+                <Link to="/">
+                    <SquareButton icon={faSignOut}/>
+                </Link>
             </Col>
-
         );
     }
 }
