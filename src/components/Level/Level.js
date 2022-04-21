@@ -87,7 +87,7 @@ export class Level extends React.Component {
                                             minHeight: "50px",
                                             backgroundColor: "#3f73c2"
                                         }} href="/">
-                                    <span style={{color: "#13305d"}}>RESTART</span>
+                                    <span style={{color: "#13305d"}}>RUN</span>
                                 </Button>
                             </Col>
                             <Col className="col-3">
