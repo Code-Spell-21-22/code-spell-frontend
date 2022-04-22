@@ -17,8 +17,10 @@ import {Login} from "./components/Login/Login";
 import {SignUp} from "./components/SignUp/SignUp";
 import {Levels} from "./components/Levels/Levels";
 import {Level} from "./components/Level/Level";
+import {LeaderboardModal} from "./components/Modals/LeaderboardModal";
+import {Leaderboards} from "./components/Leaderboards/Leaderboards";
 
-let logged_in = false;
+let logged_in = true;
 
 function App() {
 
@@ -48,6 +50,7 @@ function App() {
                       <Route  path="/" element={<Dashboard />}/>
                       <Route  path="/levels" element={<Levels />}/>
                       <Route  path="/levels/:level" element={<Level />}/>
+                      <Route  path="/leaderboards" element={<Leaderboards />}/>
                   </Routes>
               </Router>
           </Row>
