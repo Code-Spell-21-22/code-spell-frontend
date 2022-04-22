@@ -1,31 +1,17 @@
 import React from 'react';
-import {SmallPanel} from "../SmallPanel/SmallPanel";
 import Row from "react-bootstrap/Row";
-import {Button, Card, Col, Container} from "react-bootstrap";
+import {Col, Container} from "react-bootstrap";
 import {
-    faBars, faCode,
     faEdit,
     faGear,
     faPlay,
-    faPlug,
-    faPowerOff, faRankingStar,
     faRocket,
     faTrophy
 } from "@fortawesome/free-solid-svg-icons";
 import {SquarePanel} from "../SquarePanel/SquarePanel";
 import {UserPanel} from "../UserPanel/UserPanel";
 import {Navbar} from "../Navbar/Navbar";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import * as PropTypes from "prop-types";
 
-function Icon(props) {
-    return null;
-}
-
-Icon.propTypes = {
-    icon: PropTypes.any,
-    style: PropTypes.shape({color: PropTypes.string, fontSize: PropTypes.string})
-};
 
 export class Dashboard extends React.Component {
 
