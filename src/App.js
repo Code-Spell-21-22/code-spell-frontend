@@ -19,6 +19,7 @@ import {Levels} from "./components/Levels/Levels";
 import {Level} from "./components/Level/Level";
 import {LeaderboardModal} from "./components/Modals/LeaderboardModal";
 import {Leaderboards} from "./components/Leaderboards/Leaderboards";
+import {Achievements} from "./components/Achievements/Achievements";
 
 let logged_in = true;
 
@@ -51,6 +52,7 @@ function App() {
                       <Route  path="/levels" element={<Levels />}/>
                       <Route  path="/levels/:level" element={<Level />}/>
                       <Route  path="/leaderboards" element={<Leaderboards />}/>
+                      <Route  path="/achievements" element={<Achievements />}/>
                   </Routes>
               </Router>
           </Row>

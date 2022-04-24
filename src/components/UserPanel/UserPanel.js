@@ -1,6 +1,8 @@
 import React from 'react';
 import {Button, Card, Col, Image} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCode, faRankingStar} from "@fortawesome/free-solid-svg-icons";
 
 export class UserPanel extends React.Component {
 
@@ -21,6 +23,15 @@ export class UserPanel extends React.Component {
 
                         <span style={{fontSize: "0.8vw"}}>PROGRESS</span>
                         <h3 style={{fontSize: "0.8vw"}}>JAVA 80%</h3>
+                    </Col>
+                    <Col className="col-3">
+                        <Card className="text-center mt-1 px-2 py-3 mb-2 shadow" style={{border: "none", backgroundColor: "rgba(39,109,210,0.53)"}}>
+                            <span style={{fontSize: "0.9vw", color: "#1E4172"}}><FontAwesomeIcon
+                                icon={faCode}/> JAVA</span>
+                        </Card>
+                        <Card className="text-center px-2 py-3 shadow" style={{border: "none", backgroundColor: "rgba(39,109,210,0.53)"}}>
+                            <span style={{fontSize: "0.9vw", color: "#1E4172"}}><FontAwesomeIcon icon={faRankingStar}/> EXPERIENCED</span>
+                        </Card>
                     </Col>
                 </Row>
             </Card>

@@ -1,11 +1,17 @@
 import React from 'react';
-import {SmallPanel} from "../SmallPanel/SmallPanel";
 import Row from "react-bootstrap/Row";
-import {Button, Card, Col, Container} from "react-bootstrap";
-import {faEdit, faGear, faPlay, faPlug, faPowerOff, faRocket, faTrophy} from "@fortawesome/free-solid-svg-icons";
+import {Col, Container} from "react-bootstrap";
+import {
+    faEdit,
+    faGear,
+    faPlay,
+    faRocket,
+    faTrophy
+} from "@fortawesome/free-solid-svg-icons";
 import {SquarePanel} from "../SquarePanel/SquarePanel";
 import {UserPanel} from "../UserPanel/UserPanel";
 import {Navbar} from "../Navbar/Navbar";
+
 
 export class Dashboard extends React.Component {
 
@@ -52,15 +58,7 @@ export class Dashboard extends React.Component {
                             />
                         </Col>
                     </Row>
-                    <Row className="justify-content-center" style={{marginTop: "15vh"}}>
-                        <Col className="col-2 mt-4">
-                            <Button className="disabled align-items-center justify-content-center d-flex w-100 h-25 mb-3">
-                                <span style={{fontSize: "0.9vw"}}>JAVA</span>
-                            </Button>
-                            <Button className="disabled align-items-center justify-content-center d-flex w-100 h-25">
-                                <span style={{fontSize: "0.9vw"}}>EXPERIENCED</span>
-                            </Button>
-                        </Col>
+                    <Row className="justify-content-center d-flex" style={{marginTop: "15vh"}}>
                         <Col className="col-8 ms-5 me-2">
                             <UserPanel/>
                         </Col>
