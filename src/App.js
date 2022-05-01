@@ -1,9 +1,6 @@
 import './index.css';
-import {SmallPanel} from "./components/SmallPanel/SmallPanel";
-import {faPlug} from "@fortawesome/free-solid-svg-icons";
-import {Container, Image} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 import {
     BrowserRouter as Router,
@@ -12,16 +9,14 @@ import {
 } from "react-router-dom";
 
 import {Dashboard} from "./components/Dashboard/Dashboard";
-import {Navbar} from "./components/Navbar/Navbar";
 import {Login} from "./components/Login/Login";
-import {SignUp} from "./components/SignUp/SignUp";
+import SignUp from "./components/SignUp/SignUp";
 import {Levels} from "./components/Levels/Levels";
 import {Level} from "./components/Level/Level";
-import {LeaderboardModal} from "./components/Modals/LeaderboardModal";
 import {Leaderboards} from "./components/Leaderboards/Leaderboards";
 import {Achievements} from "./components/Achievements/Achievements";
 
-let logged_in = true;
+let logged_in = false;
 
 function App() {
 
