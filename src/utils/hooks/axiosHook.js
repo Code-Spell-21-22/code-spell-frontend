@@ -1,9 +1,10 @@
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import axios from "axios";
 
 const useAxios = (url, method, payload) => {
 
     const [data, setData] = useState(null);
+    const [code, setCode] = useState(0);
     const [error, setError] = useState("");
     const [loaded, setLoaded] = useState(false);
 
@@ -25,6 +26,8 @@ const useAxios = (url, method, payload) => {
                 });
 
                 setData(response.data);
+                setCode(response.status);
+
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -55,7 +58,7 @@ const useAxios = (url, method, payload) => {
     }, []);
     */
 
-    return { sendRequest, data, loaded, error, cancel };
+    return { sendRequest, data, code, loaded, error, cancel };
 
 };
 

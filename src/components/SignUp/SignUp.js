@@ -5,42 +5,49 @@ import Col from "react-bootstrap/Col";
 import {faEdit} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
-import useAxios from "../../utils/hooks/axiosHook";
+import axios from "axios";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [terms, setTerms] = useState(false);
 
-    const { sendRequest, data, error, loaded, cancel } = useAxios(
-        "http://localhost:8080/api/auth/register",
-        "POST",
-        {
-            username: username,
-            email: email,
-            password: password
-        }
-    );
+    let navigate = useNavigate();
 
     const onInputChanged = (state, event) => {
         state(event.target.value);
     };
 
+    const onTermsChanged = () => {
+        setTerms(!terms);
+    }
+
+    const notify = (message) => toast(message);
 
     const onSubmit = () => {
 
-        console.log("Submitting");
+        if (!terms) {
+            notify("Please agree to our terms of use");
+            return;
+        }
 
-        sendRequest();
-
-        if (error) {
+        axios.post('http://localhost:8080/api/auth/register', {
+            username: username,
+            email: email,
+            password: password
+        })
+        .then((response) => {
+            notify(response.data.message);
+            navigate("/login", {replace: true});
+        }, (error) => {
+            notify(JSON.parse(error.request.response)['message']);
             console.log(error);
-        }
-
-        if (!error && loaded) {
-            console.log("Registered");
-        }
+        });
 
     };
 
@@ -67,7 +74,7 @@ const SignUp = () => {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="By clicking you agree to the Terms and Conditions" />
+                            <Form.Check type="checkbox" label="By clicking you agree to the Terms and Conditions" onClick={onTermsChanged} />
                         </Form.Group>
 
                         <Button className="mt-5 w-100 text-white" onClick={onSubmit} style={{backgroundColor: "#1c93ec", border: "none", height: "6vh"}}>

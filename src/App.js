@@ -9,16 +9,17 @@ import {
 } from "react-router-dom";
 
 import {Dashboard} from "./components/Dashboard/Dashboard";
-import {Login} from "./components/Login/Login";
+import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp/SignUp";
 import {Levels} from "./components/Levels/Levels";
 import {Level} from "./components/Level/Level";
 import {Leaderboards} from "./components/Leaderboards/Leaderboards";
 import {Achievements} from "./components/Achievements/Achievements";
-
-let logged_in = false;
+import {ToastContainer} from "react-toastify";
 
 function App() {
+
+    let logged_in = localStorage.hasOwnProperty("code_spell_token")
 
     if (!logged_in) {
         return (<div style={{backgroundImage: "url(/Background_2.png)",
@@ -32,10 +33,10 @@ function App() {
                     </Routes>
                 </Router>
             </Container>
+            <ToastContainer/>
         </div>
         );
     }
-
 
   return (
       <div style={{backgroundImage: "url(/Background_2.png)",
@@ -51,6 +52,7 @@ function App() {
                   </Routes>
               </Router>
           </Row>
+          <ToastContainer/>
       </div>
     );
 }
