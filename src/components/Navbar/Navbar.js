@@ -4,7 +4,6 @@ import {Button, Card, Container} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {Link} from "react-router-dom";
 
 export class Navbar extends React.Component {
 
@@ -12,12 +11,17 @@ export class Navbar extends React.Component {
         super(props);
     }
 
+    handleExit() {
+        localStorage.removeItem('code_spell_token');
+        setTimeout(() => window.location.replace("/"), 2000);
+    }
+
     render() {
 
         let firstButton;
         if (this.props.title !== undefined && this.props.title === "Dashboard") {
             firstButton = <Button className="shadow w-75 bg-white justify-content-center align-items-center d-flex"
-                                  style={{border: "none", height: "6vh", minHeight: "50px"}}>
+                                  style={{border: "none", height: "6vh", minHeight: "50px"}} onClick={this.handleExit.bind(this)}>
                 <span style={{color: "#2C5AA2"}}>EXIT</span>
             </Button>;
         } else {
@@ -42,7 +46,7 @@ export class Navbar extends React.Component {
                     </Card>
                 </Col>
                 <Col className="col-3 justify-content-end d-flex">
-                    <Button className="shadow w-75 justify-content-center align-items-center d-flex"
+                    <Button className="shadow w-75 justify-content-center align-items-center d-flex" href="/account"
                             style={{backgroundColor: "#1E4172", border: "none", height: "6vh", minHeight: "50px"}}>
                         <span style={{color: "white"}}><FontAwesomeIcon icon={faUser} style={{color: "white"}}/> ACCOUNT</span>
                     </Button>

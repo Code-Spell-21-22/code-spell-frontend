@@ -17,6 +17,7 @@ import {Leaderboards} from "./components/Leaderboards/Leaderboards";
 import {Achievements} from "./components/Achievements/Achievements";
 import {ToastContainer} from "react-toastify";
 import {Settings} from "./components/Settings/Settings";
+import {Account} from "./components/Account/Account";
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
                       <Route  path="/leaderboards" element={<Leaderboards />}/>
                       <Route  path="/achievements" element={<Achievements />}/>
                       <Route  path={"/settings"} element={<Settings />}/>
+                      <Route  path={"/account"} element={<Account />}/>
                       <Route path="*" element={<Dashboard />}/>
                   </Routes>
               </Router>
