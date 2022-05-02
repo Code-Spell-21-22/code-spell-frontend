@@ -16,6 +16,7 @@ import {Level} from "./components/Level/Level";
 import {Leaderboards} from "./components/Leaderboards/Leaderboards";
 import {Achievements} from "./components/Achievements/Achievements";
 import {ToastContainer} from "react-toastify";
+import {Settings} from "./components/Settings/Settings";
 
 function App() {
 
@@ -49,6 +50,8 @@ function App() {
                       <Route  path="/levels/:level" element={<Level />}/>
                       <Route  path="/leaderboards" element={<Leaderboards />}/>
                       <Route  path="/achievements" element={<Achievements />}/>
+                      <Route  path={"/settings"} element={<Settings />}/>
+                      <Route path="*" element={<Dashboard />}/>
                   </Routes>
               </Router>
           </Row>

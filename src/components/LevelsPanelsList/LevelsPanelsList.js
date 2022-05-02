@@ -14,7 +14,7 @@ export class LevelsPanelsList extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.levels != this.props.levels) {
+        if (prevProps.levels !== this.props.levels) {
             this.setState(
                 {levels: this.props.levels,
                     selectedLevel: undefined}
