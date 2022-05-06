@@ -5,6 +5,9 @@ import {faBars, faClose, faGreaterThan} from "@fortawesome/free-solid-svg-icons"
 import {NavbarVertical} from "../NavbarVertical/NavbarVertical";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {GenericModal} from "../Modals/GenericModal";
+import CodeMirror from '@uiw/react-codemirror';
+import {java} from "@codemirror/lang-java";
+import { oneDark } from '@codemirror/theme-one-dark';
 
 export class Level extends React.Component {
 
@@ -12,7 +15,8 @@ export class Level extends React.Component {
         super(props);
         this.state = {
             navbarOpen: false,
-            selectedOption: undefined
+            selectedOption: undefined,
+            code: undefined
         }
     }
 
@@ -28,6 +32,10 @@ export class Level extends React.Component {
         this.setState({
             selectedOption: option,
         });
+    }
+
+    submitCode() {
+        console.log(this.state.code);
     }
 
     render() {
@@ -67,7 +75,14 @@ export class Level extends React.Component {
                         </Card>
                         <Card className="shadow p-3 mb-4 bg-white" style={{height: "64vh", borderRadius: "10px"}}>
                             <Row className="justify-content-start d-flex">
-
+                                <CodeMirror
+                                    height="60vh"
+                                    extensions={[java()]}
+                                    theme={oneDark}
+                                    onChange={(value, viewUpdate) => {
+                                        this.setState({code: value});
+                                    }}
+                                />
                             </Row>
                         </Card>
                         <Row>
@@ -86,8 +101,8 @@ export class Level extends React.Component {
                                             height: "6vh",
                                             minHeight: "50px",
                                             backgroundColor: "#3f73c2"
-                                        }} href="/">
-                                    <span style={{color: "#13305d"}}>RUN</span>
+                                        }}>
+                                    <span style={{color: "#13305d"}} onClick={this.submitCode.bind(this)}>RUN</span>
                                 </Button>
                             </Col>
                             <Col className="col-3">
