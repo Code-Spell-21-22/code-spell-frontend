@@ -6,6 +6,8 @@ import {NavbarVertical} from "../NavbarVertical/NavbarVertical";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {GenericModal} from "../Modals/GenericModal";
 
+import ThreeCube from "./scene1"
+
 export class Level extends React.Component {
 
     constructor(props) {
@@ -30,11 +32,15 @@ export class Level extends React.Component {
         });
     }
 
+    // componentDidMount() {
+       
+    // }
+
     render() {
 
         const fadeIn = this.state.selectedOption ? 'fadein' : 'fadein hide';
         const fadeInNavbar = this.state.navbarOpen ? 'fadein' : 'fadein hide'
-
+        
         return (
             <Container className="container-fluid mx-3 mt-5">
                 <Row>
@@ -106,6 +112,23 @@ export class Level extends React.Component {
                         </Row>
 
                     </Col>
+
+                    {/* <Card className={"col-4 ms-4"} style={{height: "84.5vh", width: "80vh", borderRadius: "10px"}}>
+                        three.js component
+                        <Col className={"col-4 ms-4"}>
+                            <div ref={ref => (this.mount = ref)}/>
+                        </Col>
+                    </Card> */}
+
+                    <Col className="p-3 mb-4 col-4" >
+                        {/* style={{height: "84.5vh", borderRadius: "10px"}} */}
+                            {/* <Row className="justify-content-right d-flex">
+                                <div ref={ref => (this.mount = ref)}/>
+                            </Row> */}
+                            <ThreeCube />
+                            
+                    </Col>
+
                     <Col className={"col-4 ms-4 " + fadeIn}>
 
                             <GenericModal className={fadeIn} content_type={this.state.selectedOption}
@@ -113,7 +136,6 @@ export class Level extends React.Component {
 
                     </Col>
                 </Row>
-
             </Container>
         );
     }
