@@ -31,11 +31,6 @@ export class Level extends React.Component {
             selectedOption: option,
         });
     }
-
-    // componentDidMount() {
-       
-    // }
-
     render() {
 
         const fadeIn = this.state.selectedOption ? 'fadein' : 'fadein hide';
@@ -113,19 +108,11 @@ export class Level extends React.Component {
 
                     </Col>
 
-                    {/* <Card className={"col-4 ms-4"} style={{height: "84.5vh", width: "80vh", borderRadius: "10px"}}>
-                        three.js component
-                        <Col className={"col-4 ms-4"}>
-                            <div ref={ref => (this.mount = ref)}/>
-                        </Col>
-                    </Card> */}
-
-                    <Col className="p-3 mb-4 col-4" >
-                        {/* style={{height: "84.5vh", borderRadius: "10px"}} */}
-                            {/* <Row className="justify-content-right d-flex">
-                                <div ref={ref => (this.mount = ref)}/>
-                            </Row> */}
-                            <ThreeCube />
+                    <Col className="p-3 mb-4 col-4" style={{height: "78vh", borderRadius: "10px"}} >
+                            <Row className="justify-content-right d-flex">
+                                <span>ola</span>
+                                <ThreeCube />
+                            </Row>
                             
                     </Col>
 
