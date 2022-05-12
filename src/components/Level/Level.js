@@ -109,19 +109,12 @@ export class Level extends React.Component {
                     </Col>
 
                     <Col className="p-3 mb-4 col-4" style={{height: "78vh", borderRadius: "10px"}} >
-                            <Row className="justify-content-right d-flex">
-                                <span>ola</span>
-                                <ThreeCube />
-                            </Row>
+
+                        <ThreeCube className="m-0" />
                             
                     </Col>
 
-                    <Col className={"col-4 ms-4 " + fadeIn}>
 
-                            <GenericModal className={fadeIn} content_type={this.state.selectedOption}
-                                          on_option_changed={this.optionHandler.bind(this)}/>
-
-                    </Col>
                 </Row>
             </Container>
         );

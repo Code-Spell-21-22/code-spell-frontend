@@ -3,13 +3,12 @@ import * as THREE from "three";
 import TWEEN from "../../lib/tween.umd"
  
 
-let camera, scene, renderer, x, z, cube;
-
+var camera, scene, renderer, x, z, cube;
 let movements = [];
 
 const ThreeCube = () => {
  
-    const cubeRef = useRef(null);
+    // const cubeRef = useRef(null);
 
     useEffect(() => {
         
@@ -64,9 +63,10 @@ const ThreeCube = () => {
 
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize(630,700);
+        renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
         renderer.shadowMap.enabled = true;
-        document.body.appendChild( renderer.domElement );
+        // document.body.appendChild( renderer.domElement );
+        document.getElementById("threejs").parentNode.replaceChild(renderer.domElement, document.getElementById("threejs"));
 
         //[x,z] move to x(right/left) or z(front/back))
         var createMovement = function (x, z){
@@ -107,9 +107,9 @@ const ThreeCube = () => {
 
 
         var onWindowResize = function () {
-            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.aspect = window.innerWidth / 3 / (window.innerHeight - window.innerHeight / 5);
             camera.updateProjectionMatrix();
-            renderer.setSize( window.innerWidth, window.innerHeight );
+            renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
         };
 
         window.addEventListener( 'resize', onWindowResize );    
@@ -123,13 +123,12 @@ const ThreeCube = () => {
         animate();
 
         // return () => cubeRef.current.removeChild( renderer.domElement);
- }, []);
+    }, []);
 
- return (
-    <>
-      <div ref={cubeRef}></div>
-    </>
-  );
+    return(
+       <div id="threejs"></div>
+    );
+
  };
   
  export default ThreeCube;
