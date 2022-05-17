@@ -21,7 +21,13 @@ const Login = () => {
     const notify = (message) => toast(message);
 
     const onSubmit = () => {
-
+        if (!email|| !password){
+        
+            notify("Please fill all fields");
+            return;
+        }
+            
+        
         axios.post('http://159.65.60.64:8080/api/auth/login', {
             email: email,
             password: password
@@ -48,11 +54,11 @@ const Login = () => {
                 <Row className="w-75">
                     <Form>
                         <Form.Group className="mb-3 shadow" controlId="formBasicUsername">
-                            <Form.Control style={{height: "5vh", minHeight: "40px"}} type="email" placeholder="Email" onChange={(event) => onInputChanged(setEmail, event)} />
+                            <Form.Control style={{height: "5vh", minHeight: "40px"}} type="email" placeholder="Email" onChange={(event) => onInputChanged(setEmail, event)} required/>
                         </Form.Group>
 
                         <Form.Group className="mb-3 shadow" controlId="formBasicPassword">
-                            <Form.Control style={{height: "5vh", minHeight: "40px"}} type="password" placeholder="Password" onChange={(event) => onInputChanged(setPassword, event)} />
+                            <Form.Control style={{height: "5vh", minHeight: "40px"}} type="password" placeholder="Password" onChange={(event) => onInputChanged(setPassword, event)} required/>
                         </Form.Group>
 
                         <Button className="mt-5 w-100 text-white" onClick={onSubmit} style={{backgroundColor: "#1c93ec", border: "none", height: "6vh"}}>

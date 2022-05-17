@@ -26,13 +26,49 @@ const SignUp = () => {
     const onTermsChanged = () => {
         setTerms(!terms);
     }
+    //Checks for string@string.string format
+    const isValidEmailAddress= (address) => {
+        var testEmail =    /^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i;
+        if (!testEmail.test(address)) {
+            setEmail(!email) ;
+          }
+    }
+    const checkField=(un) =>{
+        //from 3 to 20 in lenght no _ or . at the start/end/consecutive only allows for A-Z Numbers and _ .
+        var testUserName=/^(?=[a-zA-Z0-9._]{3,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/i;
+        if(!testUserName.test(un) ){
+            setUsername(!username);
+        }
+    
+    }
+    const passwordStrenght= (pw) => {
+        var testPw= /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/i;
+        if(!testPw.test(pw)){
+            setPassword(!password);
+        }
+
+    
+    }
 
     const notify = (message) => toast(message);
 
     const onSubmit = () => {
 
         if (!terms) {
-            notify("Please agree to our terms of use");
+            notify("Please agree to our terms of use!");
+            return;
+        }
+        if(!email || isValidEmailAddress(email) || email.value === "null")
+        {
+            notify("Please provide an email!");
+        return;}
+
+        if(!password || passwordStrenght(password) || password.value === "null"){
+            notify("Please provide an password, it must have 4 charaters and at least one number and one letter!");
+        return;}
+        
+        if(!username || checkField(username) || username.value === "null"){
+            notify("Please provide an username, only A-Z,0-9 , _ and . are allowed!");
             return;
         }
 

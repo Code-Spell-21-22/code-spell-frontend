@@ -36,9 +36,9 @@ export class Level extends React.Component {
 
     submitCode() {
         console.log(this.state.code);
-        axios.post('http://159.65.60.64:8080/api',{ //complete with actual endpoint
+        /* axios.post('http://159.65.60.64:8080/api',{ //complete with actual endpoint
             //put header and endpoint items
-        });
+        }); */
 
         
     }
