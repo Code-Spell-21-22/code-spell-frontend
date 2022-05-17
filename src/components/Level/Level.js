@@ -8,6 +8,7 @@ import {GenericModal} from "../Modals/GenericModal";
 import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
+import axios from "axios";
 
 export class Level extends React.Component {
 
@@ -38,6 +39,13 @@ export class Level extends React.Component {
         console.log(this.state.code);
         axios.post('http://159.65.60.64:8080/api',{ //complete with actual endpoint
             //put header and endpoint items
+            headers: {
+                'authorization': localStorage.hasOwnProperty("code_spell_token")
+            },
+            body: {
+                'code':this.state.code,
+                
+            }
         });
 
         
