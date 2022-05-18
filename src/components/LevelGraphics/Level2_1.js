@@ -1,12 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
-import TWEEN from "../../lib/tween.umd"
+
+// import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+// import TextTexture from '@seregpie/three.text-texture';
+// import TextSprite from '@seregpie/three.text-sprite';
  
 
 var camera, scene, renderer, x, z, cube;
-let movements = [];
 
-const ThreeCube = () => {
+const Level2_1 = () => {
  
     // const cubeRef = useRef(null);
 
@@ -19,18 +21,13 @@ const ThreeCube = () => {
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x03b6fc);
 
-    // init();
-    // animate();
-
-    // function init() {
-        // helper    
         // The X axis is red. The Y axis is green. The Z axis is blue.
         const axesHelper = new THREE.AxesHelper( 5 );
         //scene.add( axesHelper );
         
         // cube
         const cubeGeo = new THREE.BoxGeometry( 4, 4, 4 );
-        const cubeMaterial = new THREE.MeshPhongMaterial( { color: 0x262829} );
+        const cubeMaterial = new THREE.MeshPhongMaterial( { color: 'red'} );
         cube = new THREE.Mesh( cubeGeo, cubeMaterial );
         cube.position.set(0, 2, 0);
         
@@ -65,28 +62,9 @@ const ThreeCube = () => {
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
         renderer.shadowMap.enabled = true;
-        // document.body.appendChild( renderer.domElement );
+
+        document.body.appendChild( renderer.domElement );
         document.getElementById("threejs").parentNode.replaceChild(renderer.domElement, document.getElementById("threejs"));
-
-        //[x,z] move to x(right/left) or z(front/back))
-        var createMovement = function (x, z){
-
-            x = x*4;
-            z = z*4;
-            var targetPosition = new THREE.Vector3( x, 2, z );
-            var tween = new TWEEN.Tween( cube.position ).to( targetPosition, 1000 ); 
-
-            movements.push(tween);
-
-            if (movements.length >= 2) {
-                for (let i = 0; i < movements.length - 1; i++){
-                    movements[i].chain(movements[i+1]);
-                }
-            }
-
-            movements[0].start();
-            
-        };
 
         const start = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: true } ) );
         start.translateY(0.01);
@@ -99,11 +77,6 @@ const ThreeCube = () => {
         end.translateZ(-12);
         end.material.color.setHex(0xfeffd1)
         scene.add( end );
-        // path 
-        // (x,z) > +x (left) / -x (right) || +z (back) / -z (front)
-        createMovement(1, 0);
-        createMovement(1, -3);
-        createMovement(2, -3)
 
 
         var onWindowResize = function () {
@@ -116,13 +89,11 @@ const ThreeCube = () => {
 
         var animate = function() { 
             requestAnimationFrame(animate);
-            TWEEN.update();
             renderer.render( scene, camera ); 
         };
 
         animate();
 
-        // return () => cubeRef.current.removeChild( renderer.domElement);
     }, []);
 
     return(
@@ -131,4 +102,4 @@ const ThreeCube = () => {
 
  };
   
- export default ThreeCube;
+ export default Level2_1;
