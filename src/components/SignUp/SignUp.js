@@ -27,7 +27,7 @@ const SignUp = () => {
         setTerms(!terms);
     }
     //Checks for string@string.string format
-    const isValidEmailAddress= (address) => {
+    const isInvalidEmailAddress= (address) => {
         var testEmail =    /^[ ]*([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})[ ]*$/i;
         if (!testEmail.test(address)) {
             setEmail(!email) ;
@@ -58,20 +58,20 @@ const SignUp = () => {
             notify("Please agree to our terms of use!");
             return;
         }
-        if(!email || isValidEmailAddress(email) || email.value === "null")
+        if(!email || isInvalidEmailAddress(email) || email === "null")
+
         {
             notify("Please provide an email!");
         return;}
 
-        if(!password || passwordStrenght(password) || password.value === "null"){
+        if(!password || passwordStrenght(password) || password === "null"){
             notify("Please provide an password, it must have 4 charaters and at least one number and one letter!");
         return;}
         
-        if(!username || checkField(username) || username.value === "null"){
+        if(!username || checkField(username) || username === "null"){
             notify("Please provide an username, only A-Z,0-9 , _ and . are allowed!");
             return;
         }
-
         axios.post('http://159.65.60.64:8080/api/auth/register', {
             username: username,
             email: email,
