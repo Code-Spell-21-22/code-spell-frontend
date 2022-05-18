@@ -7,8 +7,6 @@
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
-    "@seregpie/three.text-sprite": "^3.2.0",
-    "@seregpie/three.text-texture": "^3.2.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
@@ -24,7 +22,6 @@
     "react-toastify": "^8.2.0",
     "three": "^0.140.2",
     "three-gltf-loader": "^1.111.0",
-    "three-spritetext": "^1.6.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

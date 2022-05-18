@@ -1,9 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
-
-// import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-// import TextTexture from '@seregpie/three.text-texture';
-// import TextSprite from '@seregpie/three.text-sprite';
  
 
 var camera, scene, renderer, x, z, cube;

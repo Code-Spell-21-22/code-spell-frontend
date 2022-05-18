@@ -65,7 +65,7 @@ const Level1_1 = () => {
             );
             
             var fontloader = new FontLoader();
-            fontloader.load( '/helvetiker_regular.typeface.json', function ( font ) {
+            fontloader.load( '/fonts/helvetiker_regular.typeface.json', function ( font ) {
 
                 var textGeo = new TextGeometry( text, {
                     font: font,
@@ -78,13 +78,7 @@ const Level1_1 = () => {
 
                 scene.add( final );
             
-                
-
             } );
-
-
-
-    
            
         }
     
@@ -105,10 +99,15 @@ const Level1_1 = () => {
             renderer.shadowMap.enabled = true;
         
             // const controls = new THREE.OrbitControls( camera, renderer.domElement );
-    
-            //document.body.appendChild( renderer.domElement );
-            // ! this is needed for react
             document.getElementById("threejs").parentNode.replaceChild(renderer.domElement, document.getElementById("threejs"));
+            
+            // if (document.getElementById("threejs") != null) {
+                // document.getElementById("threejs").parentNode.replaceChild(renderer.domElement, document.getElementById("threejs"));
+            // } else {
+                // var div = document.createElement("div");
+                // div.setAttribute("id", "threejs")
+                // console.log(div);
+            // }
         }
     
         // create camera and scene
