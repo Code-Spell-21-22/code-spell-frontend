@@ -35,15 +35,27 @@ export class Level extends React.Component {
         });
     }
 
+    generateUUID() {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+      }
+
+
     submitCode() {
         console.log(this.state.code);
         axios.post('http://159.65.60.64:8080/api',{ //complete with actual endpoint
             //put header and endpoint items
             headers: {
-                'authorization': localStorage.hasOwnProperty("code_spell_token")
+                
+                'authorization': "Bearer " + localStorage.hasOwnProperty("code_spell_token")
             },
             body: {
+                'uniqueCodeID': generateUUID(), //generate with Crypto.randomUUID() 
                 'code':this.state.code,
+                'chapter': this.state.chapter,
+                'level': this.state.level,
+                ''
                 
             }
         });
