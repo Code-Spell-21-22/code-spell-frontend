@@ -23,7 +23,7 @@ const Level1_1 = () => {
             scene.background = new THREE.Color(0x2e78e1);
             
             // The X axis is red. The Y axis is green. The Z axis is blue.
-            const axesHelper = new THREE.AxesHelper( 5 );
+            const axesHelper = new THREE.AxesHelper( 10 );
             // scene.add( axesHelper );
     
             // grid
@@ -47,22 +47,23 @@ const Level1_1 = () => {
     
         var showText = function (text){
     
+            const all = new THREE.Group();
             ////////////////////////////////////////
             // Instantiate a loader
-            const gltfloader = new GLTFLoader();
+            // const gltfloader = new GLTFLoader();
     
-            // Load a glTF resource
-            gltfloader.load(
-                // resource URL
-               speechBubble,
-                // called when the resource is loaded
-                function ( gltf ) {
-                    gltf.scene.scale.set( 0.008, 0.008, 0.008 ) // scale here
-                    gltf.scene.position.set( -4, 5.8, 0 ) // scale here
-                    scene.add( gltf.scene );
-                    
-                }
-            );
+            // // Load a glTF resource
+            // gltfloader.load(
+            //     // resource URL
+            //    speechBubble,
+            //     // called when the resource is loaded
+            //     function ( gltf ) {
+            //         gltf.scene.scale.set( 0.01, 0.01, 0.01 ) // scale here
+            //         gltf.scene.position.set( -5.4, 6.2, 0 ) // scale here
+            //         scene.add( gltf.scene );
+            //     }
+            // );          
+            
             
             var fontloader = new FontLoader();
             fontloader.load( '/fonts/helvetiker_regular.typeface.json', function ( font ) {
@@ -73,12 +74,41 @@ const Level1_1 = () => {
                     height: 0,
                 } );
 
-                var final = new THREE.Mesh( textGeo, new THREE.MeshPhongMaterial( { color: 0x171717 } ) );
-                final.position.set( -5.9, 5.6, 0.7 );
+                var final = new THREE.Mesh(  textGeo, new THREE.MeshPhongMaterial( { color: 0x171717 } ) );
+                
+                textGeo.computeBoundingBox();
+                const center = textGeo.boundingBox.getCenter(new THREE.Vector3());
+                const size = textGeo.boundingBox.getSize(new THREE.Vector3());
+                
+                final.position.set( -center.x, 6, 0.7 );
+                all.add(final);
+                                
+                const speech = new THREE.Mesh( new THREE.BoxGeometry( 1, 1.5, size.x+1 ), new THREE.MeshBasicMaterial( {color: 0xFFFFFF} ));
+                speech.rotateY( - Math.PI / 2 );
+                speech.position.set( 0, 6.2, 0 ) // scale here
+                all.add(speech)
+    
+                const shape = new THREE.Shape();
 
-                scene.add( final );
+                const x = 0;
+                const y = 0;
+
+                shape.moveTo(x - 0.6, y );
+                shape.lineTo(x + 0.6, y );
+                shape.lineTo(x, y + 0.8);
+
+                const TriangleGeometry = new THREE.ShapeGeometry(shape);
+
+                const tri = new THREE.Mesh( TriangleGeometry, new THREE.MeshBasicMaterial( {color: 0xFFFFFF} ));
+                tri.rotateZ(Math.PI);
+                tri.position.set( 0, 5.6, 0 ) // scale here
+                all.add(tri)
             
             } );
+            
+
+            all.position.set(0,0,0)
+            scene.add(all)
            
         }
     
@@ -101,13 +131,7 @@ const Level1_1 = () => {
             // const controls = new THREE.OrbitControls( camera, renderer.domElement );
             document.getElementById("threejs").parentNode.replaceChild(renderer.domElement, document.getElementById("threejs"));
             
-            // if (document.getElementById("threejs") != null) {
-                // document.getElementById("threejs").parentNode.replaceChild(renderer.domElement, document.getElementById("threejs"));
-            // } else {
-                // var div = document.createElement("div");
-                // div.setAttribute("id", "threejs")
-                // console.log(div);
-            // }
+           
         }
     
         // create camera and scene
@@ -117,7 +141,7 @@ const Level1_1 = () => {
         // add cube
         showCube();
         // add text
-        showText('Hello, world!'); 
+        showText("Hello, World!"); 
         // render everything
         startRender();
 
