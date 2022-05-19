@@ -48,22 +48,6 @@ const Level1_1 = () => {
         var showText = function (text){
     
             const all = new THREE.Group();
-            ////////////////////////////////////////
-            // Instantiate a loader
-            // const gltfloader = new GLTFLoader();
-    
-            // // Load a glTF resource
-            // gltfloader.load(
-            //     // resource URL
-            //    speechBubble,
-            //     // called when the resource is loaded
-            //     function ( gltf ) {
-            //         gltf.scene.scale.set( 0.01, 0.01, 0.01 ) // scale here
-            //         gltf.scene.position.set( -5.4, 6.2, 0 ) // scale here
-            //         scene.add( gltf.scene );
-            //     }
-            // );          
-            
             
             var fontloader = new FontLoader();
             fontloader.load( '/fonts/helvetiker_regular.typeface.json', function ( font ) {
