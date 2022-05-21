@@ -2,18 +2,16 @@ import React, { useEffect, useRef } from "react";
 
 import * as THREE from "three";
 
-import {createScene, createCamera} from './createEnvironment';
-import {createPlayer} from './createPlayer';
-import {createText} from './createText';
+import {createScene, createCamera} from '../Builders/createEnvironment';
+import {createPlayer} from '../Builders/createPlayer';
+import {createText} from '../Builders/createText';
 
 let camera, scene, renderer;
+var step1 = false; var step2 = false;
 
 const Level1_1 = () => {
  
     useEffect(() => {
-
-        var step1 = false; var step2 = false;
-        
         // create camera and scene
         // this is default camera 
         camera = createCamera(0, 7, 24, 0, 0, 0);

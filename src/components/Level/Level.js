@@ -6,8 +6,8 @@ import {NavbarVertical} from "../NavbarVertical/NavbarVertical";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {GenericModal} from "../Modals/GenericModal";
 
-import Level1_1 from "../LevelGraphics/Level1_1"
-import Level1_2 from "../LevelGraphics/Level1_2"
+import Level1_1 from "../LevelGraphics/Chapter1_Introduction/Level1_1"
+import Level3_1 from "../LevelGraphics/Chapter3_OOP/Level3_1"
 
 export class Level extends React.Component {
 
@@ -112,7 +112,7 @@ export class Level extends React.Component {
                     <Col className="p-3 mb-4 col-4" style={{height: "78vh", borderRadius: "10px"}} >
 
                         {/* ! nome deste component tem de mudar conforme nivel (Level1_1, Level2_1, etc) */}
-                        <Level1_2 className="m-0" />
+                        <Level3_1 className="m-0" />
                             
                     </Col>
 
