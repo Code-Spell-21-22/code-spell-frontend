@@ -21,9 +21,8 @@ const Level1_2 = () => {
     
         const player = createPlayer();
         player.position.set(8 ,2, -4)
-        scene.add(player); 
+        scene.add(player);  
 
-        step4 = true; 
         if (step1 == true || step2 == true || step3 == true ){
             //! create blueprint => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 1
             // createBlueprint = (class_name)
@@ -32,6 +31,7 @@ const Level1_2 = () => {
         }
 
         // ! this response is semt from backend
+        // (material, weight, height, side)
         var response = ["wood", 2.0, 3.0, 4.0];
 
         if (step2 == true){

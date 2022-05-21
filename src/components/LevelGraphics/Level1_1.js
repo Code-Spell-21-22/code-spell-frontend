@@ -11,6 +11,8 @@ let camera, scene, renderer;
 const Level1_1 = () => {
  
     useEffect(() => {
+
+        var step1 = false; var step2 = false;
         
         // create camera and scene
         // this is default camera 
@@ -18,13 +20,17 @@ const Level1_1 = () => {
         scene = createScene();
         
         //! create player => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 1
-        const player = createPlayer();
-        scene.add(player); 
+        if (step1 === true || step2 === true) {
+            const player = createPlayer();
+            scene.add(player); 
+        }
     
         //! create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
-        // createText = (hasSpeechBubble , text, fontSize) 
-        const text =  createText(true, "I'm trying different words, whats up?!", 0.5, 0x171717);
-        scene.add(text)
+        // createText = (hasSpeechBubble , text, fontSize)
+        if (step2 == true){
+            const text =  createText(true, "I'm trying different words, whats up?!", 0.5, 0x171717);
+            scene.add(text)
+        } 
         
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );

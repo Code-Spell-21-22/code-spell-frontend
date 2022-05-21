@@ -4,6 +4,7 @@ import {createText} from './createText';
 
 let material_text, weight_text, height_text, side_text
 
+// STEP 1
 export const createBlueprint = (text) => {
     const bp = new THREE.Group();
     
@@ -32,6 +33,7 @@ export const createBlueprint = (text) => {
     return bp;
 }
 
+// STEP 2
 export const addBlueprintItems = (array) => {
     const items = new THREE.Group();
     
@@ -57,6 +59,8 @@ export const addBlueprintItems = (array) => {
 
 
 }
+
+// STEP 3
 export const addBlueprintLayout = (array, volume_formula) => {
     const layout = new THREE.Group();
 
@@ -80,7 +84,7 @@ export const addBlueprintLayout = (array, volume_formula) => {
         side_text.position.set(-4,3,0);
     } else if (height_number > side_number){
         var geometry = new THREE.BoxGeometry( 2.5, 4, 2.5 );
-        height_text.position.set(-1.6,5,0);
+        height_text.position.set(-1.2,5,0);
         side_text.position.set(-4,2.2,0);
     }
 
@@ -95,20 +99,27 @@ export const addBlueprintLayout = (array, volume_formula) => {
     return layout
 }
 
+// STEP 4
 export const buildBox = (array, class_name, box_name) => {
     const finalbox = new THREE.Group();
 
     const classname = createText(false, class_name, 0.7, 0xffffff);
-    classname.position.set(0, 9.6, 0)
-
+    
     const boxname = createText(false, box_name, 0.4, 0xffffff);
-    boxname.position.set(0, 8.4, 0)
-
+    
     const height_number = array[2];
     const side_number = array[3];
-
-    if (height_number < side_number){ var geometry = new THREE.BoxGeometry( 8, 4, 4 ); } 
-    else if (height_number > side_number){ var geometry = new THREE.BoxGeometry( 4, 8, 4 ); }
+    
+    if (height_number < side_number){ 
+        var geometry = new THREE.BoxGeometry( 6, 3, 3 ); 
+        classname.position.set(0, 9.6, 0)
+        boxname.position.set(0, 6.6, 0)
+    } 
+    else if (height_number > side_number){ 
+        var geometry = new THREE.BoxGeometry( 3, 6, 3 ); 
+        classname.position.set(0, 9.6, 0)
+        boxname.position.set(0, 8.2, 0)
+    }
     
     var box = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( {color: 0x523320}  ));
     box.position.set(0, 10, 1.5);
