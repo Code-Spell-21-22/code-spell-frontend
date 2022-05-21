@@ -4,27 +4,27 @@ import * as THREE from "three";
 
 import {createScene, createCamera} from './createEnvironment';
 import {createPlayer} from './createPlayer';
+import {createBlueprint} from './createBlueprint';
 import {createText} from './createText';
 
 let camera, scene, renderer;
 
-const Level1_1 = () => {
+const Level1_2 = () => {
  
     useEffect(() => {
         
         // create camera and scene
-        // this is default camera 
-        camera = createCamera(0, 7, 24, 0, 0, 0);
+        //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
+        camera = createCamera(0, 6, 20, 0, 6, 0 );
         scene = createScene();
-        
-        // create player => THIS IS GOING TO BE TRIGGERED BY USER CODE
-        const player = createPlayer();
-        scene.add(player); 
     
-        // create text => THIS IS GOING TO BE TRIGGERED BY USER CODE
-        // createText = (hasSpeechBubble , text, fontSize) 
-        const text =  createText(true, "I'm trying different words, whats up?!", 0.5, 0x171717);
-        scene.add(text)
+        const player = createPlayer();
+        player.position.set(8 ,2, -4)
+        scene.add(player); 
+
+        // create blueprint => THIS IS GOING TO BE TRIGGERED BY USER CODE
+        const blueprint =  createBlueprint("SquareBox");
+        scene.add(blueprint)
         
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -59,4 +59,4 @@ const Level1_1 = () => {
 
  };
   
- export default Level1_1;
+ export default Level1_2;
