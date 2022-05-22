@@ -39,11 +39,14 @@ export class Level extends React.Component {
         return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
           (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
+        
       }
 
 
     submitCode() {
         console.log(this.state.code);
+        console.log(this.generateUUID());
+        
         axios.post('http://159.65.60.64:8080/api',{ //complete with actual endpoint
             //put header and endpoint items
             headers: {
@@ -51,11 +54,11 @@ export class Level extends React.Component {
                 'authorization': "Bearer " + localStorage.hasOwnProperty("code_spell_token")
             },
             body: {
-                'uniqueCodeID': generateUUID(), //generate with Crypto.randomUUID() 
+                'uniqueCodeID': this.generateUUID(), //generate with Crypto.randomUUID() 
                 'code':this.state.code,
                 'chapter': this.state.chapter,
                 'level': this.state.level,
-                ''
+                
                 
             }
         });
@@ -102,6 +105,7 @@ export class Level extends React.Component {
                             <Row className="justify-content-start d-flex">
                                 <CodeMirror
                                     height="60vh"
+                                    value= {"//Step 1"+ "\n\n\n//Step 2"+"\n\n\n//Step 3"}
                                     extensions={[java()]}
                                     theme={oneDark}
                                     onChange={(value, viewUpdate) => {
