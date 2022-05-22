@@ -5,7 +5,8 @@ import * as THREE from "three";
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createPlayer} from '../Builders/createPlayer';
 import {createText} from '../Builders/createText';
-import {ageBuilder} from '../Builders/ageBuilder';
+import {createInventory, createSword, createShield} from '../Builders/createInventory';
+import {ageEditor} from '../Builders/ageEditor';
 
 let camera, scene, renderer;
 var step1 = true; var step2 = true; var step3 = false; var step4 = false;
@@ -22,9 +23,19 @@ const Level2_1 = () => {
         camera = createCamera(0, 6, 26, 0, 4, 0);
         scene = createScene();
         
+        // player
         const player = createPlayer();
         player.position.set(-8 ,2, 0)
         scene.add(player); 
+
+        // inventory
+        const inventory = createInventory(scene);
+
+        // sword
+        const sword = createSword(scene);
+
+        // shield
+        const shield = createShield(scene);
 
         // ! this response is sent from backend
         // [player object, age]
@@ -32,7 +43,7 @@ const Level2_1 = () => {
 
         // * edit player age => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 1
         if (step1 == true){
-            const ageBox = ageBuilder(step1_response);
+            const ageBox = ageEditor(step1_response);
             scene.add(ageBox);
         }
 
@@ -40,13 +51,13 @@ const Level2_1 = () => {
         var step2_response = "Im learning variables";
 
         // * create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
-        // createText = (hasSpeechBubble , text, fontSize)
+        // createText = (hasSpeechBubble, hasTri, , text, fontSize, textColor)
         if (step2 == true){
-            const text =  createText(true, step2_response, 0.5, 0x171717);
+            const text =  createText(true, true, step2_response, 0.5, 0x171717);
             text.position.set(player.position.x, player.position.y-2, 0)
             scene.add(text)
         }
-        
+
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setPixelRatio( window.devicePixelRatio );

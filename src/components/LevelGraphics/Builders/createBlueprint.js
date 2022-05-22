@@ -10,7 +10,7 @@ export const createBlueprint = (text) => {
     
     const plane = new THREE.Mesh( new THREE.PlaneGeometry( 16, 9 ), new THREE.MeshBasicMaterial( {color: 0x00518f, side: THREE.DoubleSide} ) );
     plane.position.set(0, 11, -0.5)
-    const classname = createText(false, text, 0.5, 0xffffff);
+    const classname = createText(false, false, text, 0.5, 0xffffff);
     classname.position.set(0, 9.6, 0)
 
     var createLine = function(l, w, x, y) {
@@ -70,14 +70,14 @@ export const addBlueprintLayout = (array) => {
     const side_number = array[3];
     const volume_formula = array[4];
     
-    material_text = createText(false, "material" + " = " + material_type , 0.35, 0xffffff);
+    material_text = createText(false, false, "material" + " = " + material_type , 0.35, 0xffffff);
     material_text.position.set(4,7.5,0);
     
-    weight_text = createText(false, "weight" + " = " + weight_number , 0.35, 0xffffff);
+    weight_text = createText(false, false, "weight" + " = " + weight_number , 0.35, 0xffffff);
     weight_text.position.set(3.4,6.8,0);
 
-    height_text = createText(false, "height" + " = " + height_number , 0.35, 0xffffff);
-    side_text = createText(false, "side" + " = " + side_number , 0.35, 0xffffff);
+    height_text = createText(false, false, "height" + " = " + height_number , 0.35, 0xffffff);
+    side_text = createText(false, false, "side" + " = " + side_number , 0.35, 0xffffff);
     
     if (height_number < side_number){
         var geometry = new THREE.BoxGeometry( 4, 2.5, 2.5 );

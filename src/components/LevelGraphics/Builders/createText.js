@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 
-export const createText = (hasSpeechBubble , text, fontSize, textColor) => {
+export const createText = (hasSpeechBubble, hasTri , text, fontSize, textColor) => {
 
     const all = new THREE.Group();
     
@@ -33,16 +33,18 @@ export const createText = (hasSpeechBubble , text, fontSize, textColor) => {
             speech.position.set( 0, 6.2, 0 ) // scale here
             all.add(speech)
         
-            const shape = new THREE.Shape();
+            if (hasTri == true){
+                const shape = new THREE.Shape();
         
-            shape.moveTo( -0.6, 0 );
-            shape.lineTo( 0.6, 0 );
-            shape.lineTo( 0, 0.8 );
-        
-            const tri = new THREE.Mesh( new THREE.ShapeGeometry(shape), new THREE.MeshBasicMaterial( {color: 0xFFFFFF} ));
-            tri.rotateZ(Math.PI);
-            tri.position.set( 0, 5.6, 0 ) // scale here
-            all.add(tri)
+                shape.moveTo( -0.6, 0 );
+                shape.lineTo( 0.6, 0 );
+                shape.lineTo( 0, 0.8 );
+                
+                const tri = new THREE.Mesh( new THREE.ShapeGeometry(shape), new THREE.MeshBasicMaterial( {color: 0xFFFFFF} ));
+                tri.rotateZ(Math.PI);
+                tri.position.set( 0, 5.6, 0 ) // scale here
+                all.add(tri)
+            }
         }
 
     } );

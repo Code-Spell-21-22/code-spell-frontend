@@ -31,7 +31,7 @@ const Level1_1 = () => {
         // * create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
         // createText = (hasSpeechBubble , text, fontSize)
         if (step2 == true){
-            const text =  createText(true, step2_response, 0.5, 0x171717);
+            const text =  createText(true, true, step2_response, 0.5, 0x171717);
             scene.add(text)
         } 
         
