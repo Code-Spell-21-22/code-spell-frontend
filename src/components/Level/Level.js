@@ -46,18 +46,18 @@ export class Level extends React.Component {
     submitCode() {
         console.log(this.state.code);
         console.log(this.generateUUID());
-        
-        axios.post('http://159.65.60.64:8080/api',{ //complete with actual endpoint
+        let solution_id = this.generateUUID(); //generate with Crypto.randomUUID()
+        const level_id = 0 //ceninha
+        axios.post('http://159.65.60.64:8080/api/level/:'+level_id+'/submit/:'+solution_id,{ 
             //put header and endpoint items
             headers: {
                 
                 'authorization': "Bearer " + localStorage.hasOwnProperty("code_spell_token")
             },
             body: {
-                'uniqueCodeID': this.generateUUID(), //generate with Crypto.randomUUID() 
+                 
                 'code':this.state.code,
-                'chapter': this.state.chapter,
-                'level': this.state.level,
+                
                 
                 
             }
@@ -105,7 +105,7 @@ export class Level extends React.Component {
                             <Row className="justify-content-start d-flex">
                                 <CodeMirror
                                     height="60vh"
-                                    value= {"//Step 1"+ "\n\n\n//Step 2"+"\n\n\n//Step 3"}
+                                    value= {"//Step 1"+ "\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println('Hello World!')\;\n\t\}\n\}"+ "\n\n\n//Step 2"+"\n\n\n//Step 3"}
                                     extensions={[java()]}
                                     theme={oneDark}
                                     onChange={(value, viewUpdate) => {
