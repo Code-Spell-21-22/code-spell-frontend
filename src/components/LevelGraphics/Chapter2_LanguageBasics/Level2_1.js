@@ -9,7 +9,7 @@ import {createInventory, createSword, createShield} from '../Builders/createInve
 import {ageEditor} from '../Builders/ageEditor';
 
 let camera, scene, renderer;
-var step1 = true; var step2 = true; var step3 = false; var step4 = false;
+var step1 = true; var step2 = false; var step3 = false; var step4 = false;
 
 // * Variables
 const Level2_1 = () => {

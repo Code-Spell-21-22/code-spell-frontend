@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 
-import boxmodel from '../../../models/box/model/Box.OBJ'
+import boxmodel from '../../../models/box/Box.OBJ'
 import swordmodel from '../../../models/sword/sword.obj'
 import shieldmodel from '../../../models/shield/source/shield.obj'
 import shieldtexture from '../../../models/shield/textures/shieldtexture.png'
