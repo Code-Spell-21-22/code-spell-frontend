@@ -61,13 +61,14 @@ export const addBlueprintItems = (array) => {
 }
 
 // STEP 3
-export const addBlueprintLayout = (array, volume_formula) => {
+export const addBlueprintLayout = (array) => {
     const layout = new THREE.Group();
 
     const material_type = array[0];
     const weight_number = array[1];
     const height_number = array[2];
     const side_number = array[3];
+    const volume_formula = array[4];
     
     material_text = createText(false, "material" + " = " + material_type , 0.35, 0xffffff);
     material_text.position.set(4,7.5,0);

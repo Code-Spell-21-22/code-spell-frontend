@@ -9,6 +9,7 @@ import {createBlueprint, addBlueprintItems, addBlueprintLayout, buildBox} from '
 let camera, scene, renderer;
 var step1 = false; var step2 = false; var step3 = false; var step4 = false;
 
+// * Classes
 const Level3_1 = () => {
  
     useEffect(() => {
@@ -22,35 +23,47 @@ const Level3_1 = () => {
         player.position.set(8 ,2, -4)
         scene.add(player);  
 
+        // ! this response is sent from backend
+        // classname
+        var step1_response = "SquareBox";
+
         if ( step1 == true && step4 == false ){
-            //! create blueprint => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 1
+            // * create blueprint => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 1
             // createBlueprint = (class_name)
-            const blueprint =  createBlueprint("SquareBox");
+            const blueprint =  createBlueprint(step1_response);
             scene.add(blueprint) 
         }
 
-        // ! this response is semt from backend
-        // (material, weight, height, side)
-        var response = ["wood", 2.0, 3.0, 4.0];
+        // ! this response is sent from backend
+        // [material, weight, height, side]
+        var step2_response = ["wood", 2.0, 3.0, 4.0];
 
         if (step1 == true && step2 == true){
-            //! add blueprint items => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 2
+            // * add blueprint items => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 2
             // addBlueprintItems = (material_type, weight_number, height_number, side_number)
-            const blueprintItems =  addBlueprintItems(response);
+            const blueprintItems =  addBlueprintItems(step2_response);
             scene.add(blueprintItems)
         } 
 
+        // ! this response is sent from backend
+        // [material, weight, height, side]
+        var step3_response = ["wood", 2.0, 3.0, 4.0, "height*side*side"];
+
         if (step1 == true && step3 == true) {
-            //! add blueprint layout => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 3
+            // * add blueprint layout => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 3
             // addBlueprintLayout = (material_type, weight_number, height_number, side_number, volume_formula)
-            const blueprintLayout =  addBlueprintLayout(response, "height*side*side");
+            const blueprintLayout =  addBlueprintLayout(step3_response);
             scene.add(blueprintLayout)
         }
         
+         // ! this response is sent from backend
+        //[ height, side, classname, boxname]
+        var step4_response = ["wood", 2.0, 3.0, 4.0,  "BuildSquareBox", "box"];
+        
         if (step1 == false && step2 == false && step3 == false && step4 == true) {
-            //! build box => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 4
+            // * build box => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 4
             // buildBox = (class_name, box_name)
-            const box =  buildBox(response, "BuildSquareBox", "box");
+            const box =  buildBox(step4_response);
             scene.add(box)
         }
 

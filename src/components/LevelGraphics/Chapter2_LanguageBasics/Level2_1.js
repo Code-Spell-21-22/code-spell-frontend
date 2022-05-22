@@ -5,35 +5,47 @@ import * as THREE from "three";
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createPlayer} from '../Builders/createPlayer';
 import {createText} from '../Builders/createText';
+import {ageBuilder} from '../Builders/ageBuilder';
 
 let camera, scene, renderer;
-var step1 = false; var step2 = false;
+var step1 = true; var step2 = true; var step3 = false; var step4 = false;
 
-// * Hello World
-const Level1_1 = () => {
- 
+// * Variables
+const Level2_1 = () => {
+    
     useEffect(() => {
         // create camera and scene
+        
+
         // this is default camera 
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
-        camera = createCamera(0, 7, 24, 0, 0, 0);
+        camera = createCamera(0, 6, 26, 0, 4, 0);
         scene = createScene();
         
-        // * create player => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 1
-        if (step1 === true) {
-            const player = createPlayer();
-            scene.add(player); 
+        const player = createPlayer();
+        player.position.set(-8 ,2, 0)
+        scene.add(player); 
+
+        // ! this response is sent from backend
+        // [player object, age]
+        var step1_response = [player, 50];
+
+        // * edit player age => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 1
+        if (step1 == true){
+            const ageBox = ageBuilder(step1_response);
+            scene.add(ageBox);
         }
-    
-        // ! this response comes from backend
-        const step2_response = "I'm trying different words, whats up?!";
-        
+
+        // ! this response is sent from backend
+        var step2_response = "Im learning variables";
+
         // * create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
         // createText = (hasSpeechBubble , text, fontSize)
         if (step2 == true){
             const text =  createText(true, step2_response, 0.5, 0x171717);
+            text.position.set(player.position.x, player.position.y-2, 0)
             scene.add(text)
-        } 
+        }
         
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -68,4 +80,4 @@ const Level1_1 = () => {
 
  };
   
- export default Level1_1;
+ export default Level2_1;
