@@ -7,7 +7,7 @@ import {createPlayer} from '../Builders/createPlayer';
 import {createText} from '../Builders/createText';
 
 let camera, scene, renderer;
-var step1 = false; var step2 = false;
+var step1 = true; var step2 = true;
 
 // * Hello World
 const Level1_1 = () => {
@@ -29,9 +29,9 @@ const Level1_1 = () => {
         const step2_response = "I'm trying different words, whats up?!";
         
         // * create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
-        // createText = (hasSpeechBubble , text, fontSize)
-        if (step2 == true){
-            const text =  createText(true, true, step2_response, 0.5, 0x171717);
+        // const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, bubbleColor)
+        if (step1 == true && step2 === true){
+            const text =  createText(step2_response, 0.5, 0x171717, true, true, 0xffffff);
             scene.add(text)
         } 
         
