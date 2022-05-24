@@ -10,6 +10,8 @@ import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
 import axios from "axios";
 
+import ThreeCube from "./scene1"
+
 export class Level extends React.Component {
 
     constructor(props) {
@@ -70,7 +72,7 @@ export class Level extends React.Component {
 
         const fadeIn = this.state.selectedOption ? 'fadein' : 'fadein hide';
         const fadeInNavbar = this.state.navbarOpen ? 'fadein' : 'fadein hide'
-
+        
         return (
             <Container className="container-fluid mx-3 mt-5">
                 <Row>
@@ -150,6 +152,15 @@ export class Level extends React.Component {
                         </Row>
 
                     </Col>
+
+                    <Col className="p-3 mb-4 col-4" style={{height: "78vh", borderRadius: "10px"}} >
+                            <Row className="justify-content-right d-flex">
+                                <span>ola</span>
+                                <ThreeCube />
+                            </Row>
+                            
+                    </Col>
+
                     <Col className={"col-4 ms-4 " + fadeIn}>
 
                             <GenericModal className={fadeIn} content_type={this.state.selectedOption}
@@ -157,7 +168,6 @@ export class Level extends React.Component {
 
                     </Col>
                 </Row>
-
             </Container>
         );
     }
