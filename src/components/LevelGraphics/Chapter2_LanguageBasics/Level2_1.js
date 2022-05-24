@@ -4,7 +4,7 @@ import * as THREE from "three";
 
 import {createInventory, createSword, createShield} from '../Builders/createItems';
 import {createScene, createCamera} from '../Builders/createEnvironment';
-import {createMovement} from '../Builders/createMovement';
+import {createMovement} from '../Builders/tweenMotions';
 import {createPlayer} from '../Builders/createPlayer';
 import {createText} from '../Builders/createText';
 import {ageEditor} from '../Builders/ageEditor'
@@ -13,7 +13,7 @@ const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
 
-var step1 = true; var step2 = true; var step3 = true; var step4 = false;
+var step1 = false; var step2 = false; var step3 = false;
 
 // * Variables
 const Level2_1 = () => {
@@ -55,7 +55,7 @@ const Level2_1 = () => {
         }
 
         // ! this response is sent from backend
-        var step2_response = "Im learning variables";
+        var step2_response = "I'm learning variables";
         
         // * create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
         // createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, bubbleColor)
@@ -66,10 +66,10 @@ const Level2_1 = () => {
         }
 
         // * create movement => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 3
-        //  const createMovement = (obj, x, y, z, timeTo)
+        //  const createMovement = (obj, x, y, z, timeTo, delay)
         if (step3 === true){
-            createMovement(sword, 1, -5.8, 0, 800);
-            createMovement(shield, -0.5, -5, 0, 800); 
+            createMovement(sword, 1, -5.8, 0, 800, '+2000');
+            createMovement(shield, -0.5, -5, 0, 800, '+2000'); 
         }
 
         /////////////////////////////////////////////////////////////

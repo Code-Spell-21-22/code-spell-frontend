@@ -30,7 +30,11 @@ export const createInventory = (scene) => {
                 } );
 
                 scene.add(inventory)
-            }
+            }, 
+            // called while loading is progressing
+            function ( xhr ) { console.log( ('inventory ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+            // called when loading has errors
+            function ( error ) { console.log( 'An error happened '); }
         );
 }
 
@@ -55,7 +59,11 @@ export const createSword = () => {
             } );
 
             group.add(sword)
-        }
+        }, 
+        // called while loading is progressing
+        function ( xhr ) { console.log( ('sword ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+        // called when loading has errors
+        function ( error ) { console.log( 'An error happened' ); }
     );
     return group;
 }
@@ -81,36 +89,45 @@ export const createShield = () => {
             } );
 
             group.add(shield)
-        }
+        }, 
+        // called while loading is progressing
+        function ( xhr ) { console.log( ('shield ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+        // called when loading has errors
+        function ( error ) { console.log( 'An error happened' ); }
     );
     return group;
 }
 
 
 export const createApple = () => {
-    const group = new THREE.Group();
+    // const group = new THREE.Group();
 
-    // Instantiate a loader
-    const loader = new OBJLoader();
+    // // Instantiate a loader
+    // const loader = new OBJLoader();
 
-    loader.load(
-        // resource URL
-        applemodel,
-        // called when the resource is loaded
-        function ( apple ) {
-            apple.scale.set( 0.20, 0.20, 0.20 ) // scale here
+    // loader.load(
+    //     // resource URL
+    //     applemodel,
+    //     // called when the resource is loaded
+    //     function ( apple ) {
+    //         apple.scale.set( 0.14, 0.14, 0.14 ) // scale here
 
-            // For any meshes in the model, add our material.
-            apple.traverse( function ( node ) {
-                if ( node.isMesh ) node.material =  new THREE.MeshPhongMaterial({color : 0xb50000});
-            } );
+    //         // For any meshes in the model, add our material.
+    //         apple.traverse( function ( node ) {
+    //             if ( node.isMesh ) node.material =  new THREE.MeshPhongMaterial({color : 0xb50000});
+    //         } );
 
-            group.add(apple)
-        }
-    );
-    return group;
+    //         group.add(apple)
+    //     }, 
+    //     // called while loading is progressing
+    //     function ( xhr ) { console.log( ('apple ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+    //     // called when loading has errors
+    //     function ( error ) { console.log( 'An error happened' ); }
+    // );
+
+    // return group;
+    return (new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000})))
 }
-
 
 export const createTree = () => {
     const group = new THREE.Group();
@@ -123,11 +140,15 @@ export const createTree = () => {
         treemodel,
         // called when the resource is loaded
         function ( tree ) {
-            tree.scale.set( 0.015, 0.015, 0.015 ) // scale here
+            tree.scale.set( 0.017, 0.017, 0.017 ) // scale here
             tree.position.set( 0, 0, -10 ) // scale here
             
             group.add(tree)
-        }
+        }, 
+        // called while loading is progressing
+        function ( xhr ) { console.log( ('tree ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+        // called when loading has errors
+        function ( error ) { console.log( 'An error happened' ); }
     );
     return group;
 }
