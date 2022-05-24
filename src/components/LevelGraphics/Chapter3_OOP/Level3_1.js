@@ -16,11 +16,11 @@ const Level3_1 = () => {
 
         // create camera and scene
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
-        camera = createCamera(0, 6, 20, 0, 6, 0 );
+        camera = createCamera(0, 6, 35, 0, 6, 0 );
         scene = createScene();
     
         const player = createPlayer();
-        player.position.set(8 ,2, -4)
+        player.position.set(8, 2, 12)
         scene.add(player);  
 
         // ! this response is sent from backend

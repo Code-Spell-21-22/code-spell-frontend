@@ -13,7 +13,7 @@ const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
 
-var step1 = true; var step2 = false; var step3 = false; var step4 = false;
+var step1 = true; var step2 = true; var step3 = true; var step4 = false;
 
 // * Variables
 const Level2_1 = () => {
@@ -24,12 +24,12 @@ const Level2_1 = () => {
 
         // this is default camera 
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
-        camera = createCamera(0, 7, 34, 0, 4, 0);
+        camera = createCamera(0, 6.5, 34, 0, 4, 0);
         scene = createScene();
         
         // player
         const player = createPlayer();
-        player.position.set(-8 ,2, 0)
+        player.position.set(-8 ,2, 8)
         scene.add(player); 
 
         // inventory
@@ -38,9 +38,7 @@ const Level2_1 = () => {
         // sword
         const sword = createSword();
         scene.add(sword);
-        // path 
-        // (x,z) > +x (left) / -x (right) || +z (back) / -z (front)
-        
+
         // shield
         const shield = createShield();
         scene.add(shield);
@@ -63,7 +61,7 @@ const Level2_1 = () => {
         // createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, bubbleColor)
         if (step2 === true){
             const text =  createText(step2_response, 0.5, 0x171717, true, true, 0xffffff);
-            text.position.set(player.position.x, player.position.y-2, 0)
+            text.position.set(player.position.x, player.position.y-2, player.position.z)
             scene.add(text)
         }
 

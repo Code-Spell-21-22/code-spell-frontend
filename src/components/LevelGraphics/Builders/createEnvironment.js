@@ -30,12 +30,23 @@ export const createScene = () => {
     scene.add( plane );
 
     // lights    
-    const ambientLight = new THREE.AmbientLight( 0x606060 );
+    const ambientLight = new THREE.AmbientLight( 0x606060, 1 );
     scene.add( ambientLight );
 
-    const directionalLight = new THREE.DirectionalLight( 0xffffff );
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
     directionalLight.position.set( 1, 0.75, 0.5 ).normalize();
     scene.add( directionalLight );
+
+    const spotLight = new THREE.SpotLight( 0xffffff, 3, -Math.PI );
+    
+    spotLight.position.set( 0, 13, 12 );
+
+    const targetObject = new THREE.Object3D();
+    targetObject.position.set(0, 13, -10)
+    scene.add(targetObject);
+
+    spotLight.target = targetObject;
+    scene.add( spotLight );
 
     return scene;
 }
