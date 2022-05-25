@@ -2,10 +2,11 @@ import {Card, FormSelect} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {useState} from "react";
 
 const ChapterSelect = (props) => {
 
-    const [chapters, setChapters] = React.useState(props.chapters);
+    const [chapters, setChapters] = useState(props.chapters);
 
     const chapterUpdated = (event) => {
         let chapter = event.target.value;

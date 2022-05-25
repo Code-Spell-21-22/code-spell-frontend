@@ -10,7 +10,7 @@ import { updateDifficulty, updateLanguage, selectDifficulty, selectLanguage } fr
 const Settings = () => {
 
     const [selectedDifficulty, setSelectedDifficulty] = useState(useSelector(selectDifficulty));
-    const [selectedLanguage, setSelectedLanguage] = useState(useSelector(selectedLanguage));
+    const [selectedLanguage, setSelectedLanguage] = useState(useSelector(selectLanguage));
 
     const dispatch = useDispatch();
 

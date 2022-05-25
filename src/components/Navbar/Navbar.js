@@ -35,9 +35,9 @@ const Navbar = (props) => {
             </Col>
             <Col className="col-6">
                 <Card className="shadow w-100"
-                      style={{backgroundColor: "#ffffff", border: "none", minHeight: "50px"}}>
+                      style={{backgroundColor: "rgb(255,255,255)", border: "none", minHeight: "50px"}}>
                     <Col className="align-items-center justify-content-center align-items-center d-flex">
-                        <span style={{color: "#1E4172", textTransform: "uppercase", fontSize: "25px", fontWeight: "bolder", letterSpacing: "3px"}}>{title}</span>
+                        <span style={{color: "#1E4172", textTransform: "uppercase", fontSize: "20px", fontWeight: "bolder",  letterSpacing: "3px"}}>{title}</span>
                     </Col>
                 </Card>
             </Col>

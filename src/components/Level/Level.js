@@ -6,12 +6,13 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import GenericModal from "../Modals/GenericModal";
 
 import ThreeCube from "./scene1"
+import {useState} from "react";
 
 const Level = (props) => {
 
-    // const [level, setLevel] = React.useState(props.level);
-    const [navbarOpen, setNavbarOpen] = React.useState(false);
-    const [selectedOption, setSelectedOption] = React.useState(undefined);
+    // const [level, setLevel] = useState(props.level);
+    const [navbarOpen, setNavbarOpen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(undefined);
 
     const navbarHandler = () => {
         setNavbarOpen(!navbarOpen);
@@ -93,20 +94,18 @@ const Level = (props) => {
                             </Button>
                         </Col>
                     </Row>
-
                 </Col>
-
                 <Col className="p-3 mb-4 col-4" style={{height: "78vh", borderRadius: "10px"}} >
-                    <Row className="justify-content-right d-flex">
-                        <ThreeCube />
-                    </Row>
+                    {!selectedOption &&
+                        <Row className="justify-content-right d-flex">
+                            <ThreeCube />
+                        </Row>
+                    }
 
-                </Col>
-
-                <Col className={"col-4 ms-4 " + fadeIn}>
-                    <GenericModal className={fadeIn} content_type={selectedOption}
-                                  on_option_changed={optionHandler.bind(this)}/>
-
+                    {selectedOption !== undefined &&
+                        <GenericModal className={fadeIn} content_type={selectedOption}
+                                      on_option_changed={optionHandler.bind(this)}/>
+                    }
                 </Col>
             </Row>
         </Container>

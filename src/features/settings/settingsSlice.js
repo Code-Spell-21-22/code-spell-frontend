@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Default values
 const initialState = {
-    language: undefined,
-    difficulty: undefined
+    language: 'JAVA',
+    difficulty: 'Novice'
 };
 
 export const SettingsSlice = createSlice({
@@ -21,8 +21,8 @@ export const SettingsSlice = createSlice({
     }
 })
 
-export const selectLanguage = (state) => state.language.value;
-export const selectDifficulty = (state) => state.difficulty.value;
+export const selectLanguage = (state) => state.language;
+export const selectDifficulty = (state) => state.difficulty;
 
 export const { updateLanguage, updateDifficulty } = SettingsSlice.actions;
 

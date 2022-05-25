@@ -16,7 +16,7 @@ const GenericModal = (props) => {
     };
 
     let content;
-    switch (this.props.content_type) {
+    switch (props.content_type) {
         case "goals":
             content = <GoalsModal/>;
             break;
@@ -45,7 +45,7 @@ const GenericModal = (props) => {
             <Row className="justify-content-center d-flex m-3">
                 <Card className="shadow justify-content-center align-items-center d-flex w-100"
                       style={{backgroundColor: "#3f73c2", border: "none", height: "6vh", minHeight: "50px"}}>
-                    <span style={{color: "#1E4172", textTransform: "uppercase"}}>{this.props.content_type}</span>
+                    <span style={{color: "#1E4172", textTransform: "uppercase"}}>{props.content_type}</span>
                 </Card>
             </Row>
             {content}

@@ -1,11 +1,11 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {Col} from "react-bootstrap";
 import AchievementPanel from "../AchievementPanel/AchievementPanel";
 import Row from "react-bootstrap/Row";
 
 const AchievementPanelsList = (props) => {
 
-    const [language, setLanguage] = React.useState(props.language);
+    const [language, setLanguage] = useState(props.language);
 
     const achievementsJava = [{"id": 0, "title": "Achievement 1", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": true},
         {"id": 1, "title": "Achievement 2", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": false},

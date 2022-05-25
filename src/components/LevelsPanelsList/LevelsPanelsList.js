@@ -33,7 +33,7 @@ const LevelsPanelsList = (props) => {
                     <span style={{fontSize: "0.8vw", color: "white"}}>{level.nLv} {level.title}</span>
                 </Card>
             )
-        } else if (this.state.currentLevel !== undefined && level.nLv > currentLevel.nLv) {
+        } else if (currentLevel !== undefined && level.nLv > currentLevel.nLv) {
             levelPanels.push(
                 <Card className="shadow p-3 mb-3 bg-white rounded text-center" style={{opacity: "0.6"}}>
                     <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.nLv} {level.title}</span>
