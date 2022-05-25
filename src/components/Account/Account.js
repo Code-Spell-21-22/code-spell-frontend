@@ -1,9 +1,9 @@
-import Row from "react-bootstrap/Row";
 import {Button, Card, Col, Container, Form, ProgressBar} from "react-bootstrap";
-import {Navbar} from "../Navbar/Navbar";
+import Navbar from "../Navbar/Navbar";
 import UserPanel from "../UserPanel/UserPanel";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleCheck, faEdit, faStar} from "@fortawesome/free-solid-svg-icons";
+import Row from "react-bootstrap/Row";
 
 const Account = () => {
     return (

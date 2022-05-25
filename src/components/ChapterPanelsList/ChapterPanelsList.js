@@ -1,12 +1,15 @@
-import React from "react";
 import {Card, Col} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
-import {faGreaterThan, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faGreaterThan} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {useSelector} from "react-redux";
+import {selectChapters} from "../../features/chapters/chaptersSlice";
+import {useState} from "react";
 
-export class ChapterPanelsList extends React.Component {
+const ChapterPanelsList = (props) => {
 
-    chaptersList = [{"id": "0", "title": "1. Introduction", "levels": [{"id": "0", "nLv": 1.1, "title": 'Hello World'}]},
+    /*
+    const chaptersList = [{"id": "0", "title": "1. Introduction", "levels": [{"id": "0", "nLv": 1.1, "title": 'Hello World'}]},
         {"id": "1", "title": "2. Object-Oriented Programming Concepts", "levels":
                 [{"id": "1", "nLv": 2.1, "title": 'Objects'}, {"id": "2", "nLv": 2.2, "title": 'Classes'}, {"id": "3", "nLv": 2.3, "title": 'Inheritance'},
                     {"id": "4", "nLv": 2.4, "title": 'More on Classes'}, {"id": "5", "nLv": 2.5, "title": 'Nested Classes'}]},
@@ -17,66 +20,55 @@ export class ChapterPanelsList extends React.Component {
         {"id": "4", "title": "5. Numbers and Strings", "levels": []},
 
     ];
+     */
 
-    constructor(props) {
+    const chapters = useSelector(selectChapters);
+    const [selectedChapter, setSelectedChapter] = useState(undefined);
 
-        super(props);
-        this.state = {
-            chapters: this.chaptersList,
-            selectedChapter: undefined
-        };
-
+    const chapterPanelClicked = (chapter) => {
+        setSelectedChapter(chapter);
+        if (props.on_chapter_changed !== undefined)
+            props.on_chapter_changed(chapter);
     }
 
-    chapterPanelClicked(chapter) {
-        this.setState({ selectedChapter: chapter });
-        if (this.props.on_chapter_changed !== undefined)
-            this.props.on_chapter_changed(chapter);
-    }
+    const chapterPanels = [];
+    for (const chapterIdx in chapters) {
 
-    render() {
-
-        let chapters = this.state.chapters;
-
-        let chapterPanels = [];
-
-        for (let chapterIdx in chapters) {
-
-            let chapter = chapters[chapterIdx];
-            if (this.state.selectedChapter !== undefined && chapter.id === this.state.selectedChapter.id) {
-                chapterPanels.push(
-                    <Card className="shadow p-3 mb-3 rounded text-center" style={{backgroundColor: "#4b86e0", border: "none"}} onClick={this.chapterPanelClicked.bind(this, chapter)}>
-                        <Row className="align-items-center d-flex">
-                            <Col className="col-9">
-                                <span style={{fontSize: "0.8vw", color: "white"}}>{chapter.title}</span>
-                            </Col>
-                            <Col className="me-3">
-                                <FontAwesomeIcon  icon={faGreaterThan} style={{color: "white"}} />
-                            </Col>
-                        </Row>
-                    </Card>
-                )
-            } else {
-                chapterPanels.push(
-                    <Card className="shadow p-3 mb-3 rounded text-center" onClick={this.chapterPanelClicked.bind(this, chapter)}>
-                       <Row className="align-items-center d-flex">
-                           <Col className="col-9">
-                               <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{chapter.title}</span>
-                           </Col>
-                           <Col className="me-3">
-                               <FontAwesomeIcon  icon={faGreaterThan} style={{color: "#1E4172"}} />
-                           </Col>
-                       </Row>
-
-                    </Card>
-                )
-            }
+        const chapter = chapters[chapterIdx];
+        if (selectedChapter !== undefined && chapter.id === selectedChapter.id) {
+            chapterPanels.push(
+                <Card className="shadow p-3 mb-3 rounded text-center" style={{backgroundColor: "#4b86e0", border: "none"}} onClick={chapterPanelClicked.bind(this, chapter)}>
+                    <Row className="align-items-center d-flex">
+                        <Col className="col-9">
+                            <span style={{fontSize: "0.8vw", color: "white"}}>{chapter.title}</span>
+                        </Col>
+                        <Col className="me-3">
+                            <FontAwesomeIcon  icon={faGreaterThan} style={{color: "white"}} />
+                        </Col>
+                    </Row>
+                </Card>
+            )
+        } else {
+            chapterPanels.push(
+                <Card className="shadow p-3 mb-3 rounded text-center" onClick={chapterPanelClicked.bind(this, chapter)}>
+                    <Row className="align-items-center d-flex">
+                        <Col className="col-9">
+                            <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{chapter.title}</span>
+                        </Col>
+                        <Col className="me-3">
+                            <FontAwesomeIcon  icon={faGreaterThan} style={{color: "#1E4172"}} />
+                        </Col>
+                    </Row>
+                </Card>
+            )
         }
-
-        return(
-           <Col className="col-3">
-               {chapterPanels}
-           </Col>
-        );
     }
-}
+
+    return (
+        <Col className="col-3">
+            {chapterPanels}
+        </Col>
+    );
+};
+
+export default ChapterPanelsList;

@@ -1,4 +1,4 @@
-import {Button, Card, Col, Image} from "react-bootstrap";
+import {Card, Col, Image} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCode, faRankingStar} from "@fortawesome/free-solid-svg-icons";

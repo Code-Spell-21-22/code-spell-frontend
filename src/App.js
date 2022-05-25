@@ -8,16 +8,16 @@ import {
     Route
 } from "react-router-dom";
 
-import {Dashboard} from "./components/Dashboard/Dashboard";
+import Dashboard from "./components/Dashboard/Dashboard";
 import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp/SignUp";
-import {Levels} from "./components/Levels/Levels";
-import {Level} from "./components/Level/Level";
-import {Leaderboards} from "./components/Leaderboards/Leaderboards";
-import {Achievements} from "./components/Achievements/Achievements";
+import Levels from "./components/Levels/Levels";
+import Level from "./components/Level/Level";
+import Leaderboards from "./components/Leaderboards/Leaderboards";
+import Achievements from "./components/Achievements/Achievements";
 import {ToastContainer} from "react-toastify";
-import {Settings} from "./components/Settings/Settings";
-import {Account} from "./components/Account/Account";
+import Settings from "./components/Settings/Settings";
+import Account from "./components/Account/Account";
 
 function App() {
 

@@ -1,68 +1,56 @@
-import React from 'react';
 import {Card, FormSelect} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {useEffect, useState} from "react";
 
-export class LevelSelect extends React.Component {
+const LevelSelect = () => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            levels: this.props.levels
-        };
-    }
+    const [levels, setLevels] = useState(props.levels);
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.levels != this.props.levels) {
-            this.setState(
-                {levels: this.props.levels}
-            )
-        }
-    }
+    useEffect(() => {
+        setLevels(props.levels);
+    }, [props.levels]);
 
-    levelUpdated(event) {
+    const levelUpdated = (event) => {
         let level = event.target.value;
-        if (this.props.on_chapter_changed !== undefined)
-            this.props.on_chapter_changed(level);
-    }
+        if (props.on_chapter_changed !== undefined)
+            props.on_chapter_changed(level);
+    };
 
-    render() {
-
-        if (this.props.is_disabled) {
-            return (
-                <Col className="col-3">
-                    <Card className="shadow w-100 px-4 pt-4 pb-5" style={{opacity: "0.6"}}>
+    if (props.is_disabled) {
+        return (
+            <Col className="col-3">
+                <Card className="shadow w-100 px-4 pt-4 pb-5" style={{opacity: "0.6"}}>
                                <span className="mb-3" style={{color: "#2e78e1", fontSize: "1.6vh", fontWeight: "bold", textTransform: "uppercase"}}>
                                    <FontAwesomeIcon  icon={faStar} style={{color: "#2e78e1"}} /> Level</span>
-                        <FormSelect disabled={true} onChange={this.levelUpdated.bind(this)}>
-                            <option>---</option>
-                        </FormSelect>
-                    </Card>
-                </Col>
-            );
-        }
+                    <FormSelect disabled={true} onChange={levelUpdated.bind(this)}>
+                        <option>---</option>
+                    </FormSelect>
+                </Card>
+            </Col>
+        );
+    }
 
-        let levelsSelect = [];
+    let levelsSelect = [];
+    if (levels !== undefined && levels !== []) {
+        levelsSelect = levels.map(option => <option key={option.id} value={option.id}>
+            {option.title}
+        </option>);
+    }
 
-        let levels = this.state.levels;
-        if (levels !== undefined && levels !== []) {
-            levelsSelect = levels.map(option => <option key={option.id} value={option.id}>
-                {option.title}
-            </option>);
-        }
-
-        return(
+    return(
         <Col className="col-3">
             <Card className="shadow w-100 px-4 pt-4 pb-5">
                                <span className="mb-3" style={{color: "#2e78e1", fontSize: "1.6vh", fontWeight: "bold", textTransform: "uppercase"}}>
                                    <FontAwesomeIcon  icon={faStar} style={{color: "#2e78e1"}} /> Level</span>
-                <FormSelect onChange={this.levelUpdated.bind(this)}>
+                <FormSelect onChange={levelUpdated.bind(this)}>
                     <option>---</option>
                     {levelsSelect}
                 </FormSelect>
             </Card>
         </Col>
-        );
-    }
-}
+    );
+};
+
+export default LevelSelect;

@@ -1,11 +1,13 @@
-import React from 'react';
+import {useEffect} from 'react';
 import {Col} from "react-bootstrap";
-import {AchievementPanel} from "../AchievementPanel/AchievementPanel";
+import AchievementPanel from "../AchievementPanel/AchievementPanel";
 import Row from "react-bootstrap/Row";
 
-export class AchievementPanelsList extends React.Component {
+const AchievementPanelsList = (props) => {
 
-    achievementsJava = [{"id": 0, "title": "Achievement 1", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": true},
+    const [language, setLanguage] = React.useState(props.language);
+
+    const achievementsJava = [{"id": 0, "title": "Achievement 1", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": true},
         {"id": 1, "title": "Achievement 2", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": false},
         {"id": 2, "title": "Achievement 3", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": false},
         {"id": 3, "title": "Achievement 4", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": false},
@@ -18,7 +20,7 @@ export class AchievementPanelsList extends React.Component {
         {"id": 10, "title": "Achievement 11", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": true},
         {"id": 11, "title": "Achievement 12", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": false}];
 
-    achievementsPython = [{"id": 12, "title": "Achievement 1", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": true},
+    const achievementsPython = [{"id": 12, "title": "Achievement 1", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": true},
         {"id": 13, "title": "Achievement 2", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": false},
         {"id": 14, "title": "Achievement 3", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": false},
         {"id": 15, "title": "Achievement 4", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": false},
@@ -31,46 +33,35 @@ export class AchievementPanelsList extends React.Component {
         {"id": 22, "title": "Achievement 11", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": true},
         {"id": 23, "title": "Achievement 12", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": false}];
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            language: this.props.language
-        }
+    useEffect(() => {
+        setLanguage(props.language);
+    }, [props.language]); // Only re-run the effect if props.language changes
+
+    let achievementsPanels = [];
+    let achievements = [];
+
+    if (language === "Java") {
+        achievements = achievementsJava;
+    } else if (language === "Python") {
+        achievements = achievementsPython;
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.language !== this.props.language)
-            this.setState({language: this.props.language});
-    }
+    for (let achievementIdx in achievements) {
 
-    render() {
+        let achievement = achievements[achievementIdx];
+        achievementsPanels.push(
+            <Col className="col-2">
+                <AchievementPanel key={achievement.id} language={language} title={achievement.title} description={achievement.description} completed={achievement.completed}/>
+            </Col>
 
-        let achievementsPanels = [];
-        let achievements = [];
-
-        let language = this.state.language;
-
-        if (language === "Java") {
-            achievements = this.achievementsJava;
-        } else if (language === "Python") {
-            achievements = this.achievementsPython;
-        }
-
-        for (let achievementIdx in achievements) {
-
-            let achievement = achievements[achievementIdx];
-            achievementsPanels.push(
-                <Col className="col-2">
-                    <AchievementPanel key={achievement.id} language={language} title={achievement.title} description={achievement.description} completed={achievement.completed}/>
-                </Col>
-
-            );
-        }
-
-        return (
-            <Row>
-                {achievementsPanels}
-            </Row>
         );
     }
+
+    return (
+        <Row>
+            {achievementsPanels}
+        </Row>
+    );
 }
+
+export default AchievementPanelsList;

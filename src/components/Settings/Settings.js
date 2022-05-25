@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import Row from "react-bootstrap/Row";
 import {Button, Col, Container} from "react-bootstrap";
-import {Navbar} from "../Navbar/Navbar";
-import {LanguagePanel} from "../LanguagePanel/LanguagePanel";
-import {DifficultyPanelsList} from "../DifficultyPanelsList/DifficultyPanelsList";
+import Navbar from "../Navbar/Navbar";
+import LanguagePanel from "../LanguagePanel/LanguagePanel";
+import DifficultyPanelsList from "../DifficultyPanelsList/DifficultyPanelsList";
 import { useSelector, useDispatch } from 'react-redux';
 import { updateDifficulty, updateLanguage, selectDifficulty, selectLanguage } from "../../features/settings/settingsSlice";
 
@@ -16,14 +16,12 @@ const Settings = () => {
 
     const difficultyChangedHandler = (title) => {
         dispatch(updateDifficulty(title));
-        setSelectedLanguage(useSelector(selectDifficulty()));
-        // setSelectedDifficulty(title);
+        setSelectedDifficulty(title);
     }
 
     const languageChangedHandler = (title) => {
         dispatch(updateLanguage(title));
-        setSelectedLanguage(useSelector(selectLanguage()));
-        // setSelectedLanguage(title);
+        setSelectedLanguage(title);
     }
 
     const saveButton = () => {
