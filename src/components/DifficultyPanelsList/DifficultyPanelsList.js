@@ -23,7 +23,7 @@ const DifficultyPanelsList = (props) => {
                     active={selectedDifficulty}
                     title={"Novice"}
                     description={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tincidunt, lacus a dictum tempor, lorem magna venenatis augue."}
-                    clickBehavior={difficultyPanelClicked.bind(this, "NOVICE")}
+                    clickBehavior={difficultyPanelClicked.bind(this, "Novice")}
                 />
             </Col>
             <Col>
@@ -31,7 +31,7 @@ const DifficultyPanelsList = (props) => {
                     active={selectedDifficulty}
                     title={"Experienced"}
                     description={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tincidunt, lacus a dictum tempor, lorem magna venenatis augue."}
-                    clickBehavior={difficultyPanelClicked.bind(this, "EXPERIENCED")}
+                    clickBehavior={difficultyPanelClicked.bind(this, "Experienced")}
                 />
             </Col>
             <Col>
@@ -39,7 +39,7 @@ const DifficultyPanelsList = (props) => {
                     active={selectedDifficulty}
                     title={"Advanced"}
                     description={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tincidunt, lacus a dictum tempor, lorem magna venenatis augue."}
-                    clickBehavior={difficultyPanelClicked.bind(this, "ADVANCED")}
+                    clickBehavior={difficultyPanelClicked.bind(this, "Advanced")}
                 />
             </Col>
         </Row>

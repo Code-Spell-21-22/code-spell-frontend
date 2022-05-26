@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Default values
 const initialState = {
-    language: 'JAVA',
-    difficulty: 'Novice'
+    language: '',
+    difficulty: ''
 };
 
 export const SettingsSlice = createSlice({
@@ -21,8 +21,8 @@ export const SettingsSlice = createSlice({
     }
 })
 
-export const selectLanguage = (state) => state.language;
-export const selectDifficulty = (state) => state.difficulty;
+export const selectLanguage = (state) => state.settings.language;
+export const selectDifficulty = (state) => state.settings.difficulty;
 
 export const { updateLanguage, updateDifficulty } = SettingsSlice.actions;
 
@@ -30,12 +30,13 @@ export default SettingsSlice.reducer;
 
 export const fetchLanguage = () => async dispatch => {
     // const response = await apiHandler.getLanguage();
-    const response = [];
+    const response = 'Java';
     dispatch(updateLanguage(response));
 }
 
 export const fetchDifficulty = () => async dispatch => {
     // const response = await apiHandler.getDifficulty();
-    const response = [];
+    const response = 'Novice';
     dispatch(updateDifficulty(response));
+    console.log(this.state.settings.difficulty);
 }

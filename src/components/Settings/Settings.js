@@ -1,28 +1,45 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Row from "react-bootstrap/Row";
 import {Button, Col, Container} from "react-bootstrap";
 import Navbar from "../Navbar/Navbar";
 import LanguagePanel from "../LanguagePanel/LanguagePanel";
 import DifficultyPanelsList from "../DifficultyPanelsList/DifficultyPanelsList";
 import { useSelector, useDispatch } from 'react-redux';
-import { updateDifficulty, updateLanguage, selectDifficulty, selectLanguage } from "../../features/settings/settingsSlice";
+import {
+    updateDifficulty,
+    updateLanguage,
+    selectDifficulty,
+    selectLanguage,
+    fetchLanguage, fetchDifficulty
+} from "../../features/settings/settingsSlice";
 
 const Settings = () => {
 
-    const [selectedDifficulty, setSelectedDifficulty] = useState(useSelector(selectDifficulty));
-    const [selectedLanguage, setSelectedLanguage] = useState(useSelector(selectLanguage));
+    const previousDifficulty = useSelector(selectDifficulty);
+    const previousLanguage = useSelector(selectLanguage);
+
+    const [selectedDifficulty, setSelectedDifficulty] = useState(previousDifficulty);
+    const [selectedLanguage, setSelectedLanguage] = useState(previousLanguage);
+
+    useEffect(() => {
+      fetchLanguage();
+      fetchDifficulty();
+    });
 
     const dispatch = useDispatch();
 
     const difficultyChangedHandler = (title) => {
-        dispatch(updateDifficulty(title));
         setSelectedDifficulty(title);
     }
 
     const languageChangedHandler = (title) => {
-        dispatch(updateLanguage(title));
         setSelectedLanguage(title);
     }
+
+    const saveChanges = () => {
+        dispatch(updateDifficulty(selectedDifficulty));
+        dispatch(updateLanguage(selectedLanguage));
+    };
 
     const saveButton = () => {
         if (selectedDifficulty !== undefined && selectedLanguage !== undefined) {
@@ -33,7 +50,7 @@ const Settings = () => {
                             height: "6vh",
                             minHeight: "50px",
                             backgroundColor: "#1e5ebb"
-                        }} href="/">
+                        }} onClick={saveChanges}>
                     <span>SAVE</span>
                 </Button>
             );
@@ -51,7 +68,6 @@ const Settings = () => {
             );
         }
     }
-
 
     return (
         <Container>
