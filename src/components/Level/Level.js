@@ -5,8 +5,12 @@ import {faBars, faClose, faGreaterThan} from "@fortawesome/free-solid-svg-icons"
 import {NavbarVertical} from "../NavbarVertical/NavbarVertical";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {GenericModal} from "../Modals/GenericModal";
+import CodeMirror from '@uiw/react-codemirror';
+import {java} from "@codemirror/lang-java";
+import { oneDark } from '@codemirror/theme-one-dark';
+import axios from "axios";
 
-import ThreeCube from "./scene1"
+import ThreeCube from "./scene1";
 
 export class Level extends React.Component {
 
@@ -14,7 +18,8 @@ export class Level extends React.Component {
         super(props);
         this.state = {
             navbarOpen: false,
-            selectedOption: undefined
+            selectedOption: undefined,
+            code: undefined
         }
     }
 
@@ -31,6 +36,38 @@ export class Level extends React.Component {
             selectedOption: option,
         });
     }
+
+    generateUUID() {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+        
+      }
+
+
+    submitCode() {
+        console.log(this.state.code);
+        console.log(this.generateUUID());
+        let solution_id = this.generateUUID(); //generate with Crypto.randomUUID()
+        const level_id = 0 //ceninha
+        axios.post('http://159.65.60.64:8080/api/level/:'+level_id+'/submit/:'+solution_id,{ 
+            //put header and endpoint items
+            headers: {
+                
+                'authorization': "Bearer " + localStorage.hasOwnProperty("code_spell_token")
+            },
+            body: {
+                 
+                'code':this.state.code,
+                
+                
+                
+            }
+        });
+
+        
+    }
+
     render() {
 
         const fadeIn = this.state.selectedOption ? 'fadein' : 'fadein hide';
@@ -68,7 +105,15 @@ export class Level extends React.Component {
                         </Card>
                         <Card className="shadow p-3 mb-4 bg-white" style={{height: "64vh", borderRadius: "10px"}}>
                             <Row className="justify-content-start d-flex">
-
+                                <CodeMirror
+                                    height="60vh"
+                                    value= {"//Step 1"+ "\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println('Hello World!')\;\n\t\}\n\}"+ "\n\n\n//Step 2"+"\n\n\n//Step 3"}
+                                    extensions={[java()]}
+                                    theme={oneDark}
+                                    onChange={(value, viewUpdate) => {
+                                        this.setState({code: value});
+                                    }}
+                                />
                             </Row>
                         </Card>
                         <Row>
@@ -87,8 +132,8 @@ export class Level extends React.Component {
                                             height: "6vh",
                                             minHeight: "50px",
                                             backgroundColor: "#3f73c2"
-                                        }} href="/">
-                                    <span style={{color: "#13305d"}}>RUN</span>
+                                        }}>
+                                    <span style={{color: "#13305d"}} onClick={this.submitCode.bind(this)}>RUN</span>
                                 </Button>
                             </Col>
                             <Col className="col-3">
