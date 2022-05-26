@@ -8,8 +8,9 @@ import {GenericModal} from "../Modals/GenericModal";
 import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
+import axios from "axios";
 
-import ThreeCube from "./scene1"
+import ThreeCube from "./scene1";
 
 export class Level extends React.Component {
 
@@ -36,11 +37,33 @@ export class Level extends React.Component {
         });
     }
 
+    generateUUID() {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+
+      }
+
+
     submitCode() {
         console.log(this.state.code);
-        /* axios.post('http://159.65.60.64:8080/api',{ //complete with actual endpoint
+        console.log(this.generateUUID());
+        let solution_id = this.generateUUID(); //generate with Crypto.randomUUID()
+        const level_id = 0 //ceninha
+        axios.post('http://159.65.60.64:8080/api/level/:'+level_id+'/submit/:'+solution_id,{
             //put header and endpoint items
-        }); */
+            headers: {
+
+                'authorization': "Bearer " + localStorage.hasOwnProperty("code_spell_token")
+            },
+            body: {
+
+                'code':this.state.code,
+
+
+
+            }
+        });
 
         
     }
@@ -84,6 +107,7 @@ export class Level extends React.Component {
                             <Row className="justify-content-start d-flex">
                                 <CodeMirror
                                     height="60vh"
+                                    value= {"//Step 1"+ "\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println('Hello World!')\;\n\t\}\n\}"+ "\n\n\n//Step 2"+"\n\n\n//Step 3"}
                                     extensions={[java()]}
                                     theme={oneDark}
                                     onChange={(value, viewUpdate) => {
