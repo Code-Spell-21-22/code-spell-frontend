@@ -3,11 +3,12 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import {createScene, createCamera} from '../Builders/createEnvironment';
+import {createDay, createNight} from '../Builders/createSky';
 import {createPlayer} from '../Builders/createPlayer';
 import {createText} from '../Builders/createText';
 
 let camera, scene, renderer;
-var step1 = true; var step2 = true;
+var step1 = true; var step2 = true; var step3 = true;
 
 // * The if-then and if-then-else Statements
 const Level2_3 = () => {
@@ -22,6 +23,22 @@ const Level2_3 = () => {
         const player = createPlayer();
         player.position.set(0 ,2, 12)
         scene.add(player); 
+
+        /* 
+        boolean day = true;
+        int stars;
+
+        if (day) {
+            stars = 0;
+            dayTime();
+        } else {
+            stars = 10;
+            nightTime();  
+        }
+
+        */
+
+
 
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
