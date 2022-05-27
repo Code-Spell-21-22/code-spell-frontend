@@ -3,11 +3,8 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import {createScene, createCamera} from '../Builders/createEnvironment';
-import {resizeMovement} from '../Builders/tweenMotions';
 import {createPlayer} from '../Builders/createPlayer';
 import {createText} from '../Builders/createText';
-
-const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
 var step1 = true; var step2 = true;
@@ -29,15 +26,13 @@ const Level1_1 = () => {
         }
     
         // ! this response comes from backend
-        const step2_response = "Hello World!";
+        const step2_response = "I'm trying different words, whats up?!";
         
         // * create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
         // const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, bubbleColor)
         if (step1 == true && step2 === true){
             const text =  createText(step2_response, 0.5, 0x171717, true, true, 0xffffff);
-            text.scale.set(0,0,0);
             scene.add(text)
-            resizeMovement(text, 1, 1, 1, 2000, '+2000') ;
         } 
         
         /////////////////////////////////////////////////////////////
@@ -58,8 +53,7 @@ const Level1_1 = () => {
 
         window.addEventListener( 'resize', onWindowResize );    
 
-        var animate = function(time) { 
-            TWEEN.update(time)
+        var animate = function() { 
             requestAnimationFrame(animate);
             renderer.render( scene, camera ); 
         };
