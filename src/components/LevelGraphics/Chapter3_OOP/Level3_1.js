@@ -2,12 +2,12 @@ import React, { useEffect, useRef } from "react";
 
 import * as THREE from "three";
 
+import {createBlueprint, addBlueprintItems, addBlueprintLayout, buildBox} from '../Builders/createBlueprint';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createPlayer} from '../Builders/createPlayer';
-import {createBlueprint, addBlueprintItems, addBlueprintLayout, buildBox} from '../Builders/createBlueprint';
 
 let camera, scene, renderer;
-var step1 = true; var step2 = true; var step3 = true; var step4 = true;
+var step1 = false; var step2 = false; var step3 = false; var step4 = false;
 
 // * Classes
 const Level3_1 = () => {
