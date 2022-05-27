@@ -15,18 +15,23 @@ import {
 
 const Settings = () => {
 
-    const previousDifficulty = useSelector(selectDifficulty);
-    const previousLanguage = useSelector(selectLanguage);
+    const difficulty = useSelector(selectDifficulty);
+    const language = useSelector(selectLanguage);
 
-    const [selectedDifficulty, setSelectedDifficulty] = useState(previousDifficulty);
-    const [selectedLanguage, setSelectedLanguage] = useState(previousLanguage);
-
-    useEffect(() => {
-      fetchLanguage();
-      fetchDifficulty();
-    });
+    const [selectedDifficulty, setSelectedDifficulty] = useState(difficulty);
+    const [selectedLanguage, setSelectedLanguage] = useState(language);
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchLanguage());
+        dispatch(fetchDifficulty());
+    }, [dispatch]);
+
+    useEffect(() => {
+        setSelectedDifficulty(difficulty);
+        setSelectedLanguage(language);
+    }, [difficulty, language]);
 
     const difficultyChangedHandler = (title) => {
         setSelectedDifficulty(title);
@@ -39,6 +44,8 @@ const Settings = () => {
     const saveChanges = () => {
         dispatch(updateDifficulty(selectedDifficulty));
         dispatch(updateLanguage(selectedLanguage));
+
+        // TODO: API Handler
     };
 
     const saveButton = () => {

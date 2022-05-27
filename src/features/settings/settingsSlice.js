@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 // Default values
 const initialState = {
@@ -28,15 +28,14 @@ export const { updateLanguage, updateDifficulty } = SettingsSlice.actions;
 
 export default SettingsSlice.reducer;
 
-export const fetchLanguage = () => async dispatch => {
-    // const response = await apiHandler.getLanguage();
-    const response = 'Java';
-    dispatch(updateLanguage(response));
+export const fetchLanguage = () => async (dispatch) => {
+    // const data = await apiHandler.getLanguage();
+    const data = 'Java';
+    dispatch(updateLanguage(data));
 }
 
-export const fetchDifficulty = () => async dispatch => {
-    // const response = await apiHandler.getDifficulty();
-    const response = 'Novice';
-    dispatch(updateDifficulty(response));
-    console.log(this.state.settings.difficulty);
+export const fetchDifficulty = () => async (dispatch) => {
+    // const data = await apiHandler.getDifficulty();
+    const data = 'Novice';
+    dispatch(updateDifficulty(data));
 }

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Default values
 const initialState = {
-    progress: []
+    progress: {}
 };
 
 export const progressSlice = createSlice({
@@ -15,16 +15,16 @@ export const progressSlice = createSlice({
     }
 });
 
-export const selectProgress = state => state.progress;
+export const selectProgress = state => state.progress.progress;
 
 export const { updateProgress } = progressSlice.actions;
 
 export default progressSlice.reducer;
 
-export const fetchProgress = () => async dispatch => {
-    // const response = await apiHandler.getProgress();
-    const response = [];
-    dispatch(updateProgress(response));
+export const fetchProgress = (language, difficulty) => async dispatch => {
+    // const data = await apiHandler.getProgress();
+    const data = {Completed: 12, NotCompleted: 8};
+    dispatch(updateProgress(data));
 };
 
 

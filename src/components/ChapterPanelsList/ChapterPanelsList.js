@@ -2,14 +2,29 @@ import {Card, Col} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {faGreaterThan} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {useSelector} from "react-redux";
-import {selectChapters} from "../../features/chapters/chaptersSlice";
-import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchChapters, selectChapters} from "../../features/chapters/chaptersSlice";
+import {useEffect, useState} from "react";
+import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 
 const ChapterPanelsList = (props) => {
 
     const chapters = useSelector(selectChapters);
+    const language = useSelector(selectLanguage);
+    const difficulty = useSelector(selectDifficulty);
+
     const [selectedChapter, setSelectedChapter] = useState(undefined);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchLanguage);
+        dispatch(fetchDifficulty);
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(fetchChapters(language, difficulty));
+    }, [language, difficulty]);
 
     const chapterPanelClicked = (chapter) => {
         setSelectedChapter(chapter);
@@ -23,7 +38,7 @@ const ChapterPanelsList = (props) => {
         const chapter = chapters[chapterIdx];
         if (selectedChapter !== undefined && chapter.id === selectedChapter.id) {
             chapterPanels.push(
-                <Card className="shadow p-3 mb-3 rounded text-center" style={{backgroundColor: "#4b86e0", border: "none"}} onClick={chapterPanelClicked.bind(this, chapter)}>
+                <Card key={chapter.id} className="shadow p-3 mb-3 rounded text-center" style={{backgroundColor: "#4b86e0", border: "none"}} onClick={chapterPanelClicked.bind(this, chapter)}>
                     <Row className="align-items-center d-flex">
                         <Col className="col-9">
                             <span style={{fontSize: "0.8vw", color: "white"}}>{chapter.title}</span>
@@ -36,7 +51,7 @@ const ChapterPanelsList = (props) => {
             )
         } else {
             chapterPanels.push(
-                <Card className="shadow p-3 mb-3 rounded text-center" onClick={chapterPanelClicked.bind(this, chapter)}>
+                <Card key={chapter.id} className="shadow p-3 mb-3 rounded text-center" onClick={chapterPanelClicked.bind(this, chapter)}>
                     <Row className="align-items-center d-flex">
                         <Col className="col-9">
                             <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{chapter.title}</span>

@@ -6,14 +6,30 @@ import Navbar from "../Navbar/Navbar";
 
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 import {Doughnut} from 'react-chartjs-2';
-import {useSelector} from "react-redux";
-import {selectProgress} from "../../features/progress/progressSlice";
-import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchProgress, selectProgress} from "../../features/progress/progressSlice";
+import {useEffect, useState} from "react";
+import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 
 const Levels = () => {
 
+    const language = useSelector(selectLanguage);
+    const difficulty = useSelector(selectDifficulty);
+    const progress = useSelector(selectProgress);
+
     const [selectedChapter, setSelectedChapter] = useState(undefined);
     const [selectedLevel, setSelectedLevel] = useState(undefined);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchLanguage);
+        dispatch(fetchDifficulty);
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(fetchProgress(language, difficulty));
+    }, [language, difficulty]);
 
     const chapterChangedHandler = (chapter) => {
         setSelectedChapter(chapter);
@@ -24,15 +40,12 @@ const Levels = () => {
         setSelectedLevel(level);
     }
 
-    // TODO: Change data according to progress
-    const progress = useSelector(selectProgress);
-
     const data = {
         labels: ['Completed', 'Not Completed'],
         datasets: [
             {
                 label: 'Progress',
-                data: [12, 8],
+                data: [progress.Completed, progress.NotCompleted],
                 backgroundColor: [
                     'rgba(54, 162, 235, 0.5)',
                     'rgba(54, 162, 235, 0.2)',
@@ -82,7 +95,7 @@ const Levels = () => {
                     <Col className="col-5">
                         <Card className="shadow p-3 mb-3 text-center" style={{border: "none", borderRadius: "20px"}}>
                             <span>Progress</span>
-                            <span className="mb-3" style={{color: 'rgba(54, 162, 235, 0.8)'}}>JAVA</span>
+                            <span className="mb-3" style={{color: 'rgba(54, 162, 235, 0.8)'}}>{language}</span>
                             <Col className="mx-5 my-3">
                                 <Doughnut data={data}/>
                             </Col>
