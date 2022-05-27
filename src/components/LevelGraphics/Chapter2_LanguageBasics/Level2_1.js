@@ -3,8 +3,8 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import {createInventory, createSword, createShield} from '../Builders/createItems';
+import {createMovement, resizeMovement} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
-import {createMovement} from '../Builders/tweenMotions';
 import {createPlayer} from '../Builders/createPlayer';
 import {createText} from '../Builders/createText';
 import {ageEditor} from '../Builders/ageEditor'
@@ -61,8 +61,10 @@ const Level2_1 = () => {
         // createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, bubbleColor)
         if (step2 === true){
             const text =  createText(step2_response, 0.5, 0x171717, true, true, 0xffffff);
+            text.scale.set(0, 0, 0)
             text.position.set(player.position.x, player.position.y-2, player.position.z)
             scene.add(text)
+            resizeMovement(text, 1, 1, 1, 1000, '+2000');
         }
 
         // * create movement => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 3
