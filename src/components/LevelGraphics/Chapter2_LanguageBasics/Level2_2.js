@@ -3,11 +3,10 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import {createScene, createCamera} from '../Builders/createEnvironment';
-import {createApple, loadApples, createTree} from '../Builders/createItems';
+import {createApple, createTree} from '../Builders/createItems';
 import {createMovement, resizeMovement} from '../Builders/tweenMotions';
 import {createPlayer} from '../Builders/createPlayer';
 import {createText} from '../Builders/createText';
-
 
 const TWEEN = require('@tweenjs/tween.js')
 
