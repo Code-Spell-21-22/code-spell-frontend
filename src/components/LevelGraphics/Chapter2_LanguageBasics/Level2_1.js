@@ -13,7 +13,7 @@ const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
 
-var step1 = false; var step2 = false; var step3 = false;
+var step1 = true; var step2 = true; var step3 = false;
 
 // * Variables
 const Level2_1 = () => {
@@ -46,7 +46,7 @@ const Level2_1 = () => {
 
         // ! this response is sent from backend
         // [player object, age]
-        var step1_response = [player, 50];
+        var step1_response = [player, 30];
 
         // * edit player age => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 1
         if (step1 === true){

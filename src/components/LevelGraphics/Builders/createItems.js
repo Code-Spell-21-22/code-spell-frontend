@@ -99,7 +99,7 @@ export const createShield = () => {
 }
 
 
-export const createApple = () => {
+export const createApple = (color) => {
     // const group = new THREE.Group();
 
     // // Instantiate a loader
@@ -126,7 +126,7 @@ export const createApple = () => {
     // );
 
     // return group;
-    return (new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000})))
+    return (new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : color})))
 }
 
 export const createTree = () => {

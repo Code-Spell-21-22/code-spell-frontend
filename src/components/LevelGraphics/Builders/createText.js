@@ -31,7 +31,10 @@ export const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, b
 
         const box_color = new THREE.MeshBasicMaterial( {color: bubbleColor});
         
-            // speech bubble
+        // const p = new THREE.PlaneGeometry( size.x+1, 1.5 )
+        // p.rotateY( - Math.PI / 2 );
+
+        // speech bubble
         const speech = new THREE.Mesh( new THREE.BoxGeometry( 1, 1.5, size.x+1 ), box_color);
         speech.rotateY( - Math.PI / 2 );
         speech.position.set( 0, 6.2, 0 ) // scale here

@@ -37,7 +37,7 @@ const Level3_1 = () => {
     
             // ! this response is sent from backend
             // [material, weight, height, side]
-            var step2_response = ["wood", 2.0, 3.0, 4.0];
+            var step2_response = ["wood", 2.0, 4.0, 3.0];
     
     
             if (step2 === true && step3 === false){
@@ -49,7 +49,7 @@ const Level3_1 = () => {
     
             // ! this response is sent from backend
             // [material, weight, height, side]
-            var step3_response = ["wood", 2.0, 3.0, 4.0, "height*side*side"];
+            var step3_response = ["wood", 2.0, 4.0, 3.0, "height*side*side"];
     
             if (step3 === true) {
                 // * add blueprint layout => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 3
