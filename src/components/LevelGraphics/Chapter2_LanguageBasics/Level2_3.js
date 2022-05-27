@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 
 import * as THREE from "three";
 
-import {resizeMovement, createMovement, transitionColor} from '../Builders/tweenMotions';
+import {createMovement, transitionColor} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createDay, createNight} from '../Builders/createSky';
 import {createPlayer} from '../Builders/createPlayer';
