@@ -11,7 +11,7 @@ import {createText, showText} from '../Builders/createText';
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = false; var step2 = false; var step3 = false;
+var step1 = true; var step2 = true; var step3 = true;
 
 // * The if-then and if-then-else Statements
 const Level2_3 = () => {
@@ -32,7 +32,7 @@ const Level2_3 = () => {
         const day = createDay()
         scene.add(day)
 
-        var stars = 60;
+        var stars = 50;
         
         //* STEP1 - Update the value of variable step1_response to false. (is true by default)
         // ! this response comes from backend
@@ -64,7 +64,7 @@ const Level2_3 = () => {
         // ! this response comes from backend
         var step2_response = [40, "What a starry sky!","What a beautiful sky!"] 
         
-        if (step2 == true){
+        if (step2 === true && step3 === false){
 
             var step2_1 = step2_response[0]; var step2_2 = step2_response[1]; var step2_3 = step2_response[2];
             
