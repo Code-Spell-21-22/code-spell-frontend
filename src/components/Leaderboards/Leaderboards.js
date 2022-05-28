@@ -6,22 +6,42 @@ import ChapterSelect from "../LeaderboardSelects/ChapterSelect";
 import LevelSelect from "../LeaderboardSelects/LevelSelect";
 import CategorySelect from "../LeaderboardSelects/CategorySelect";
 import DifficultySelect from "../LeaderboardSelects/DifficultySelect";
-import {useSelector} from "react-redux";
-import {selectChapters} from "../../features/chapters/chaptersSlice";
-import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchChapters, selectChapters} from "../../features/chapters/chaptersSlice";
+import {useEffect, useState} from "react";
+import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
+import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 
 const Leaderboards = () => {
 
+    const language = useSelector(selectLanguage);
+    const gameDifficulty = useSelector(selectDifficulty);
     const chapters = useSelector(selectChapters);
+    const levels = useSelector(selectLevels);
+
     const [category, setCategory] = useState(undefined);
     const [chapter, setChapter] = useState(undefined);
     const [level, setLevel] = useState(undefined);
     const [difficulty, setDifficulty] = useState(undefined);
+    const [filteredLevels, setFilteredLevels] = useState([]);
 
-    let levels = [];
-    if (chapter !== undefined) {
-        levels = chapter.levels;
-    }
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+       dispatch(fetchLanguage());
+       dispatch(fetchDifficulty());
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(fetchChapters(language, gameDifficulty));
+        dispatch(fetchLevels(language, gameDifficulty));
+    }, [language, gameDifficulty]);
+
+    useEffect(() => {
+        if (chapter && levels) {
+            setFilteredLevels(levels.filter(level => level.chapter === chapter.id));
+        }
+    }, [chapter, levels]);
 
     const categoryChangedHandler = (category) => {
         setCategory(category);
@@ -38,7 +58,7 @@ const Leaderboards = () => {
     }
 
     const levelChangedHandler = (level_id) => {
-        let selectedLevel = chapter.levels.filter(l => l.id === level_id)[0];
+        let selectedLevel = levels.filter(l => l.id === level_id)[0];
         setLevel(selectedLevel);
     }
 
@@ -55,12 +75,12 @@ const Leaderboards = () => {
                 <Row className="mx-5 mt-4 mb-5">
                     <CategorySelect on_category_changed={categoryChangedHandler.bind(this)}/>
                     <ChapterSelect chapters={chapters} on_chapter_changed={chapterChangedHandler.bind(this)} is_disabled={category !== "Chapter" && category !== "Level"}/>
-                    <LevelSelect levels={levels} on_level_changed={levelChangedHandler.bind(this)} is_disabled={category !== "Level"}/>
+                    <LevelSelect levels={filteredLevels} on_level_changed={levelChangedHandler.bind(this)} is_disabled={category !== "Level"}/>
                     <DifficultySelect on_difficulty_changed={difficultyChangedHandler.bind(this)} />
                 </Row>
                 <Container className="px-5">
                     {category !== undefined &&
-                        <ScoresPanelsList/>
+                        <ScoresPanelsList chapter={chapter} level={level} difficulty={difficulty}/>
                     }
                 </Container>
             </Container>

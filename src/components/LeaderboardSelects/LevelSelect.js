@@ -14,8 +14,8 @@ const LevelSelect = (props) => {
 
     const levelUpdated = (event) => {
         let level = event.target.value;
-        if (props.on_chapter_changed !== undefined)
-            props.on_chapter_changed(level);
+        if (props.on_level_changed !== undefined)
+            props.on_level_changed(level);
     };
 
     if (props.is_disabled) {

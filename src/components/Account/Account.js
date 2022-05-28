@@ -4,8 +4,32 @@ import UserPanel from "../UserPanel/UserPanel";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleCheck, faEdit, faStar} from "@fortawesome/free-solid-svg-icons";
 import Row from "react-bootstrap/Row";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchProgress, selectProgress} from "../../features/progress/progressSlice";
+import {useEffect} from "react";
 
 const Account = () => {
+
+    const progress = useSelector(selectProgress);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchProgress());
+    }, [dispatch]);
+
+    let progressBars = [];
+    for (let idx in progress) {
+        progressBars.push(
+            <Row key={idx}>
+                <p className="mb-0 mt-5" style={{fontSize: "0.9vw", fontWeight: "bold", color: "#1E4172"}}>
+                    <FontAwesomeIcon icon={faCircleCheck}/> {progress[idx].language}
+                </p>
+                <p className="text-end" style={{fontSize: "0.8vw"}}>{progress[idx].percentage * 100}%</p>
+                <ProgressBar animated now={progress[idx].percentage * 100} />
+            </Row>
+        );
+    }
+
     return (
         <Container>
             <Container className="container-fluid">
@@ -55,27 +79,8 @@ const Account = () => {
                                         <span style={{color: "#1E4172", textTransform: "uppercase"}}>Progress</span>
                                     </Col>
                                 </Card>
-                                <Row className="mb-5">
-                                    <p className="mb-0 mt-5" style={{fontSize: "0.9vw", fontWeight: "bold", color: "#1E4172"}}>
-                                        <FontAwesomeIcon icon={faCircleCheck}/> Python
-                                    </p>
-                                    <p className="text-end" style={{fontSize: "0.8vw"}}>80%</p>
-                                    <ProgressBar animated now={80} />
-                                    <p className="mb-0 mt-5" style={{fontSize: "0.9vw", fontWeight: "bold", color: "#1E4172"}}>
-                                        <FontAwesomeIcon icon={faCircleCheck}/> Java
-                                    </p>
-                                    <p className="text-end" style={{fontSize: "0.8vw"}}>60%</p>
-                                    <ProgressBar animated now={60} />
-                                    <p className="mb-0 mt-5" style={{fontSize: "0.9vw", fontWeight: "bold", color: "#1E4172"}}>
-                                        <FontAwesomeIcon icon={faCircleCheck}/> Javascript
-                                    </p>
-                                    <p className="text-end" style={{fontSize: "0.8vw"}}>90%</p>
-                                    <ProgressBar animated now={90} />
-                                    <p className="mb-0 mt-5" style={{fontSize: "0.9vw", fontWeight: "bold", color: "#1E4172"}}>
-                                        <FontAwesomeIcon icon={faCircleCheck}/> C
-                                    </p>
-                                    <p className="text-end" style={{fontSize: "0.8vw"}}>10%</p>
-                                    <ProgressBar animated now={10} />
+                                <Row className="mb-5 justify-content-center d-flex">
+                                    {progressBars}
                                 </Row>
                             </Row>
                         </Card>

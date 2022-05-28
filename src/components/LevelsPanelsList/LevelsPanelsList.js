@@ -1,18 +1,53 @@
 import {Card, Col} from "react-bootstrap";
 import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
+import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 
 const LevelsPanelsList = (props) => {
 
-    const [levels, setLevels] = useState(props.levels);
+    const language = useSelector(selectLanguage);
+    const difficulty = useSelector(selectDifficulty);
+    const levels = useSelector(selectLevels);
+
+    const [chapter, setChapter] = useState(props.chapter);
     const [selectedLevel, setSelectedLevel] = useState(undefined);
+    const [filteredLevels, setFilteredLevels] = useState([]);
 
     // TODO: Obtain current level
-    const [currentLevel, setCurrentLevel] = useState({"id": "4", "nLv": 2.4, "title": 'More on Classes'});
+    const [currentLevel, setCurrentLevel] = useState(
+        {
+            "id": "2",
+            "title": "Classes",
+            "description": "Description about Classes level.",
+            "language": "JAVA",
+            "skill": "NOVICE",
+            "number": 2.2,
+            "chapter": "89a2183ja126a71er2j"
+        }
+    );
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        setLevels(props.levels);
+        dispatch(fetchLanguage());
+        dispatch(fetchDifficulty());
+    }, [dispatch]);
+
+    useEffect(() => {
+        setChapter(props.chapter);
+    }, [props.chapter]);
+
+    useEffect(() => {
+        dispatch(fetchLevels(language, difficulty));
         setSelectedLevel(undefined);
-    }, [props.levels]);
+    }, [language, difficulty]);
+
+    useEffect(() => {
+        if (chapter && levels) {
+            setFilteredLevels(levels.filter(level => level.chapter === chapter.id));
+        }
+    }, [chapter, levels]);
 
     const levelPanelClicked = (level) => {
         setSelectedLevel(level);
@@ -21,29 +56,29 @@ const LevelsPanelsList = (props) => {
     };
 
     let levelPanels = [];
-    for (let levelIdx in levels) {
+    for (let levelIdx in filteredLevels) {
 
-        let level = levels[levelIdx];
+        let level = filteredLevels[levelIdx];
 
         if (selectedLevel !== undefined && level.id === selectedLevel.id) {
             levelPanels.push(
                 <Card className="shadow p-3 mb-3 rounded text-center"
                       style={{backgroundColor: "#4b86e0", border: "none"}}
                       onClick={levelPanelClicked.bind(this, level)}>
-                    <span style={{fontSize: "0.8vw", color: "white"}}>{level.nLv} {level.title}</span>
+                    <span style={{fontSize: "0.8vw", color: "white"}}>{level.number} {level.title}</span>
                 </Card>
             )
-        } else if (currentLevel !== undefined && level.nLv > currentLevel.nLv) {
+        } else if (currentLevel !== undefined && level.number > currentLevel.number) {
             levelPanels.push(
                 <Card className="shadow p-3 mb-3 bg-white rounded text-center" style={{opacity: "0.6"}}>
-                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.nLv} {level.title}</span>
+                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.number} {level.title}</span>
                 </Card>
             )
 
         } else {
             levelPanels.push(
                 <Card className="shadow p-3 mb-3 bg-white rounded text-center" onClick={levelPanelClicked.bind(this, level)}>
-                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.nLv} {level.title}</span>
+                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.number} {level.title}</span>
                 </Card>
             )
         }

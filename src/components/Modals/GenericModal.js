@@ -24,7 +24,7 @@ const GenericModal = (props) => {
             content = <TipsModal/>;
             break;
         case "leaderboard":
-            content = <LeaderboardModal/>;
+            content = <LeaderboardModal level={props.level}/>;
             break;
         case "documentation":
             content = <DocumentationModal/>;
@@ -34,8 +34,10 @@ const GenericModal = (props) => {
             break;
     }
 
+    // const fadeIn = selectedOption ? 'fadein' : 'fadein hide';
+
     return (
-        <Card className="shadow px-5 pt-4 pb-5 mb-4 bg-white rounded" style={{minHeight: "91vh"}}>
+        <Card className="shadow px-5 pt-4 pb-5 bg-white rounded" style={{minHeight: "91vh"}}>
             <Row className="justify-content-end d-flex">
                 <Button className="col-1" style={{backgroundColor: "white", border: "none"}}
                         onClick={closeClicked.bind(this)}>

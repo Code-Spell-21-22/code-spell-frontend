@@ -1,18 +1,44 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Row from "react-bootstrap/Row";
 import {Card, Col, Container} from "react-bootstrap";
 
-const ScoresPanelsList = () => {
+const ScoresPanelsList = (props) => {
 
-    const allUsers = [{"id": "0", "username": "USER_1", "score": 100},
-        {"id": "1", "username": "USER_2", "score": 90},
-        {"id": "2", "username": "USER_3", "score": 150},
-        {"id": "3", "username": "USER_XX", "score": 200},
-        {"id": "4", "username": "USER_YY", "score": 190}]
+    const [chapter, setChapter] = useState(props.chapter);
+    const [level, setLevel] = useState(props.level);
+    const [difficulty, setDifficulty] = useState(props.difficulty);
+    const [scores, setScores] = useState([]);
+
+    useEffect(() => {
+        setChapter(props.chapter);
+        setLevel(props.level);
+        setDifficulty(props.difficulty);
+    }, [props]);
+
+    useEffect(() => {
+        if (level !== undefined) {
+            // TODO: API call to get scores
+            const levelScores = [{"id": "0", "email": "user1@gmail.com", "username": "USER_1", "score": 100},
+                {"id": "1", "email": "user2@gmail.com", "username": "USER_2", "score": 90},
+                {"id": "2", "email": "user3@gmail.com", "username": "USER_3", "score": 150},
+                {"id": "3", "email": "userXX@gmail.com", "username": "USER_XX", "score": 200},
+                {"id": "4", "email": "useryy@gmail.com",  "username": "USER_YY", "score": 190}];
+            setScores(levelScores);
+        } else if (chapter !== undefined) {
+            // TODO: API call to get scores
+            const chapterScores = [{"id": "0", "email": "user1@gmail.com", "username": "USER_1", "score": 2000},
+                {"id": "1", "email": "user2@gmail.com", "username": "USER_2", "score": 1300},
+                {"id": "2", "email": "user3@gmail.com", "username": "USER_3", "score": 900},
+                {"id": "3", "email": "userXX@gmail.com", "username": "USER_XX", "score": 2100},
+                {"id": "4", "email": "useryy@gmail.com",  "username": "USER_YY", "score": 1800}];
+            setScores(chapterScores);
+        }
+    }, [chapter, level]);
+
 
     let userPanels = [];
 
-    let users = allUsers.sort((function (u1, u2){
+    let users = scores.sort((function (u1, u2){
         return u2.score - u1.score;
     }))
 
@@ -33,12 +59,12 @@ const ScoresPanelsList = () => {
 
         if (userIdx === "0") {
             userPanels.push(
-                <Card className="w-100 text-white mb-3" style={{height: "6vh", minHeight:"50px", backgroundColor: "#1d4f8f"}}>
+                <Card key={user.id} className="w-100 text-white mb-3" style={{height: "6vh", minHeight:"50px", backgroundColor: "#1d4f8f"}}>
                     {content}
                 </Card>);
         } else {
             userPanels.push(
-                <Card className="w-100 bg-white mb-3" style={{height: "6vh", minHeight: "50px"}}>
+                <Card key={user.id} className="w-100 bg-white mb-3" style={{height: "6vh", minHeight: "50px"}}>
                     {content}
                 </Card>
             )

@@ -9,7 +9,7 @@ const TipsModal = () => {
     let nSteps = 6;
     for (let i = 0; i < nSteps; i++) {
         stepPanels.push(
-            <Col className="col-6">
+            <Col key={i} className="col-6">
                 <p className="mb-3" style={{fontSize: "1.1vw", fontWeight: "bold"}}>
                     <span className="me-5">Step {i}</span><FontAwesomeIcon style={{color: "grey"}} icon={faArrowRight} />
                 </p>
