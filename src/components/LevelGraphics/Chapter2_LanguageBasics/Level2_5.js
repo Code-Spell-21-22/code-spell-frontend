@@ -5,7 +5,7 @@ import * as THREE from "three";
 import {createMovement, resizeMovement, transitionObjectColor} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createPlayer} from '../Builders/createPlayer';
-import {createTree, createGrass} from "../Builders/createItems";
+import {createTree, createFence} from "../Builders/createItems";
 import {createDay} from '../Builders/createSky';
 
 const TWEEN = require('@tweenjs/tween.js')
@@ -28,8 +28,11 @@ const Level2_5 = () => {
         scene.add(player); 
 
         const tree = createTree();
-        tree.position.set(8,0,-6) 
+        tree.position.set(16,0,-6) 
+        tree.scale.set(1.3,1.3,1.3)
         scene.add(tree);
+
+        scene.add(createFence())
 
         const day = createDay();
         day.position.set(-25, 10, -40);

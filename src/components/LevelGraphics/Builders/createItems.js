@@ -13,6 +13,8 @@ import shieldmodel from '../../../models/shield/shield.obj'
 import applemodel from '../../../models/apple/apple.obj'
 import appletexture from '../../../models/apple/apple.jpg'
 
+import fencemodel from '../../../models/fence/fence.obj'
+import fencetexture from '../../../models/fence/fence.jpeg'
 
 
 export const createInventory = (scene) => {
@@ -180,6 +182,37 @@ export const createGrass = () => {
         }, 
         // called while loading is progressing
         function ( xhr ) { console.log( ('grass ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+        // called when loading has errors
+        function ( error ) { console.log( 'An error happened' ); }
+    );
+    return group;
+}
+
+export const createFence = () => {
+    const group = new THREE.Group();
+
+    // Instantiate a loader
+    const loader = new OBJLoader();
+
+    loader.load(
+        // resource URL
+        fencemodel,
+        // called when the resource is loaded
+        function ( fence ) {
+            fence.scale.set( 3, 3, 3 ) // scale here
+            fence.position.set( 7.2, 0, -14 ) // scale here
+            fence.rotateY(-Math.PI / 2)
+
+            fence.traverse( function ( node ) {
+                if ( node.isMesh ) node.material = new THREE.MeshPhongMaterial({color : 0x292115})
+                // new THREE.MeshPhongMaterial({map: new THREE.TextureLoader().load(fencetexture)});
+            } );
+
+            
+            group.add(fence)
+        }, 
+        // called while loading is progressing
+        function ( xhr ) { console.log( ('fence ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
         // called when loading has errors
         function ( error ) { console.log( 'An error happened' ); }
     );
