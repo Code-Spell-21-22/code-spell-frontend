@@ -50,3 +50,19 @@ export const transitionColor = (scene, hex, timeTo, delay) => {
 
     movements[0].start(delay);
 };
+
+export const transitionObjectColor = (obj, hex, timeTo, delay) => {
+
+    var newColor = new THREE.Color( hex );
+    var tween = new TWEEN.Tween( obj.material.color ).to( newColor, timeTo ); 
+
+    movements.push(tween);
+
+    if (movements.length >= 2) {
+        for (let i = 0; i < movements.length - 1; i++){
+            movements[i].chain(movements[i+1]);
+        }
+    }
+
+    movements[0].start(delay);
+};
