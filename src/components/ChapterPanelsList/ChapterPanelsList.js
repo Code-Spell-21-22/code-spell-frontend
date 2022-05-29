@@ -1,3 +1,4 @@
+import React from "react";
 import {Card, Col} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {faGreaterThan} from "@fortawesome/free-solid-svg-icons";

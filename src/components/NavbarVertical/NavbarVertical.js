@@ -1,3 +1,4 @@
+import React from "react";
 import {Col} from "react-bootstrap";
 import SquareButton from "../SquareButton/SquareButton";
 import {

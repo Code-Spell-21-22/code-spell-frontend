@@ -1,3 +1,4 @@
+import React from "react";
 import {Button, Card, Col, Container} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {faBars, faGreaterThan} from "@fortawesome/free-solid-svg-icons";

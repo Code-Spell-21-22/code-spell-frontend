@@ -1,21 +1,14 @@
+import React from "react";
 import Row from "react-bootstrap/Row";
 import {Container} from "react-bootstrap";
 import ScoresPanelsList from "../ScoresPanelsList/ScoresPanelsList";
-import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
-import {selectChapters} from "../../features/chapters/chaptersSlice";
 import {useEffect, useState} from "react";
-import {fetchDifficulty, fetchLanguage, selectLanguage} from "../../features/settings/settingsSlice";
+import {fetchLanguage, selectLanguage} from "../../features/settings/settingsSlice";
 
 const LeaderboardModal = (props) => {
 
-    const { levelNumber } = useParams();
-
     const language = useSelector(selectLanguage);
-    const chapters = useSelector(selectChapters);
-    const levels = useSelector(selectLevels);
-
     const [level, setLevel] = useState(props.level);
 
     const dispatch = useDispatch();

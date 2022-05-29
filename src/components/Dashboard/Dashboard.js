@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import SquarePanel from "../SquarePanel/SquarePanel";
 import UserPanel from "../UserPanel/UserPanel";
+import React from "react";
 import Navbar from "../Navbar/Navbar";
 
 const Dashboard = () => {

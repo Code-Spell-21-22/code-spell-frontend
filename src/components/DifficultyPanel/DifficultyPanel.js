@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import Row from "react-bootstrap/Row";
 import {Card} from "react-bootstrap";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
+
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const DifficultyPanel = (props) => {

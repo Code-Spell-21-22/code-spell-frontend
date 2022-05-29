@@ -1,3 +1,4 @@
+import React from "react";
 import {useEffect, useState} from 'react';
 import {Col} from "react-bootstrap";
 import AchievementPanel from "../AchievementPanel/AchievementPanel";

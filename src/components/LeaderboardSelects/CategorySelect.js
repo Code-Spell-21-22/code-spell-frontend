@@ -1,3 +1,4 @@
+import React from "react";
 import {Card, FormSelect} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import {faStar} from "@fortawesome/free-solid-svg-icons";

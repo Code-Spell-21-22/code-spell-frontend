@@ -1,3 +1,4 @@
+import React from "react";
 import {Button, Col} from "react-bootstrap";
 import {faHome} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';

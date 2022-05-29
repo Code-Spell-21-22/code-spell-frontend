@@ -1,3 +1,4 @@
+import React from "react";
 import {Col} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import DifficultyPanel from "../DifficultyPanel/DifficultyPanel";

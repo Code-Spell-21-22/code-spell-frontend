@@ -1,3 +1,4 @@
+import React from "react";
 import {Button, Card, Col, Container, Form, ProgressBar} from "react-bootstrap";
 import Navbar from "../Navbar/Navbar";
 import UserPanel from "../UserPanel/UserPanel";

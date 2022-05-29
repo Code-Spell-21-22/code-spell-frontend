@@ -1,5 +1,7 @@
+import React from "react";
 import Row from "react-bootstrap/Row";
 import {Card, Image} from "react-bootstrap";
+
 import {useEffect, useState} from "react";
 
 const LanguagePanel = (props) => {

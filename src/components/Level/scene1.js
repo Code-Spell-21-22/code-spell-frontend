@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
-import TWEEN from "../../lib/tween.umd"
+
+const TWEEN = require('@tweenjs/tween.js');
  
 
 let camera, scene, renderer, x, z, cube;

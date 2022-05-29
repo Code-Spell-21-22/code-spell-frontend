@@ -1,3 +1,4 @@
+import React from "react";
 import {Card, Col, Image} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
