@@ -5,6 +5,11 @@ import NavbarVertical from "../NavbarVertical/NavbarVertical";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import GenericModal from "../Modals/GenericModal";
 
+import CodeMirror from '@uiw/react-codemirror';
+import {java} from "@codemirror/lang-java";
+import { oneDark } from '@codemirror/theme-one-dark';
+import axios from "axios";
+
 import ThreeCube from "./scene1"
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
@@ -96,7 +101,15 @@ const Level = () => {
                         </Card>
                         <Card className="shadow p-3 mb-4 bg-white" style={{height: "64vh", borderRadius: "10px"}}>
                             <Row className="justify-content-start d-flex">
-
+                                <CodeMirror
+                                    height="60vh"
+                                    value= {"//Step 1"+ "\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println('Hello World!')\;\n\t\}\n\}"+ "\n\n\n//Step 2"+"\n\n\n//Step 3"}
+                                    extensions={[java()]}
+                                    theme={oneDark}
+                                    onChange={(value, viewUpdate) => {
+                                        this.setState({code: value});
+                                    }}
+                                />
                             </Row>
                         </Card>
                         <Row>
