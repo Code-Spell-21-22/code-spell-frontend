@@ -65,6 +65,7 @@ export const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, b
 }
 
 export const showText = (text, scene, player) => {
+
     text.scale.set(0, 0, 0)
     text.position.set(player.position.x, player.position.y-2, player.position.z)
     scene.add(text)

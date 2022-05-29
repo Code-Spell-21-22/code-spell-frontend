@@ -200,7 +200,7 @@ export const createFence = () => {
         // called when the resource is loaded
         function ( fence ) {
             fence.scale.set( 3, 3, 3 ) // scale here
-            fence.position.set( 7.2, 0, -14 ) // scale here
+            //fence.position.set( 7.2, 0, -14 ) // scale here
             fence.rotateY(-Math.PI / 2)
 
             fence.traverse( function ( node ) {

@@ -2,11 +2,12 @@ import React, { useEffect, useRef } from "react";
 
 import * as THREE from "three";
 
-import {createMovement, resizeMovement, transitionObjectColor} from '../Builders/tweenMotions';
+import {createMovement, transitionObjectColor} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createPlayer} from '../Builders/createPlayer';
 import {createTree, createFence} from "../Builders/createItems";
 import {createNight} from '../Builders/createSky';
+import {createText, showText} from '../Builders/createText';
 
 const TWEEN = require('@tweenjs/tween.js')
 
@@ -22,26 +23,81 @@ const Level2_6 = () => {
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
         camera = createCamera(0, 20, 48, 0, 4, -8);
         scene = createScene();
-
-        const color = 0x142433;  // white
-        const near = 5;
-        const far = 90;
-        scene.fog = new THREE.Fog(color, near, far);
+        scene.fog = new THREE.Fog(0x142433, 5, 90);
         
         const player = createPlayer();
         player.position.set(0 ,2, 24)
         scene.add(player); 
 
         const tree = createTree();
-        tree.position.set(16,0,-6) 
+        tree.position.set(16 , 0, -6) 
         tree.scale.set(1.3,1.3,1.3)
         scene.add(tree);
 
-        scene.add(createFence())
+        const fence = createFence()
+        fence.position.set(7.2,0,-14)
+        scene.add(fence)
 
         scene.background = new THREE.Color(0x142433);
         scene.add(createNight(100))
 
+        const totalSteps = 10;  
+
+        // walk forward x number of steps
+        var walkForward = (steps) => { createMovement(player, 0, 2, player.position.z - 4*(steps), 2000, '+2000'); }
+
+        var createPath = (i, color) => {
+
+            var plane;
+
+            // grid
+            const gridHelper = new THREE.GridHelper( 4, 1 );
+            gridHelper.position.set(0, 0.01, (-16+4*i))
+            scene.add( gridHelper );
+            
+            plane = new THREE.Mesh( new THREE.PlaneGeometry( 4, 4 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+            plane.rotateX( - Math.PI / 2 );
+            plane.position.set(0, 0.01, (-16+4*i))
+            
+            transitionObjectColor(plane, color, 350, '+2000');
+
+            scene.add( plane, gridHelper );
+        }
+
+
+         //* STEP1 -Call the method walkFoward() once
+        // ! this response comes from backend (will either return true or false)
+        var step1_response = true
+
+        if (step1 === true && step1_response === true){ 
+            if (step2 === false){ walkForward(1); }
+            else { player.position.set(0, 2, 20)}
+        }
+
+
+        //* STEP2 - Write a while statement that calls the method walkFoward() until the value of variable atDoor is true.
+        // ! this response comes from backend (will be a number (should be totalSteps-1))
+        var step2_response = true;
+        if (step2 === true && step2_response === true ){ 
+            if (step3 === false){ walkForward(9); }
+            else { player.position.set(0, 2, -16) }
+        }
+
+        //   //* STEP3 - Obtain the number of steps taken in total (including the first step) and store that value in a variable named totalSteps. 
+        // ! this response comes from backend)
+        var step3_response = [true, 9];
+
+        if (step3 === true && step3_response[0] === true) { 
+            for (var i  = 1; i <= step3_response[1]; i++){
+                if (i < step3_response[1]){ createPath(i, 0x8bccd9); } // path
+                else { createPath(i, 0x009dff); }   // final block
+            }
+
+            const point = new THREE.Object3D(new THREE.Vector3());
+            point.position.set(6,0,24)
+
+            showText(createText("Steps taken: " + step3_response[1], 0.5, 0xffffff, true, false, 0x142433), scene, point);
+        }
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setPixelRatio( window.devicePixelRatio );
