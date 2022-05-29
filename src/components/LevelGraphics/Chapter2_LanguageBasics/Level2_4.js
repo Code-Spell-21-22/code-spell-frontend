@@ -10,7 +10,7 @@ import {createNight} from '../Builders/createSky';
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = true; var step2 = false;
+var step1 = true; var step2 = true;
 
 // * The switch Statement
 const Level2_4 = () => {
@@ -51,7 +51,7 @@ const Level2_4 = () => {
             if (stars === step1_1) { 
                 showText(createText(step1_2, 0.5, 0x171717, true, true, 0xffffff), scene, player) 
             } 
-            else if (stars > step1_3) { 
+            else if (stars === step1_3) { 
                 showText(createText(step1_4, 0.5, 0x171717, true, true, 0xffffff), scene, player) 
             } 
             else { 
