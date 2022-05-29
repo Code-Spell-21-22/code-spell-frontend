@@ -5,15 +5,15 @@ import * as THREE from "three";
 import {createMovement, resizeMovement, transitionObjectColor} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createPlayer} from '../Builders/createPlayer';
-import {createTree, createGrass} from "../Builders/createItems";
-import {createDay} from '../Builders/createSky';
+import {createTree, createFence} from "../Builders/createItems";
+import {createNight} from '../Builders/createSky';
 
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
 var step1 = true; var step2 = true; var step3 = true;
 
-// * The for Statement
+//* The while and do-while Statement
 const Level2_6 = () => {
  
     useEffect(() => {
@@ -22,18 +22,25 @@ const Level2_6 = () => {
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
         camera = createCamera(0, 20, 48, 0, 4, -8);
         scene = createScene();
+
+        const color = 0x142433;  // white
+        const near = 5;
+        const far = 90;
+        scene.fog = new THREE.Fog(color, near, far);
         
         const player = createPlayer();
         player.position.set(0 ,2, 24)
         scene.add(player); 
 
         const tree = createTree();
-        tree.position.set(8,0,-6) 
+        tree.position.set(16,0,-6) 
+        tree.scale.set(1.3,1.3,1.3)
         scene.add(tree);
 
-        const day = createDay();
-        day.position.set(-25, 10, -40);
-        scene.add(day)
+        scene.add(createFence())
+
+        scene.background = new THREE.Color(0x142433);
+        scene.add(createNight(100))
 
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
