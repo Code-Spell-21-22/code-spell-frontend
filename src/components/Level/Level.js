@@ -10,8 +10,12 @@ import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
 import axios from "axios";
 
+<<<<<<< HEAD
 import ThreeCube from "./scene1"
 
+=======
+import ThreeCube from "./scene1";
+>>>>>>> 2385b9e752f166e03f997c2d708a06dfe9060437
 
 export class Level extends React.Component {
 
