@@ -6,13 +6,13 @@ import {createMovement, resizeMovement} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createApple, createTree} from '../Builders/createItems';
 import {createPlayer} from '../Builders/createPlayer';
-import {createText} from '../Builders/createText';
+import {createText, showText} from '../Builders/createText';
 
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
 
-var step1 = true; var step2 = true; var step3 = true;
+var step1 = true; var step2 = false; var step3 = false;
 
 let myapples = []
 let friendapples = []
@@ -21,6 +21,8 @@ let friendapples = []
 const Level2_1 = () => {
     
     useEffect(() => {
+
+        const point = new THREE.Object3D(new THREE.Vector3());
         
         // create camera and scene
         // this is default camera 
@@ -177,10 +179,9 @@ const Level2_1 = () => {
             var initial_friendapples = friendapples.length;
             
             var extra_apples = initial_friendapples - (initial_friendapples-step3_1);
-           
-            const extra_apples_text =  createText("extraApples: " + extra_apples, 0.4, 0xffffff, true, false, 0x383838);
-            extra_apples_text.position.set(0, 9, 12)
-            scene.add(extra_apples_text);
+
+            point.position.set(0, 11, 12)
+            showText(createText("extraApples: " + extra_apples, 0.4, 0xffffff, true, false, 0x383838), scene, point)
 
             for (var i = 0; i< extra_apples; i++){
                 var apple = createApple(0xbbc95d);
@@ -205,7 +206,7 @@ const Level2_1 = () => {
             } else if (step3_2 < initial_friendapples){    // se sao menos, diminui
                 for (var i = 0; i< (initial_friendapples - step3_2); i++){ 
                     var thisapple = scene.getObjectByName("friendapple_" + ((initial_friendapples-1)-i ))
-                    resizeMovement(thisapple, 0, 0, 0, 200, '+2000') ;
+                    resizeMovement(thisapple, 0, 0, 0, 300, '+2000') ;
                 }
             }
 
@@ -213,13 +214,23 @@ const Level2_1 = () => {
             console.log("step3 complete")
         }
 
-        const friendapples_text =  createText("myApples: " + myapples.length, 0.4, 0xffffff, true, false, 0x383838);
-        friendapples_text.position.set(-6, 9, 12)
-        scene.add(friendapples_text)
+        var friendText = createText("friendApples: " + friendapples.length, 0.36, 0xffffff, true, false, 0x383838)
+        var myText = createText("myApples: " + myapples.length, 0.36, 0xffffff, true, false, 0x383838)
 
-        const myapples_text =  createText("friendApples: " + friendapples.length, 0.4, 0xffffff, true, false, 0x383838);
-        myapples_text.position.set(6, 9, 12)
-        scene.add(myapples_text)
+        if (step1 === false && step2 === false && step3 === false){ 
+            point.position.set(6, 11, 12)
+            showText(friendText, scene, point)
+    
+            point.position.set(-6, 11, 12)
+            showText(myText, scene, point)
+        } else {
+            friendText.position.set(6, 9, 12)
+            scene.add(friendText)
+
+            myText.position.set(-6, 9, 12)
+            scene.add(myText)
+        }
+
 
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
