@@ -12,7 +12,6 @@ import axios from "axios";
 
 import ThreeCube from "./scene1"
 
-import ThreeCube from "./scene1"
 
 export class Level extends React.Component {
 
@@ -54,17 +53,14 @@ export class Level extends React.Component {
         const level_id = 0 //ceninha
         axios.post('http://159.65.60.64:8080/api/level/:'+level_id+'/submit/:'+solution_id,{ 
             //put header and endpoint items
+            data:{
+
+                body: this.state.code,
+            } ,
             headers: {
-                
-                'authorization': "Bearer " + localStorage.hasOwnProperty("code_spell_token")
+                'authorization': "Bearer " + localStorage.hasOwnProperty("code_spell_token"),
+                'Content-Type': 'text/plain'
             },
-            body: {
-                 
-                'code':this.state.code,
-                
-                
-                
-            }
         });
 
         
