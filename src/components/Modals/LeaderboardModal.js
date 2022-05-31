@@ -1,27 +1,36 @@
 import React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faClose, faStar, faStarHalfStroke, faStarOfLife} from "@fortawesome/free-solid-svg-icons";
 import Row from "react-bootstrap/Row";
-import {Button, Card, Col, Container} from "react-bootstrap";
-import {ScoresPanelsList} from "../ScoresPanelsList/ScoresPanelsList";
+import {Container} from "react-bootstrap";
+import ScoresPanelsList from "../ScoresPanelsList/ScoresPanelsList";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect, useState} from "react";
+import {fetchLanguage, selectLanguage} from "../../features/settings/settingsSlice";
 
-export class LeaderboardModal extends React.Component {
+const LeaderboardModal = (props) => {
 
-    constructor(props) {
-        super(props);
-    }
+    const language = useSelector(selectLanguage);
+    const [level, setLevel] = useState(props.level);
 
-    render() {
+    const dispatch = useDispatch();
 
-        return (
-            <Container>
-                <Row className="mx-1 mt-4">
-                    <span style={{fontSize: "0.7vw"}}>Hello World - JAVA</span>
-                    <h1 style={{fontSize: "1.7vw"}}>Level 2.1</h1>
-                </Row>
-                <ScoresPanelsList />
-            </Container>
+    useEffect(() => {
+        dispatch(fetchLanguage());
+    }, [dispatch]);
 
-        );
-    }
+    useEffect(() => {
+        setLevel(props.level);
+    }, [props.level]);
+
+    return (
+        <Container>
+            <Row className="mx-1 mt-4">
+                <span style={{fontSize: "0.7vw"}}>{level.title} - {language}</span>
+                <h1 style={{fontSize: "1.7vw"}}>Level {level.number}</h1>
+            </Row>
+            <ScoresPanelsList level={level}/>
+        </Container>
+
+    );
 }
+
+export default LeaderboardModal;
