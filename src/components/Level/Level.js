@@ -10,12 +10,9 @@ import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
 import axios from "axios";
 
-<<<<<<< HEAD
 import ThreeCube from "./scene1"
 
-=======
-import ThreeCube from "./scene1";
->>>>>>> 2385b9e752f166e03f997c2d708a06dfe9060437
+
 
 export class Level extends React.Component {
 
@@ -46,7 +43,7 @@ export class Level extends React.Component {
         return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
           (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
-        
+
       }
 
 
@@ -54,9 +51,9 @@ export class Level extends React.Component {
         console.log(this.state.code);
         console.log(this.generateUUID());
         let solution_id = this.generateUUID(); //generate with Crypto.randomUUID()
-        const level_id = 0 //ceninha
-        axios.post('http://159.65.60.64:8080/api/level/:'+level_id+'/submit/:'+solution_id,{ 
-            //put header and endpoint items
+        const level_id = 0 
+        axios.post('http://159.65.60.64:8080/api/level/:'+level_id+'/submit/:'+solution_id,{
+            
             data:{
 
                 body: this.state.code,
@@ -65,6 +62,7 @@ export class Level extends React.Component {
                 'authorization': "Bearer " + localStorage.hasOwnProperty("code_spell_token"),
                 'Content-Type': 'text/plain'
             },
+
         });
 
         
