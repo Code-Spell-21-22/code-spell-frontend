@@ -10,7 +10,7 @@ import {createNight} from '../Builders/createSky';
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = true; var step2 = true;
+var step1 = false; var step2 = false;
 
 // * The switch Statement
 const Level2_4 = () => {
@@ -41,25 +41,19 @@ const Level2_4 = () => {
         
         if (step1 === true) {
 
-            if (step2 === true) {
-                stars = step2_response
-            }
+            if (step2 === true) { stars = step2_response }
 
-            var step1_1 = step1_response[0]; var step1_2 = step1_response[1]; var step1_3 = step1_response[2];
-            var step1_4 = step1_response[3]; var step1_5 = step1_response[4];
-
-            if (stars === step1_1) { 
-                showText(createText(step1_2, 0.5, 0x171717, true, true, 0xffffff), scene, player) 
+            if (stars === step1_response[0]) { 
+                showText(createText(step1_response[1], 0.5, 0x171717, true, true, 0xffffff), scene, player) 
             } 
-            else if (stars === step1_3) { 
-                showText(createText(step1_4, 0.5, 0x171717, true, true, 0xffffff), scene, player) 
+            else if (stars === step1_response[2]) { 
+                showText(createText(step1_response[3], 0.5, 0x171717, true, true, 0xffffff), scene, player) 
             } 
             else { 
-                showText(createText(step1_5, 0.5, 0x171717, true, true, 0xffffff), scene, player) 
+                showText(createText(step1_response[4], 0.5, 0x171717, true, true, 0xffffff), scene, player) 
             }
 
         }
-
 
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
