@@ -12,7 +12,7 @@ const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
 
-var step1 = true; var step2 = false; var step3 = false;
+var step1 = false; var step2 = false; var step3 = false;
 
 let myapples = []
 let friendapples = []
