@@ -9,7 +9,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
 import axios from "axios";
-import apihandler from '../../utils/api/apihandler';
+import {ApiHandler} from '../../utils/api/apihandler';
 
 import ThreeCube from "./scene1";
 
@@ -52,7 +52,7 @@ export class Level extends React.Component {
         let solution_id = this.generateUUID(); //generate with Crypto.randomUUID()
         const level_id = 0 //ceninha
         let header= "Bearer " + localStorage.hasOwnProperty("code_spell_token");
-        apihandler.postLevelSolution(level_id,solution_id,this.state.code,header);
+        ApiHandler.postLevelSolution(level_id,solution_id,this.state.code,header);
 
 
         

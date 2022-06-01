@@ -7,7 +7,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import axios from "axios";
-import apihandler from "../../utils/api/apihandler";
+import {ApiHandler} from "../../utils/api/apihandler";
 
 const Login = () => {
 
@@ -28,7 +28,7 @@ const Login = () => {
             return;
         }
             
-        apihandler.postLogin(email, password)
+        ApiHandler.postLogin(email, password)
         .then((response) => {
             notify(response.data.message);
             localStorage.setItem('code_spell_token', response.data.token);

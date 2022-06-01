@@ -9,10 +9,10 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
-import apihandler from "../../utils/api/apihandler";
+import {ApiHandler} from "../../utils/api/apihandler";
 
 const SignUp = () => {
-
+    const api = new ApiHandler();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -73,8 +73,7 @@ const SignUp = () => {
             notify("Please provide an username, only A-Z,0-9 , _ and . are allowed!");
             return;
         }
-        
-        apihandler().postRegister(username,email, password)
+        api.postRegister(username,email, password)
         .then((response) => {
             notify(response.data.message);
             navigate("/login", {replace: true});

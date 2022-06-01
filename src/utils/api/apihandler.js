@@ -2,17 +2,16 @@ import axios from "axios";
 
 
 const address ='http://159.65.60.64:8080/api';
-const apihandler = (() =>{
+export class ApiHandler {
     
-    
-    const postLogin =(email,password) =>{
+      postLogin = (email,password) =>{
         axios.post(address+'/auth/login', {
             email: email,
             password: password
         });
     };
     
-    const postRegister =(username,email,password) =>{
+    postRegister = (username,email,password) => {
         axios.post(address+'/auth/register', {
             username:username,
             email: email,
@@ -20,7 +19,7 @@ const apihandler = (() =>{
         });
     };
 
-    const getUserDetails =(username)=>{
+      getUserDetails = (username) =>{
         axios.get(address+'/user/'+username+'/details');
     };
     
@@ -34,17 +33,17 @@ const apihandler = (() =>{
      */
 
 
-    const getUserAchievements =(username)=>{
+      getUserAchievements =(username)=>{
         axios.get(address+ '/user/'+username+'/achievements');
 
     };
-    const putUserPassword=(username,password)=>{
+      putUserPassword=(username,password)=>{
         axios.put(address+'/user/'+username+'/password',{
             new_password: password
         });
 
     };
-    const putUserName=(username,name)=>{
+      putUserName=(username,name)=>{
         axios.put(address+'/user/'+username+'/name',{
             new_name:name
 
@@ -54,7 +53,7 @@ const apihandler = (() =>{
     };
 
     
-    const getLevelLeaderboard = (levelid,language,level,skill_level)=>{
+      getLevelLeaderboard = (levelid,language,level,skill_level)=>{
         axios.get(address+'/level/'+levelid+'/leaderboards',{
             params: {
                 language:language,
@@ -63,11 +62,11 @@ const apihandler = (() =>{
             }
         });
     };
-    const getLevelDocumentation =(levelid)=>{
+      getLevelDocumentation =(levelid)=>{
         axios.get(address+'/level/'+levelid+'/documentation')
     };
     
-    const getLevels = (language,skill_level,chapter)=>{
+      getLevels = (language,skill_level,chapter)=>{
         axios.get(address+'/level',{
             params: {
                 language:language,
@@ -76,7 +75,7 @@ const apihandler = (() =>{
             }
         });
     };
-    const getChapter = (language,skill_level)=>{
+      getChapter = (language,skill_level)=>{
         axios.get(address+'/chapter',{
             params: {
                 language:language,
@@ -84,12 +83,12 @@ const apihandler = (() =>{
             }
         });
     };
-    const getPossibleSoluctions =(levelid)=>{
+      getPossibleSoluctions =(levelid)=>{
         axios.get(address+'/level/'+levelid+'/solutions')
     };
 
 
-    const postLevelSolution =(levelid,solutionid,code,header) =>{
+      postLevelSolution =(levelid,solutionid,code,header) =>{
         axios.post(address+'/level/'+levelid+'/submit/'+solutionid,code ,{
             'authorization': header,
             'content-type': 'text/plain',
@@ -98,20 +97,20 @@ const apihandler = (() =>{
         };
     
 
-    const getLevelGoals =(levelid)=>{
+      getLevelGoals =(levelid)=>{
         axios.get(address+'/level/'+levelid+'/goals');
     };
 
-    const getLevel =(levelid)=>{
+      getLevel =(levelid)=>{
 
         axios.get(address+'/level/'+levelid);
     };
-    const getSolution =(levelid,solutionid)=>{
+      getSolution =(levelid,solutionid)=>{
         axios.get(address+'/level/'+levelid+'/solutions/'+solutionid);
 
     };
 
-    return { 
+    /* return { 
         postRegister,
         postLogin,
         getChapter,
@@ -127,7 +126,6 @@ const apihandler = (() =>{
         getUserDetails,
         putUserName,
         putUserPassword 
-    };
+    }; */
 
-})(); //tentei com e sem parenteses still nothi
-export default apihandler();
+}; //tentei com e sem parenteses still nothi
