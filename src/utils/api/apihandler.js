@@ -1,26 +1,25 @@
 import axios from "axios";
 
 
-const address ='http://159.65.60.64:8080/api';
-export class ApiHandler {
+ const address ='http://159.65.60.64:8080/api';
     
-      postLogin = (email,password) =>{
-        axios.post(address+'/auth/login', {
+async function postLogin  (email,password)  {
+        return axios.post(address+'/auth/login', {
             email: email,
             password: password
         });
     };
     
-    postRegister = (username,email,password) => {
-        axios.post(address+'/auth/register', {
+    async function postRegister  (username,email,password)  {
+        return axios.post(address+'/auth/register', {
             username:username,
             email: email,
             password: password
         });
     };
 
-      getUserDetails = (username) =>{
-        axios.get(address+'/user/'+username+'/details');
+     async function  getUserDetails  (username)  {
+        return axios.get(address+'/user/'+username+'/details');
     };
     
     
@@ -33,18 +32,18 @@ export class ApiHandler {
      */
 
 
-      getUserAchievements =(username)=>{
-        axios.get(address+ '/user/'+username+'/achievements');
+      async function  getUserAchievements (username) {
+        return axios.get(address+ '/user/'+username+'/achievements');
 
     };
-      putUserPassword=(username,password)=>{
-        axios.put(address+'/user/'+username+'/password',{
+     async function  putUserPassword  (username,password) {
+        return axios.put(address+'/user/'+username+'/password',{
             new_password: password
         });
 
     };
-      putUserName=(username,name)=>{
-        axios.put(address+'/user/'+username+'/name',{
+     async function   putUserName  (username,name) {
+        return axios.put(address+'/user/'+username+'/name',{
             new_name:name
 
         });
@@ -53,8 +52,8 @@ export class ApiHandler {
     };
 
     
-      getLevelLeaderboard = (levelid,language,level,skill_level)=>{
-        axios.get(address+'/level/'+levelid+'/leaderboards',{
+     async function  getLevelLeaderboard    (levelid,language,level,skill_level) {
+        return axios.get(address+'/level/'+levelid+'/leaderboards',{
             params: {
                 language:language,
                 level:level,
@@ -62,12 +61,12 @@ export class ApiHandler {
             }
         });
     };
-      getLevelDocumentation =(levelid)=>{
-        axios.get(address+'/level/'+levelid+'/documentation')
+     async function  getLevelDocumentation   (levelid) {
+        return axios.get(address+'/level/'+levelid+'/documentation')
     };
     
-      getLevels = (language,skill_level,chapter)=>{
-        axios.get(address+'/level',{
+     async function  getLevels    (language,skill_level,chapter) {
+        return axios.get(address+'/level',{
             params: {
                 language:language,
                 skill_level:skill_level,
@@ -75,21 +74,21 @@ export class ApiHandler {
             }
         });
     };
-      getChapter = (language,skill_level)=>{
-        axios.get(address+'/chapter',{
+     async function  getChapter    (language,skill_level) {
+        return axios.get(address+'/chapter',{
             params: {
                 language:language,
                 skill_level:skill_level,
             }
         });
     };
-      getPossibleSoluctions =(levelid)=>{
-        axios.get(address+'/level/'+levelid+'/solutions')
+     async function  getPossibleSoluctions   (levelid) {
+        return axios.get(address+'/level/'+levelid+'/solutions')
     };
 
 
-      postLevelSolution =(levelid,solutionid,code,header) =>{
-        axios.post(address+'/level/'+levelid+'/submit/'+solutionid,code ,{
+     async function  postLevelSolution   (levelid,solutionid,code,header)  {
+        return axios.post(address+'/level/'+levelid+'/submit/'+solutionid,code ,{
             'authorization': header,
             'content-type': 'text/plain',
             
@@ -97,20 +96,20 @@ export class ApiHandler {
         };
     
 
-      getLevelGoals =(levelid)=>{
-        axios.get(address+'/level/'+levelid+'/goals');
+         async function  getLevelGoals   (levelid) {
+        return axios.get(address+'/level/'+levelid+'/goals');
     };
 
-      getLevel =(levelid)=>{
+     async function  getLevel   (levelid) {
 
-        axios.get(address+'/level/'+levelid);
+        return axios.get(address+'/level/'+levelid);
     };
-      getSolution =(levelid,solutionid)=>{
-        axios.get(address+'/level/'+levelid+'/solutions/'+solutionid);
+     async function  getSolution   (levelid,solutionid) {
+        return axios.get(address+'/level/'+levelid+'/solutions/'+solutionid);
 
     };
 
-    /* return { 
+    export  { 
         postRegister,
         postLogin,
         getChapter,
@@ -126,6 +125,6 @@ export class ApiHandler {
         getUserDetails,
         putUserName,
         putUserPassword 
-    }; */
+    };
 
-}; //tentei com e sem parenteses still nothi
+//tentei com e sem parenteses still nothi
