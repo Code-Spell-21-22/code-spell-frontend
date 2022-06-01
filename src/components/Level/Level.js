@@ -17,6 +17,7 @@ import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
+import {connect, disconnect} from "../../web_sockets/WebSocket";
 
 const Level = () => {
 
@@ -24,9 +25,12 @@ const Level = () => {
     const language = useSelector(selectLanguage);
     const difficulty = useSelector(selectDifficulty);
 
+    const initialCode = "//Step 1"+ "\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println('Hello World!')\;\n\t\}\n\}"+ "\n\n\n//Step 2"+"\n\n\n//Step 3";
+
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(undefined);
     const [level, setLevel] = useState(undefined);
+    const [code, setCode] = useState(initialCode);
 
     let { levelNumber } = useParams();
 
@@ -68,6 +72,29 @@ const Level = () => {
         setSelectedOption(option);
     };
 
+    const generateUUID = () => {
+        return(
+        ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)));
+    };
+
+    const submitCode = () => {
+
+        let solutionId = generateUUID(); //generate with Crypto.randomUUID()
+        const URL = 'http://dev.codespell.live:8080/api/level/' + level.id + '/submit/' + solutionId;
+        axios.post(URL, code, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('code_spell_token'),
+                'Content-Type': 'text/plain'
+            }
+        }).then(r => {
+            connect();
+            disconnect();
+        }).catch(e => {
+            console.log(e);
+        });
+    }
+
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';
 
     if (level === undefined || levelNumber > currentLevel.number) {
@@ -102,15 +129,7 @@ const Level = () => {
                         </Card>
                         <Card className="shadow p-3 mb-4 bg-white" style={{height: "64vh", borderRadius: "10px"}}>
                             <Row className="justify-content-start d-flex">
-                                <CodeMirror
-                                    height="60vh"
-                                    value= {"//Step 1"+ "\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println('Hello World!')\;\n\t\}\n\}"+ "\n\n\n//Step 2"+"\n\n\n//Step 3"}
-                                    extensions={[java()]}
-                                    theme={oneDark}
-                                    onChange={(value, viewUpdate) => {
-                                        this.setState({code: value});
-                                    }}
-                                />
+
                             </Row>
                         </Card>
                         <Row>
@@ -185,7 +204,15 @@ const Level = () => {
                     </Card>
                     <Card className="shadow p-3 mb-4 bg-white" style={{height: "64vh", borderRadius: "10px"}}>
                         <Row className="justify-content-start d-flex">
-
+                            <CodeMirror
+                                height="60vh"
+                                value= {initialCode}
+                                extensions={[java()]}
+                                theme={oneDark}
+                                onChange={(value, viewUpdate) => {
+                                    setCode(value);
+                                }}
+                            />
                         </Row>
                     </Card>
                     <Row>
@@ -204,7 +231,7 @@ const Level = () => {
                                         height: "6vh",
                                         minHeight: "50px",
                                         backgroundColor: "#3f73c2"
-                                    }} href="/">
+                                    }} onClick={submitCode.bind(this)}>
                                 <span style={{color: "#13305d"}}>RUN</span>
                             </Button>
                         </Col>

@@ -29,7 +29,7 @@ const Login = () => {
         }
             
         
-        axios.post('http://159.65.60.64:8080/api/auth/login', {
+        axios.post('http://dev.codespell.live:8080/api/auth/login', {
             email: email,
             password: password
         })

@@ -72,7 +72,7 @@ const SignUp = () => {
             notify("Please provide an username, only A-Z,0-9 , _ and . are allowed!");
             return;
         }
-        axios.post('http://159.65.60.64:8080/api/auth/register', {
+        axios.post('http://dev.codespell.live:8080/api/auth/register', {
             username: username,
             email: email,
             password: password
