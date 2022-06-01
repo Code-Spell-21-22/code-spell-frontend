@@ -5,6 +5,7 @@ import * as THREE from "three";
 import {createBlueprint, addBlueprintItems, addBlueprintLayout, buildBox} from '../Builders/createBlueprint';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createPlayer} from '../Builders/createPlayer';
+import {createDay} from '../Builders/createSky'
 
 let camera, scene, renderer;
 var step1 = false; var step2 = false; var step3 = false; var step4 = false;
@@ -20,58 +21,31 @@ const Level3_2 = () => {
         camera = createCamera(0, 8, 24, 0, 8, 0);
         scene = createScene();
 
+        // spotlight /////////////////
+        const spotLight = new THREE.SpotLight( 0xffffff, 1.2, -Math.PI );
+        spotLight.position.set( 0, 40, -20 );
+
+        const targetObject = new THREE.Object3D();
+        targetObject.position.set(0, 20, -50)
+        scene.add(targetObject);
+
+        spotLight.target = targetObject;
+        scene.add( spotLight );
+        //////////////////////////////
+
         const player = createPlayer();
         player.position.set(0, 2, -4)
         scene.add(player);  
 
-        if (step4 === false){     
-            // ! this response is sent from backend
-            // classname
-            var step1_response = "SquareBox";
-    
-            if (step1 === true){
-                // * create blueprint => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 1
-                // createBlueprint = (class_name)
-                const blueprint =  createBlueprint(step1_response);
-                scene.add(blueprint) 
-            }
-    
-            // ! this response is sent from backend
-            // [material, weight, height, side]
-            var step2_response = ["wood", 2.0, 4.0, 3.0];
-    
-    
-            if (step2 === true && step3 === false){
-                // * add blueprint items => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 2
-                // addBlueprintItems = (material_type, weight_number, height_number, side_number)
-                const blueprintItems =  addBlueprintItems(step2_response);
-                scene.add(blueprintItems)
-            } 
-    
-            // ! this response is sent from backend
-            // [material, weight, height, side]
-            var step3_response = ["wood", 2.0, 4.0, 3.0, "height*side*side"];
-    
-            if (step3 === true) {
-                // * add blueprint layout => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 3
-                // addBlueprintLayout = (material_type, weight_number, height_number, side_number, volume_formula)
-                const blueprintLayout =  addBlueprintLayout(step3_response);
-                scene.add(blueprintLayout)
-            }
-        }
+        const day = createDay();
+        day.position.set(10, 15, -30)
+        scene.add(day)
+
         
-         // ! this response is sent from backend
-        //[ height, side, classname, boxname]
-        var step4_response = [3.0, 4.0,  "BuildSquareBox", "box"];
+    //* STEP1 - 
 
-        if (step4 === true) {
-            // * build box => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 4
-            // buildBox = (class_name, box_name)
-            const box =  buildBox(step4_response);
-            scene.add(box)
-        }
-
-
+    // ! this response comes from backend
+    var step1_response;
         
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
