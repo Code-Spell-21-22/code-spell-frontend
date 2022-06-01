@@ -7,7 +7,7 @@ import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createPlayer} from '../Builders/createPlayer';
 
 let camera, scene, renderer;
-var step1 = false; var step2 = false; var step3 = false; var step4 = false;
+var step1 = true; var step2 = false; var step3 = false; var step4 = false;
 
 // * Classes
 const Level3_1 = () => {
@@ -18,7 +18,7 @@ const Level3_1 = () => {
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
         camera = createCamera(0, 6, 35, 0, 6, 0 );
         scene = createScene();
-    
+
         const player = createPlayer();
         player.position.set(8, 2, 12)
         scene.add(player);  
