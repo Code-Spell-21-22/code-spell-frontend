@@ -11,7 +11,7 @@ import {createPlayer} from '../Builders/createPlayer';
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = true; var step2 = false;
+var step1 = true; var step2 = true;
 
 //* Branching Statements
 const Level2_7 = () => {
@@ -40,10 +40,11 @@ const Level2_7 = () => {
 
         //////////////////////////////
         const player = createPlayer();
-        player.position.set(0, 2, -12)
+        player.position.set(0, 2, -4)
         scene.add(player); 
 
         const fruits = ["apple", "orange", "apple", "blueberry", "melon", "orange", "orange"];
+        const fruitspositions = [-15, -10, -5, 0, 5, 10, 15];
         const fruitobjects = [];
 
         for (var f in fruits){
@@ -51,24 +52,24 @@ const Level2_7 = () => {
             var currfruit = fruits[f];
             switch(currfruit){
                 case "apple":
-                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.50, 20, 20), new THREE.MeshPhongMaterial({color : 0xeb4034}))
+                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.75, 20, 20), new THREE.MeshPhongMaterial({color : 0xeb4034}))
                     currfruit.name = "apple";
                     break;
                 case "orange":
-                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.55, 20, 20), new THREE.MeshPhongMaterial({color : 0xf59031}))
+                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.80, 20, 20), new THREE.MeshPhongMaterial({color : 0xf59031}))
                     currfruit.name = "orange";
                     break;
                 case "blueberry":
-                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.30, 20, 20), new THREE.MeshPhongMaterial({color : 0x2d0770}))
+                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.55, 20, 20), new THREE.MeshPhongMaterial({color : 0x2d0770}))
                     currfruit.name = "blueberry";
                     break;
                 case "melon":
-                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.70, 20, 20), new THREE.MeshPhongMaterial({color : 0xbfed61}))
-                    currfruit.name = "blueberry";
+                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.95, 20, 20), new THREE.MeshPhongMaterial({color : 0xbfed61}))
+                    currfruit.name = "melon";
                     break;
             }
 
-            currfruit.position.set(-11.5+(f*3.8), 10, 0)
+            currfruit.position.set(fruitspositions[f], 12, -16)
             fruitobjects.push(currfruit)
             scene.add(currfruit)
         }
@@ -78,18 +79,44 @@ const Level2_7 = () => {
          //* Stop the loop with the break statement after finding the first “apple”.
 
         // ! this response comes from backend (will either return true or false if function is correct, also fruit used and print)
-        var step1_response = [true, "apple", "Found an apple!"]
+        var step1_response = [true, "blueberry", "Found a blueberry!"]
+       
+        //* STEP2 - Write a new for statement that iterates through the elements of variable fruits and calls the method jump()
+        //* if the element isn’t an “orange”. Use the continue statement to ignore the “orange”s.
+
+       // ! this response comes from backend (will either return true or false if function is correct, also fruit)
+       var step2_response = [true, "orange"]
+
 
         if (step1 === true && step1_response[0] === true){
 
+            // andar para o 1º elemento do array
+            createMovement(player, fruitobjects[0].position.x, 2, fruitobjects[0].position.z, 1000, 3000)
+
+            // iterar cada elemento da lisra
             for (var f in fruitobjects){
                 const fruit = fruitobjects[f];
-                if (fruit.name === step1_response[1]){
-                    createMovement(player, fruit.position.x, 2, fruit.position.z-12, 1000, 3000)
-                }
-            }
+                createMovement(player, fruit.position.x, 2, fruit.position.z, 1000, 3000)
 
-            // rotationMovement(player, 3.5, 2, 600, 3000)
+                if (step2 === false){
+                    if (fruit.name === step1_response[1]){
+                        rotationMovement(player, fruit, 4, 2, 800, 2000)
+    
+                        const text = createText(step1_response[2], 0.8, 0x171717, true, true, 0xffffff)
+                        text.scale.set(0, 0, 0)
+                        text.position.set(fruit.position.x, player.position.y-2, fruit.position.z)
+    
+                        scene.add(text)
+                        resizeMovement(text, 1, 1, 1, 1000, '+1000');
+                        
+                        break;
+                    }
+                } else if (step2 === true) {
+                    if (fruit.name !== step2_response[1]){
+                        rotationMovement(player, fruit, 4, 2, 800, 2000)
+                    }
+                }
+            } 
         }
         
         /////////////////////////////////////////////////////////////
