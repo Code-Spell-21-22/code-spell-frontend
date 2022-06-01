@@ -30,6 +30,19 @@ const Level2_1 = () => {
         camera = createCamera(0, 7, 34, 0, 4, 0);
         scene = createScene();
 
+        // SPOTLIGHT ///////////////////////////
+        const spotLight = new THREE.SpotLight( 0xffffff, 3, -Math.PI );
+    
+        spotLight.position.set( 0, 13, 12 );
+    
+        const targetObject = new THREE.Object3D();
+        targetObject.position.set(0, 13, -10)
+        scene.add(targetObject);
+    
+        spotLight.target = targetObject;
+        scene.add( spotLight );
+        /////////////////////////////////////////
+        
         // player
         const player = createPlayer();
         player.position.set(-8 ,2, 12)
