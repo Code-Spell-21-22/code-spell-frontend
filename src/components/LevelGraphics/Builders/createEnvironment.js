@@ -37,16 +37,16 @@ export const createScene = () => {
     directionalLight.position.set( 1, 0.75, 0.5 ).normalize();
     scene.add( directionalLight );
 
-    const spotLight = new THREE.SpotLight( 0xffffff, 3, -Math.PI );
+    // const spotLight = new THREE.SpotLight( 0xffffff, 3, -Math.PI );
     
-    spotLight.position.set( 0, 40, 20 );
+    // spotLight.position.set( 0, 40, 20 );
 
-    const targetObject = new THREE.Object3D();
-    targetObject.position.set(0, 20, -10)
-    scene.add(targetObject);
+    // const targetObject = new THREE.Object3D();
+    // targetObject.position.set(0, 20, -10)
+    // scene.add(targetObject);
 
-    spotLight.target = targetObject;
-    scene.add( spotLight );
+    // spotLight.target = targetObject;
+    // scene.add( spotLight );
 
     return scene;
 }
