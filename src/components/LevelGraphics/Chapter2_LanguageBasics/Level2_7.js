@@ -11,7 +11,7 @@ import {createPlayer} from '../Builders/createPlayer';
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = false; var step2 = false;
+var step1 = true; var step2 = false;
 
 //* Branching Statements
 const Level2_7 = () => {
@@ -100,14 +100,12 @@ const Level2_7 = () => {
 
                 if (step2 === false){
                     if (fruit.name === step1_response[1]){
+                        
+                        const point = new THREE.Object3D(new THREE.Vector3());
+                        point.position.set(fruit.position.x, player.position.y, fruit.position.z)
+
                         rotationMovement(player, fruit, 4, 2, 800, 2000)
-    
-                        const text = createText(step1_response[2], 0.8, 0x171717, true, true, 0xffffff)
-                        text.scale.set(0, 0, 0)
-                        text.position.set(fruit.position.x, player.position.y-2, fruit.position.z)
-    
-                        scene.add(text)
-                        resizeMovement(text, 1, 1, 1, 1000, '+1000');
+                        showText(createText(step1_response[2], 0.8, 0x171717, true, true, 0xffffff), scene, point)
                         
                         break;
                     }
