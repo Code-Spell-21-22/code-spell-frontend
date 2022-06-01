@@ -2,9 +2,10 @@ import React, { useEffect, useRef } from "react";
 
 import * as THREE from "three";
 
-import {createBlueprint, addBlueprintItems, addBlueprintLayout, buildBox} from '../Builders/createBlueprint';
 import {createScene, createCamera} from '../Builders/createEnvironment';
+import {createText, showText} from '../Builders/createText';
 import {createPlayer} from '../Builders/createPlayer';
+import {createTree} from "../Builders/createItems";
 import {createDay} from '../Builders/createSky'
 
 let camera, scene, renderer;
@@ -18,15 +19,15 @@ const Level3_2 = () => {
         // create camera and scene
         // this is default camera 
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
-        camera = createCamera(0, 8, 24, 0, 8, 0);
+        camera = createCamera(0, 6, 24, 0, 8, 0);
         scene = createScene();
 
         // spotlight /////////////////
-        const spotLight = new THREE.SpotLight( 0xffffff, 1.2, -Math.PI );
-        spotLight.position.set( 0, 40, -20 );
+        const spotLight = new THREE.SpotLight( 0xffffff, 2.2, -Math.PI );
+        spotLight.position.set( 0, 20, 0 );
 
         const targetObject = new THREE.Object3D();
-        targetObject.position.set(0, 20, -50)
+        targetObject.position.set(0, 20, -20)
         scene.add(targetObject);
 
         spotLight.target = targetObject;
@@ -34,15 +35,23 @@ const Level3_2 = () => {
         //////////////////////////////
 
         const player = createPlayer();
-        player.position.set(0, 2, -4)
+        player.position.set(0, 2, 0)
         scene.add(player);  
 
         const day = createDay();
-        day.position.set(10, 15, -30)
+        day.position.set(-20, 25, -30)
         scene.add(day)
 
+        const tree = createTree();
+        tree.position.set(12 , 0, -8) 
+        scene.add(tree);
         
-    //* STEP1 - 
+
+        const apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000}))
+        scene.add(apple)
+        apple.position.set(-6,5,0)
+    
+        //* STEP1 - 
 
     // ! this response comes from backend
     var step1_response;
