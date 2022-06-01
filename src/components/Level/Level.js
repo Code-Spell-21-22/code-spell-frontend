@@ -9,6 +9,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
 import axios from "axios";
+import apihandler from '../../utils/api/apihandler';
 
 import ThreeCube from "./scene1";
 
@@ -50,20 +51,9 @@ export class Level extends React.Component {
         console.log(this.generateUUID());
         let solution_id = this.generateUUID(); //generate with Crypto.randomUUID()
         const level_id = 0 //ceninha
-        axios.post('http://159.65.60.64:8080/api/level/:'+level_id+'/submit/:'+solution_id,{
-            //put header and endpoint items
-            headers: {
+        let header= "Bearer " + localStorage.hasOwnProperty("code_spell_token");
+        apihandler.postLevelSolution(level_id,solution_id,this.state.code,header);
 
-                'authorization': "Bearer " + localStorage.hasOwnProperty("code_spell_token")
-            },
-            body: {
-
-                'code':this.state.code,
-
-
-
-            }
-        });
 
         
     }
