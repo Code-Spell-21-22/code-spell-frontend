@@ -20,9 +20,22 @@ const Level2_5 = () => {
         // create camera and scene
         // this is default camera 
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
-        camera = createCamera(0, 20, 48, 0, 4, -8);
+        camera = createCamera(0, 16, 46, 0, 4, -8);
         scene = createScene();
         
+        // SPOTLIGHT ////////////////////////////////////
+        const spotLight = new THREE.SpotLight( 0xffffff, 2.5, 100, -Math.PI);
+    
+        spotLight.position.set( 0, 16, 24 );
+    
+        const targetObject = new THREE.Object3D();
+        targetObject.position.set(0, 16, -12)
+        scene.add(targetObject);
+    
+        spotLight.target = targetObject;
+        scene.add( spotLight );
+        //*//////////////////////////////////////////////
+
         const player = createPlayer();
         player.position.set(0 ,2, 24)
         scene.add(player); 
