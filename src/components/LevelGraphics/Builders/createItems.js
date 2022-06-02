@@ -104,37 +104,6 @@ export const createShield = () => {
     return group;
 }
 
-
-export const createApple = (color) => {
-    // const group = new THREE.Group();
-
-    // // Instantiate a loader
-    // const loader = new OBJLoader();
-
-    // loader.load(
-    //     // resource URL
-    //     applemodel,
-    //     // called when the resource is loaded
-    //     function ( apple ) {
-    //         apple.scale.set( 0.14, 0.14, 0.14 ) // scale here
-
-    //         // For any meshes in the model, add our material.
-    //         apple.traverse( function ( node ) {
-    //             if ( node.isMesh ) node.material =  new THREE.MeshPhongMaterial({color : 0xb50000});
-    //         } );
-
-    //         group.add(apple)
-    //     }, 
-    //     // called while loading is progressing
-    //     function ( xhr ) { console.log( ('apple ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
-    //     // called when loading has errors
-    //     function ( error ) { console.log( 'An error happened' ); }
-    // );
-
-    // return group;
-    return (new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : color})))
-}
-
 export const createTree = () => {
     const group = new THREE.Group();
 
