@@ -17,7 +17,7 @@ import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
-import {connect, disconnect} from "../../web_sockets/WebSocket";
+import {connect, disconnect, isStompClientConnected} from "../../web_sockets/WebSocket";
 
 const Level = () => {
 
@@ -25,7 +25,7 @@ const Level = () => {
     const language = useSelector(selectLanguage);
     const difficulty = useSelector(selectDifficulty);
 
-    const initialCode = "//Step 1"+ "\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println('Hello World!')\;\n\t\}\n\}"+ "\n\n\n//Step 2"+"\n\n\n//Step 3";
+    const initialCode = "//Step 1"+ '\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}' + "\n\n\n//Step 2"+"\n\n\n//Step 3";
 
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(undefined);
@@ -52,6 +52,10 @@ const Level = () => {
     useEffect(() => {
         dispatch(fetchLanguage());
         dispatch(fetchDifficulty());
+
+        if (!isStompClientConnected())
+            connect();
+
     }, [dispatch]);
 
     useEffect(() => {
@@ -88,8 +92,7 @@ const Level = () => {
                 'Content-Type': 'text/plain'
             }
         }).then(r => {
-            connect();
-            disconnect();
+            console.log(r);
         }).catch(e => {
             console.log(e);
         });

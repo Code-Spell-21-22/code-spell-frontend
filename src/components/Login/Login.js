@@ -23,11 +23,9 @@ const Login = () => {
 
     const onSubmit = () => {
         if (!email|| !password){
-        
             notify("Please fill all fields");
             return;
         }
-            
         
         axios.post('http://dev.codespell.live:8080/api/auth/login', {
             email: email,

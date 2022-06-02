@@ -3,8 +3,12 @@ import SockJS from "sockjs-client";
 
 let stompClient = null;
 
+export const isStompClientConnected = () => {
+  return stompClient !== null;
+};
+
 export const connect = () => {
-    let socket = new SockJS('http://dev.codespell.live:8090/');
+    let socket = new SockJS('http://dev.codespell.live:8090/code-spell/websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
