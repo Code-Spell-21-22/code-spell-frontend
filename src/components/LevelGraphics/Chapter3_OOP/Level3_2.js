@@ -55,8 +55,9 @@ const Level3_2 = () => {
         const platform = new THREE.Mesh( new THREE.BoxGeometry( 2, 0.5, 0.5 ), new THREE.MeshBasicMaterial( {color: 0x141414}));
     
         //* STEP1 - Create a new instance of Apple with weight equal to 1.2d.
+        var step1_response = true;
 
-        if (step1=== true && step2 === false && step3 === false && step4 === false ){
+        if (step1 === true && step2 === false && step3 === false && step4 === false ){
             // platform movement
             platform.position.set(-16, 4.1, 0)
             scene.add(platform);
@@ -67,7 +68,7 @@ const Level3_2 = () => {
             scene.add(apple);
             createMovement(apple, -4, 5, 0, 800, '+2000')
 
-        } else {
+        } else if (step2 === true || step3 === true || step4 === true ){
             // aplle shows still
             apple.position.set(-4, 5, 0)
             scene.add(apple);
