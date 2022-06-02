@@ -1,7 +1,9 @@
 import * as THREE from "three";
 
+import { resizeMovement } from '../Builders/tweenMotions';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
+
 
 export const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, bubbleColor) => {
     
@@ -56,8 +58,14 @@ export const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, b
 
     } );
 
-    
     all.position.set(0,0,0)
-    return all;
-   
+    return all;   
+}
+
+export const showText = (text, scene, player) => {
+
+    text.scale.set(0, 0, 0)
+    text.position.set(player.position.x, player.position.y-2, player.position.z)
+    scene.add(text)
+    resizeMovement(text, 1, 1, 1, 1000, '+1000');
 }
