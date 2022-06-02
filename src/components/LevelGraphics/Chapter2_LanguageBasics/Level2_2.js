@@ -4,7 +4,7 @@ import * as THREE from "three";
 
 import {createMovement, resizeMovement} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
-import {createApple, createTree} from '../Builders/createItems';
+import {createTree} from '../Builders/createItems';
 import {createPlayer} from '../Builders/createPlayer';
 import {createText, showText} from '../Builders/createText';
 
@@ -60,7 +60,7 @@ const Level2_1 = () => {
 
 
         for (var i = 0; i< 4; i++){
-            var apple = createApple(0xb50000);
+            var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000}));
             apple.name = "friendapple_"+i;
             apple.rotation.y += i
             friendapples.push(apple)
@@ -84,7 +84,7 @@ const Level2_1 = () => {
 
         if (step1 === true){
             for (var i = 0; i< step1_response; i++){
-                var apple = createApple(0xb50000);
+                var apple = new THREE.Mesh(new THREE.SphereGeometry(0.65, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000}));
                 apple.name = "myapple_"+i;
                 apple.rotation.y += i
                 myapples.push(apple)
@@ -130,7 +130,7 @@ const Level2_1 = () => {
 
             // Add the value of variable myApples to variable friendsApples
             for (var i = 0; i< step2_1; i++){;
-                var apple = createApple(0x98eb34);
+                var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0x98eb34}));
                 apple.name = "friendapple_"+ (i+4);
                 apple.rotation.y += i
                 friendapples.push(apple)
@@ -197,7 +197,7 @@ const Level2_1 = () => {
             showText(createText("extraApples: " + extra_apples, 0.4, 0xffffff, true, false, 0x383838), scene, point)
 
             for (var i = 0; i< extra_apples; i++){
-                var apple = createApple(0xbbc95d);
+                var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xbbc95d}));
                 apple.name = "extraapple_"+i;
                 apple.rotation.y += i
                 apple.position.set(0, 20, 17)
@@ -208,7 +208,7 @@ const Level2_1 = () => {
             console.log(step3_2, initial_friendapples)
             if (step3_2 > initial_friendapples){   // se sao mais aumenta maças
                 for (var i = 0; i< (step3_2 - initial_friendapples); i++){;
-                    var apple = createApple(0x98eb34);
+                    var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0x98eb34}));
                     apple.name = "friendapple_"+ (i+initial_friendapples);
                     apple.rotation.y += i
                     apple.position.set(3, 18, 17)
