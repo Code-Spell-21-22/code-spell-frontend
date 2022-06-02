@@ -58,10 +58,8 @@ export const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, b
 
     } );
 
-    
     all.position.set(0,0,0)
-    return all;
-   
+    return all;   
 }
 
 export const showText = (text, scene, player) => {
