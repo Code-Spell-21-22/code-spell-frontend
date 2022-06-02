@@ -12,7 +12,7 @@ import {createDay} from '../Builders/createSky'
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = true; var step2 = true; var step3 = true; var step4 = true;
+var step1 = false; var step2 = false; var step3 = false; var step4 = false;
 
 // * Objects
 const Level3_2 = () => {
@@ -105,7 +105,6 @@ const Level3_2 = () => {
                 resizeMovement(apple, resize[s], resize[s], resize[s], 500, "+1000") 
             }
         }
-
 
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
