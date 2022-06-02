@@ -84,6 +84,9 @@ const Level = () => {
 
     const submitCode = () => {
 
+        if (!isStompClientConnected())
+            connect();
+
         let solutionId = generateUUID(); //generate with Crypto.randomUUID()
         const URL = 'http://dev.codespell.live:8080/api/level/' + level.id + '/submit/' + solutionId;
         axios.post(URL, code, {
