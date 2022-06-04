@@ -46,23 +46,20 @@ const Level = () => {
 
     const dispatch = useDispatch();
 
-
-    generateUUID() {
+    const generateUniqueId = () => {
         return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
+    }
 
-      }
-
-
-    submitCode() {
+    const submitCode = () => {
         console.log(this.state.code);
         console.log(this.generateUUID());
-        let solution_id = this.generateUUID(); //generate with Crypto.randomUUID()
-        const level_id = 0 //ceninha
-        let header= "Bearer " + localStorage.hasOwnProperty("code_spell_token");
-        postLevelSolution(level_id,solution_id,this.state.code,header);
-
+        let solution_id = this.generateUUID();
+        const level_id = 0
+        let header = "Bearer " + localStorage.hasOwnProperty("code_spell_token");
+        postLevelSolution(level_id, solution_id, this.state.code, header);
+    }
 
     useEffect(() => {
         dispatch(fetchLanguage());
