@@ -8,6 +8,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import axios from "axios";
+import {postLogin} from "../../utils/api/apihandler";
 
 const Login = () => {
 
@@ -28,11 +29,7 @@ const Login = () => {
             return;
         }
             
-        
-        axios.post('http://159.65.60.64:8080/api/auth/login', {
-            email: email,
-            password: password
-        })
+        postLogin(email, password)
         .then((response) => {
             notify(response.data.message);
             localStorage.setItem('code_spell_token', response.data.token);

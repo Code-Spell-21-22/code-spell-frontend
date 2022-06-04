@@ -9,9 +9,9 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
+import {postRegister} from "../../utils/api/apihandler";
 
 const SignUp = () => {
-
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -42,7 +42,8 @@ const SignUp = () => {
     
     }
     const passwordStrenght= (pw) => {
-        var testPw= /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/i;
+        //Minimum eight characters, at least one uppercase letter, one lowercase letter and one number
+        var testPw=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/i;
         if(!testPw.test(pw)){
             setPassword(!password);
         }
@@ -65,22 +66,19 @@ const SignUp = () => {
         return;}
 
         if(!password || passwordStrenght(password) || password === "null"){
-            notify("Please provide an password, it must have 4 charaters and at least one number and one letter!");
+            notify("Please provide an password, it must have 8 charaters and at least one number, one uppercase and one lowercase!");
         return;}
         
         if(!username || checkField(username) || username === "null"){
             notify("Please provide an username, only A-Z,0-9 , _ and . are allowed!");
             return;
         }
-        axios.post('http://159.65.60.64:8080/api/auth/register', {
-            username: username,
-            email: email,
-            password: password
-        })
+        postRegister(username,email ,password)
         .then((response) => {
             notify(response.data.message);
             navigate("/login", {replace: true});
         }, (error) => {
+            console.log(error)
             notify(JSON.parse(error.request.response)['message']);
             console.log(error);
         });
