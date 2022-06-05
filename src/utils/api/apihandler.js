@@ -19,7 +19,8 @@ async function postLogin  (email,password)  {
     };
 
      async function  getUserDetails  (username)  {
-        return axios.get(address+'/user/'+username+'/details');
+        return axios.get(address+'/user/'+username+'/details',{'authorization': header,
+    });
     };
     
     
@@ -33,17 +34,20 @@ async function postLogin  (email,password)  {
 
 
       async function  getUserAchievements (username) {
-        return axios.get(address+ '/user/'+username+'/achievements');
+        return axios.get(address+ '/user/'+username+'/achievements',{'authorization': header,
+    });
 
     };
      async function  putUserPassword  (username,password) {
-        return axios.put(address+'/user/'+username+'/password',{
+        return axios.put(address+'/user/'+username+'/password',{'authorization': header,
+    
             new_password: password
         });
 
     };
      async function   putUserName  (username,name) {
-        return axios.put(address+'/user/'+username+'/name',{
+        return axios.put(address+'/user/'+username+'/name',{'authorization': header,
+    
             new_name:name
 
         });
@@ -53,7 +57,8 @@ async function postLogin  (email,password)  {
 
     
      async function  getLevelLeaderboard    (levelid,language,level,skill_level) {
-        return axios.get(address+'/level/'+levelid+'/leaderboards',{
+        return axios.get(address+'/level/'+levelid+'/leaderboards',{'authorization': header,
+    
             params: {
                 language:language,
                 level:level,
@@ -62,11 +67,13 @@ async function postLogin  (email,password)  {
         });
     };
      async function  getLevelDocumentation   (levelid) {
-        return axios.get(address+'/level/'+levelid+'/documentation')
+        return axios.get(address+'/level/'+levelid+'/documentation',{'authorization': header,
+    })
     };
     
      async function  getLevels    (language,skill_level,chapter) {
-        return axios.get(address+'/level',{
+        return axios.get(address+'/level',{'authorization': header,
+    
             params: {
                 language:language,
                 skill_level:skill_level,
@@ -75,7 +82,9 @@ async function postLogin  (email,password)  {
         });
     };
      async function  getChapter    (language,skill_level) {
-        return axios.get(address+'/chapter',{
+        return axios.get(address+'/chapter',
+        {'authorization': header,
+    
             params: {
                 language:language,
                 skill_level:skill_level,
@@ -83,7 +92,8 @@ async function postLogin  (email,password)  {
         });
     };
      async function  getPossibleSoluctions   (levelid) {
-        return axios.get(address+'/level/'+levelid+'/solutions')
+        return axios.get(address+'/level/'+levelid+'/solutions',{'authorization': header,
+    })
     };
 
 
@@ -96,16 +106,19 @@ async function postLogin  (email,password)  {
         };
     
 
-         async function  getLevelGoals   (levelid) {
-        return axios.get(address+'/level/'+levelid+'/goals');
+    async function  getLevelGoals   (levelid) {
+        return axios.get(address+'/level/'+levelid+'/goals',{'authorization': header,
+    });
     };
 
      async function  getLevel   (levelid) {
 
-        return axios.get(address+'/level/'+levelid);
+        return axios.get(address+'/level/'+levelid,{'authorization': header,
+    });
     };
      async function  getSolution   (levelid,solutionid) {
-        return axios.get(address+'/level/'+levelid+'/solutions/'+solutionid);
+        return axios.get(address+'/level/'+levelid+'/solutions/'+solutionid,{'authorization': header,
+    });
 
     };
 
