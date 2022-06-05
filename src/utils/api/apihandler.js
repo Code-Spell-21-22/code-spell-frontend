@@ -76,13 +76,14 @@ async function getPossibleSoluctions(levelid) {
 }
 
 
-async function postLevelSolution(levelid, solutionid, code, header) {
+async function postLevelSolution(levelid, solutionid, code) {
     return axios.post(apiAddress + '/level/' + levelid + '/submit/' + solutionid, code, {
-        'authorization': header,
-        'content-type': 'text/plain',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('code_spell_token'),
+            'Content-Type': 'text/plain'
+        }
     });
 }
-
 
 async function getLevelGoals(levelid) {
     return axios.get(apiAddress + '/level/' + levelid + '/goals');

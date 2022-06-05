@@ -65,7 +65,7 @@ const ThreeCube = () => {
 
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
+        renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 3);
         renderer.shadowMap.enabled = true;
         document.getElementById("threejs").parentNode.replaceChild(renderer.domElement, document.getElementById("threejs"));
 
@@ -108,9 +108,9 @@ const ThreeCube = () => {
 
 
         var onWindowResize = function () {
-            camera.aspect = window.innerWidth / 3 / (window.innerHeight - window.innerHeight / 5);
+            camera.aspect = window.innerWidth / 3 / (window.innerHeight - window.innerHeight / 3);
             camera.updateProjectionMatrix();
-            renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
+            renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 3);
         };
 
         window.addEventListener( 'resize', onWindowResize );    
