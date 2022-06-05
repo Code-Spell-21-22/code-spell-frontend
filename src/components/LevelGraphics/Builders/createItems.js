@@ -128,35 +128,6 @@ export const createTree = () => {
     return group;
 }
 
-export const createGrass = () => {
-    const group = new THREE.Group();
-
-    // Instantiate a loader
-    const loader = new OBJLoader();
-
-    loader.load(
-        // resource URL
-        grassmodel,
-        // called when the resource is loaded
-        function ( grass ) {
-            grass.scale.set( 0.06, 0.06, 0.06 ) // scale here
-            grass.position.set( 0, 0, 0 ) // scale here
-
-            grass.traverse( function ( node ) {
-                if ( node.isMesh ) node.material =  new THREE.MeshPhongMaterial({color: 0x143316});
-            } );
-
-            
-            group.add(grass)
-        }, 
-        // called while loading is progressing
-        function ( xhr ) { console.log( ('grass ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
-        // called when loading has errors
-        function ( error ) { console.log( 'An error happened' ); }
-    );
-    return group;
-}
-
 export const createFence = () => {
     const group = new THREE.Group();
 
