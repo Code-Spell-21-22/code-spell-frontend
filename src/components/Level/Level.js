@@ -33,6 +33,8 @@ const Level = () => {
     const [level, setLevel] = useState(undefined);
     const [code, setCode] = useState(initialCode);
 
+    const output = useSelector(state => state.code.output);
+
     let { levelNumber } = useParams();
 
     // TODO: Obtain current level
@@ -96,6 +98,16 @@ const Level = () => {
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';
 
     if (!currentLevel) return;
+
+    let outputPanels = [];
+    if (!output) {
+        outputPanels.push(<span style={{fontSize: "0.8vw"}}>---</span>)
+    } else {
+        for (let o of output) {
+            outputPanels.push(<span style={{fontSize: "0.8vw"}}>{o}</span>);
+        }
+    }
+
 
     return (
         <Container className="container-fluid mx-3 mt-5">
@@ -181,6 +193,17 @@ const Level = () => {
                             <Level1_1/>
                         </Row>
                     }
+                    {!selectedOption &&
+                        <Row className="justify-content-right d-flex mx-4">
+                            <Card className="shadow p-3 mb-3 bg-white" style={{borderRadius: "10px", minHeight: "150px"}}>
+                                <Row className="justify-content-start d-flex m-2">
+                                    <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>Output</span>
+                                    {outputPanels}
+                                </Row>
+                            </Card>
+                        </Row>
+                    }
+
 
                     {selectedOption !== undefined &&
                         <GenericModal content_type={selectedOption} level={currentLevel}

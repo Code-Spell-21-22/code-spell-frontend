@@ -31,7 +31,7 @@ const GenericModal = (props) => {
             content = <DocumentationModal/>;
             break;
         case "errors":
-            content = <ErrorsModal/>;
+            content = <ErrorsModal level={props.level}/>;
             break;
     }
 

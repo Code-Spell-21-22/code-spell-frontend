@@ -74,7 +74,8 @@ const SignUp = () => {
             notify("Please provide an username, only A-Z,0-9 , _ and . are allowed!");
             return;
         }
-        postRegister(username,email ,password)
+
+        postRegister(username,email,password)
         .then((response) => {
             notify(response.data.message);
             navigate("/login", {replace: true});
