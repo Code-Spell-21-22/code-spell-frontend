@@ -5,23 +5,23 @@ import * as THREE from "three";
 import {createInventory, createSword, createShield} from '../Builders/createItems';
 import {createMovement, resizeMovement} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
+import {createText, showText} from '../Builders/createText';
 import {createPlayer} from '../Builders/createPlayer';
-import {createText} from '../Builders/createText';
 import {ageEditor} from '../Builders/ageEditor'
 
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
 
-var step1 = true; var step2 = true; var step3 = false;
+var step1 = false; var step2 = false; var step3 = false;
 
 // * Variables
 const Level2_1 = () => {
     
     useEffect(() => {
-        // create camera and scene
         
-
+        var age, speech
+        // create camera and scene
         // this is default camera 
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
         camera = createCamera(0, 6.5, 34, 0, 4, 0);
@@ -47,25 +47,21 @@ const Level2_1 = () => {
         // ! this response is sent from backend
         // [player object, age]
         var step1_response = [player, 30];
-
+        
         // * edit player age => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 1
         if (step1 === true){
             const ageBox = ageEditor(step1_response);
             scene.add(ageBox);
         }
-
+        age = step1_response[1]
+        
         // ! this response is sent from backend
         var step2_response = "I'm learning variables";
         
         // * create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
         // createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, bubbleColor)
-        if (step2 === true){
-            const text =  createText(step2_response, 0.5, 0x171717, true, true, 0xffffff);
-            text.scale.set(0, 0, 0)
-            text.position.set(player.position.x, player.position.y-2, player.position.z)
-            scene.add(text)
-            resizeMovement(text, 1, 1, 1, 1000, '+2000');
-        }
+        if (step2 === true){ showText(createText(step2_response, 0.5, 0x171717, true, true, 0xffffff), scene, player) }
+        speech = step2_response;
 
         // * create movement => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 3
         //  const createMovement = (obj, x, y, z, timeTo, delay)
