@@ -25,7 +25,7 @@ export const fetchLevels = (language, difficulty) => async dispatch => {
     // const data = await apiHandler.getLevels(language, difficulty);
     const data = [
         {
-            "id": "0",
+            "id": "628910f54829b52a921fabb5",
             "title": "Variables",
             "description": "Description about variables level.",
             "language": "JAVA",

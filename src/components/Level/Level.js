@@ -17,6 +17,8 @@ import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
+import {connect, disconnect, isStompClientConnected} from "../../web_sockets/WebSocket";
+import axios from "axios";
 
 const Level = () => {
 
@@ -24,9 +26,12 @@ const Level = () => {
     const language = useSelector(selectLanguage);
     const difficulty = useSelector(selectDifficulty);
 
+    const initialCode = "//Step 1"+ '\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}' + "\n\n\n//Step 2"+"\n\n\n//Step 3";
+
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(undefined);
     const [level, setLevel] = useState(undefined);
+    const [code, setCode] = useState(initialCode);
 
     let { levelNumber } = useParams();
 
@@ -45,26 +50,13 @@ const Level = () => {
 
     const dispatch = useDispatch();
 
-    const generateUniqueId = () => {
-        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
-    }
-
-    const submitCode = () => {
-        console.log(this.state.code);
-        console.log(this.generateUUID());
-        let solution_id = this.generateUUID();
-        const level_id = 0
-        let header = "Bearer " + localStorage.hasOwnProperty("code_spell_token");
-        postLevelSolution(level_id, solution_id, this.state.code, header);
-    }
-
-    // Once it has an empty 'deps' array, it will only be called once - when the component initiates.
     useEffect(() => {
 
         dispatch(fetchLanguage());
         dispatch(fetchDifficulty());
+
+        if (!isStompClientConnected())
+            connect();
 
         dispatch(fetchLevels(language, difficulty));
 
@@ -82,6 +74,24 @@ const Level = () => {
     const optionHandler = (option) => {
         setSelectedOption(option);
     };
+
+    const generateUUID = () => {
+        return(
+        ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)));
+    };
+
+    const submitCode = () => {
+
+        if (!isStompClientConnected())
+            connect();
+
+        let solutionId = generateUUID(); //generate with Crypto.randomUUID()
+        let header = "Bearer " + localStorage.hasOwnProperty("code_spell_token");
+        postLevelSolution(level.id, solutionId, code, header)
+            .then(r => console.log(r))
+            .catch(e => console.log(e));
+    }
 
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';
 
@@ -145,7 +155,7 @@ const Level = () => {
                                         height: "6vh",
                                         minHeight: "50px",
                                         backgroundColor: "#3f73c2"
-                                    }} href="/">
+                                    }} onClick={submitCode.bind(this)}>
                                 <span style={{color: "#13305d"}}>RUN</span>
                             </Button>
                         </Col>
