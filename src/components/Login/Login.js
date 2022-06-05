@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React from "react";
+import {useState} from "react";
 import Row from "react-bootstrap/Row";
 import {Button, Form, Image} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
@@ -7,6 +8,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
 import axios from "axios";
+import {postLogin} from "../../utils/api/apihandler";
 
 const Login = () => {
 
@@ -21,11 +23,13 @@ const Login = () => {
     const notify = (message) => toast(message);
 
     const onSubmit = () => {
-
-        axios.post('http://159.65.60.64:8080/api/auth/login', {
-            email: email,
-            password: password
-        })
+        if (!email|| !password){
+        
+            notify("Please fill all fields");
+            return;
+        }
+            
+        postLogin(email, password)
         .then((response) => {
             notify(response.data.message);
             localStorage.setItem('code_spell_token', response.data.token);
@@ -48,11 +52,11 @@ const Login = () => {
                 <Row className="w-75">
                     <Form>
                         <Form.Group className="mb-3 shadow" controlId="formBasicUsername">
-                            <Form.Control style={{height: "5vh", minHeight: "40px"}} type="email" placeholder="Email" onChange={(event) => onInputChanged(setEmail, event)} />
+                            <Form.Control style={{height: "5vh", minHeight: "40px"}} type="email" placeholder="Email" onChange={(event) => onInputChanged(setEmail, event)} required/>
                         </Form.Group>
 
                         <Form.Group className="mb-3 shadow" controlId="formBasicPassword">
-                            <Form.Control style={{height: "5vh", minHeight: "40px"}} type="password" placeholder="Password" onChange={(event) => onInputChanged(setPassword, event)} />
+                            <Form.Control style={{height: "5vh", minHeight: "40px"}} type="password" placeholder="Password" onChange={(event) => onInputChanged(setPassword, event)} required/>
                         </Form.Group>
 
                         <Button className="mt-5 w-100 text-white" onClick={onSubmit} style={{backgroundColor: "#1c93ec", border: "none", height: "6vh"}}>

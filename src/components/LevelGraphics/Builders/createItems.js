@@ -10,9 +10,6 @@ import grassmodel from '../../../models/grass/grass.obj'
 import swordmodel from '../../../models/sword/sword.obj'
 import shieldmodel from '../../../models/shield/shield.obj'
 
-import applemodel from '../../../models/apple/apple.obj'
-import appletexture from '../../../models/apple/apple.jpg'
-
 import fencemodel from '../../../models/fence/fence.obj'
 import fencetexture from '../../../models/fence/fence.jpeg'
 
