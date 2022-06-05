@@ -9,10 +9,9 @@ import GenericModal from "../Modals/GenericModal";
 import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
-import axios from "axios";
 import {postLevelSolution} from '../../utils/api/apihandler';
 
-import ThreeCube from "./scene1"
+import Level1_1 from "../LevelGraphics/Chapter1_Introduction/Level1_1"
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -34,13 +33,13 @@ const Level = () => {
     // TODO: Obtain current level
     const [currentLevel, setCurrentLevel] = useState(
         {
-            "id": "2",
-            "title": "Classes",
-            "description": "Description about Classes level.",
+            "id": "0",
+            "title": "Variables",
+            "description": "Description about variables level.",
             "language": "JAVA",
             "skill": "NOVICE",
-            "number": 2.2,
-            "chapter": "89a2183ja126a71er2j"
+            "number": 1.1,
+            "chapter": "89a2183ja126a712j"
         }
     );
 
@@ -61,25 +60,24 @@ const Level = () => {
         postLevelSolution(level_id, solution_id, this.state.code, header);
     }
 
+    // Once it has an empty 'deps' array, it will only be called once - when the component initiates.
     useEffect(() => {
+
         dispatch(fetchLanguage());
         dispatch(fetchDifficulty());
-    }, [dispatch]);
 
-    useEffect(() => {
         dispatch(fetchLevels(language, difficulty));
-    }, [language, difficulty]);
 
-    useEffect(() => {
-        if (levels.length > 0) {
+        /*
+        if (levels.length > 0)
             setLevel(levels.find(level => level.number.toString() === levelNumber));
-        }
-    }, [levels, levelNumber]);
+        */
+
+    }, []);
 
     const navbarHandler = () => {
         setNavbarOpen(!navbarOpen);
     };
-
 
     const optionHandler = (option) => {
         setSelectedOption(option);
@@ -87,89 +85,7 @@ const Level = () => {
 
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';
 
-    if (level === undefined || levelNumber > currentLevel.number) {
-        return (
-            <Container className="container-fluid mx-3 mt-5">
-                <Row>
-                    <Col className="col-1">
-                        <Button className="shadow mb-5 justify-content-center align-items-center d-flex"
-                                onClick={navbarHandler.bind(this)}
-                                style={{
-                                    border: "none",
-                                    backgroundColor: "#3f73c2",
-                                    borderRadius: "10px",
-                                    width: "5vw",
-                                    height: "5vw",
-                                    maxHeight: "70px",
-                                    maxWidth: "70px"
-                                }}>
-                            <FontAwesomeIcon icon={faBars} style={{fontSize: "1.5vw", color: "white"}}/>
-                        </Button>
-                        <div className={fadeInNavbar}>
-                            <NavbarVertical is_disabled={!navbarOpen}
-                                            on_option_changed={optionHandler.bind(this)}/>
-                        </div>
-                    </Col>
-                    <Col className="col-6">
-                        <Card className="shadow p-3 mb-3 bg-white" style={{borderRadius: "10px"}}>
-                            <Row className="justify-content-start d-flex m-2">
-                                <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>Loading...</span>
-                                <span style={{fontSize: "0.8vw"}}>Loading...</span>
-                            </Row>
-                        </Card>
-                        <Card className="shadow p-3 mb-4 bg-white" style={{height: "64vh", borderRadius: "10px"}}>
-                            <Row className="justify-content-start d-flex">
-                                <CodeMirror
-                                    height="60vh"
-                                    value= {"//Step 1"+ "\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println('Hello World!')\;\n\t\}\n\}"+ "\n\n\n//Step 2"+"\n\n\n//Step 3"}
-                                    extensions={[java()]}
-                                    theme={oneDark}
-                                    onChange={(value, viewUpdate) => {
-                                        this.setState({code: value});
-                                    }}
-                                />
-                            </Row>
-                        </Card>
-                        <Row>
-                            <Col className="col-3">
-                                <Button
-                                        className="disabled w-100 me-5 shadow bg-white justify-content-center align-items-center d-flex"
-                                        style={{border: "none", height: "6vh", minHeight: "50px"}}>
-                                    <span style={{color: "#2C5AA2"}}>ERRORS</span>
-                                </Button>
-                            </Col>
-                            <Col className="col-3"></Col>
-                            <Col className="col-3">
-                                <Button className="disabled w-100 shadow justify-content-center align-items-center d-flex"
-                                        style={{
-                                            border: "none",
-                                            height: "6vh",
-                                            minHeight: "50px",
-                                            backgroundColor: "#3f73c2"
-                                        }}>
-                                    <span style={{color: "#13305d"}}>RUN</span>
-                                </Button>
-                            </Col>
-                            <Col className="col-3">
-                                <Button className="disabled w-100 shadow justify-content-center align-items-center d-flex"
-                                        style={{
-                                            backgroundColor: "#1E4172",
-                                            border: "none",
-                                            height: "6vh",
-                                            minHeight: "50px"
-                                        }}>
-                                    <span style={{color: "white"}}>NEXT LEVEL <FontAwesomeIcon icon={faGreaterThan}
-                                                                                               style={{color: "white"}}/>
-                                    </span>
-                                </Button>
-                            </Col>
-                        </Row>
-                    </Col>
-
-                </Row>
-            </Container>
-        );
-    }
+    if (!currentLevel) return;
 
     return (
         <Container className="container-fluid mx-3 mt-5">
@@ -196,13 +112,21 @@ const Level = () => {
                 <Col className="col-6">
                     <Card className="shadow p-3 mb-3 bg-white" style={{borderRadius: "10px"}}>
                         <Row className="justify-content-start d-flex m-2">
-                            <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>Level {level.number}</span>
-                            <span style={{fontSize: "0.8vw"}}>{level.description}</span>
+                            <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>Level {currentLevel.number}</span>
+                            <span style={{fontSize: "0.8vw"}}>{currentLevel.description}</span>
                         </Row>
                     </Card>
                     <Card className="shadow p-3 mb-4 bg-white" style={{height: "64vh", borderRadius: "10px"}}>
                         <Row className="justify-content-start d-flex">
-
+                            <CodeMirror
+                                height="60vh"
+                                value= {'class HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}'}
+                                extensions={[java()]}
+                                theme={oneDark}
+                                onChange={(value, viewUpdate) => {
+                                    //this.setState({code: value});
+                                }}
+                            />
                         </Row>
                     </Card>
                     <Row>
@@ -241,16 +165,18 @@ const Level = () => {
                     </Row>
                 </Col>
                 <Col className="mx-3 p-0 mb-4 col-4" style={{minHeight: "50vh", borderRadius: "10px", backgroundColor: "white"}} >
+
                     {!selectedOption &&
                         <Row className="justify-content-right d-flex">
-                            <ThreeCube />
+                            <Level1_1/>
                         </Row>
                     }
 
                     {selectedOption !== undefined &&
-                        <GenericModal content_type={selectedOption} level={level}
+                        <GenericModal content_type={selectedOption} level={currentLevel}
                                       on_option_changed={optionHandler.bind(this)}/>
                     }
+
                 </Col>
             </Row>
         </Container>
