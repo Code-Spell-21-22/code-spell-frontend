@@ -50,21 +50,6 @@ const Level = () => {
 
     const dispatch = useDispatch();
 
-    const generateUniqueId = () => {
-        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
-    }
-
-    const submitCode = () => {
-        console.log(this.state.code);
-        console.log(this.generateUUID());
-        let solution_id = this.generateUUID();
-        const level_id = 0
-        let header = "Bearer " + localStorage.hasOwnProperty("code_spell_token");
-        postLevelSolution(level_id, solution_id, this.state.code, header);
-    }
-
     useEffect(() => {
         dispatch(fetchLanguage());
         dispatch(fetchDifficulty());
@@ -105,17 +90,10 @@ const Level = () => {
             connect();
 
         let solutionId = generateUUID(); //generate with Crypto.randomUUID()
-        const URL = 'http://dev.codespell.live:8080/api/level/' + level.id + '/submit/' + solutionId;
-        axios.post(URL, code, {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('code_spell_token'),
-                'Content-Type': 'text/plain'
-            }
-        }).then(r => {
-            console.log(r);
-        }).catch(e => {
-            console.log(e);
-        });
+        let header = "Bearer " + localStorage.hasOwnProperty("code_spell_token");
+        postLevelSolution(level.id, solutionId, code, header)
+            .then(r => console.log(r))
+            .catch(e => console.log(e));
     }
 
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';
