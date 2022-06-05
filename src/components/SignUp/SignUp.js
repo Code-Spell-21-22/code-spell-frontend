@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import {postRegister} from "../../utils/api/apihandler";
 
 const SignUp = () => {
+
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -78,7 +79,6 @@ const SignUp = () => {
             notify(response.data.message);
             navigate("/login", {replace: true});
         }, (error) => {
-            console.log(error)
             notify(JSON.parse(error.request.response)['message']);
             console.log(error);
         });

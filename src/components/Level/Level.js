@@ -87,17 +87,10 @@ const Level = () => {
             connect();
 
         let solutionId = generateUUID(); //generate with Crypto.randomUUID()
-        const URL = 'http://dev.codespell.live:8080/api/level/' + level.id + '/submit/' + solutionId;
-        axios.post(URL, code, {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('code_spell_token'),
-                'Content-Type': 'text/plain'
-            }
-        }).then(r => {
-            console.log(r);
-        }).catch(e => {
-            console.log(e);
-        });
+        let header = "Bearer " + localStorage.hasOwnProperty("code_spell_token");
+        postLevelSolution(level.id, solutionId, code, header)
+            .then(r => console.log(r))
+            .catch(e => console.log(e));
     }
 
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';

@@ -7,7 +7,6 @@ import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Link} from "react-router-dom";
 import {toast} from "react-toastify";
-import axios from "axios";
 import {postLogin} from "../../utils/api/apihandler";
 
 const Login = () => {
