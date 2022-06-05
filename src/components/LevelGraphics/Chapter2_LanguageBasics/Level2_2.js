@@ -227,8 +227,10 @@ const Level2_1 = () => {
             console.log("step3 complete")
         }
 
-        var friendText = createText("friendApples: " + friendapples.length, 0.36, 0xffffff, true, false, 0x383838)
-        var myText = createText("myApples: " + myapples.length, 0.36, 0xffffff, true, false, 0x383838)
+        var friendText = createText("friendApples: " + friendapples.length, 0.36, 0xffffff, true, false, 0x171717)
+        friendText.rotation.x += 0.2
+        var myText = createText("myApples: " + myapples.length, 0.36, 0xffffff, true, false, 0x171717)
+        myText.rotation.x += 0.2
 
         if (step1 === false && step2 === false && step3 === false){ 
             point.position.set(6, 11, 12)
