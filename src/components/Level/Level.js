@@ -18,6 +18,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 import {connect, disconnect, isStompClientConnected} from "../../web_sockets/WebSocket";
+import axios from "axios";
 
 const Level = () => {
 
