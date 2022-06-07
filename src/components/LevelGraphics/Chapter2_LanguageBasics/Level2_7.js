@@ -96,7 +96,7 @@ const Level2_7 = () => {
             // iterar cada elemento da lisra
             for (var f in fruitobjects){
                 const fruit = fruitobjects[f];
-                createMovement(player, fruit.position.x, 2, fruit.position.z, 1000, 3000)
+                createMovement(player, fruit.position.x, 2, fruit.position.z, 600, 3000)
 
                 if (step2 === false){
                     if (fruit.name === step1_response[1]){
@@ -104,14 +104,14 @@ const Level2_7 = () => {
                         const point = new THREE.Object3D(new THREE.Vector3());
                         point.position.set(fruit.position.x, player.position.y, fruit.position.z)
 
-                        rotationMovement(player, fruit, 4, 2, 800, 2000)
+                        rotationMovement(player, fruit, 4, 2, 800, '+2000')
                         showText(createText(step1_response[2], 0.8, 0x171717, true, true, 0xffffff), scene, point)
                         
                         break;
                     }
                 } else if (step2 === true) {
                     if (fruit.name !== step2_response[1]){
-                        rotationMovement(player, fruit, 4, 2, 800, 2000)
+                        rotationMovement(player, fruit, 4, 2, 400, '+2000')
                     }
                 }
             } 
