@@ -4,9 +4,9 @@ import * as THREE from "three";
 
 import {createMovement, resizeMovement} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
-import {createTree} from '../Builders/createItems';
+import {createText, showText}  from '../Builders/createText';
 import {createPlayer} from '../Builders/createPlayer';
-import {createText, showText} from '../Builders/createText';
+import {createTree} from '../Builders/createItems';
 
 const TWEEN = require('@tweenjs/tween.js')
 
@@ -84,7 +84,7 @@ const Level2_1 = () => {
 
         if (step1 === true){
             for (var i = 0; i< step1_response; i++){
-                var apple = new THREE.Mesh(new THREE.SphereGeometry(0.65, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000}));
+                var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000}));
                 apple.name = "myapple_"+i;
                 apple.rotation.y += i
                 myapples.push(apple)
@@ -97,20 +97,18 @@ const Level2_1 = () => {
                 } else if (step2 === true){
                     apple.position.set(-3, 1+i, 17)
                     scene.add(apple);
-                }                
+                }
             }
-            
-            // var loop = myapples.length;
 
-            // if (myapples.length !== 5 ){  // meaning not correct number to pass the goal
-            //     console.log("not correct number of apples: " + myapples.length)
-                
-            //     for (var a in myapples){ resizeMovement(myapples[a], 0, 0, 0, 500, '+2000') ; }    // make them disappear
-            //     for (var a=0; a < loop; a++){ myapples.pop(); }
 
-            // } else { 
-            if (myapples.length === 5 ){ console.log("step1 successful") }
-    
+            if (step1_response !== 5 ){  // meaning not correct number to pass the goal
+                point.position.set(0, 5, 15)
+                const text = createText("Wrong values for this step, try again!", 0.36, 0xb50000, true, false, 0xffffff)
+                showText(text, scene, point)
+                for (var a in myapples){ resizeMovement(myapples[a], 0, 0, 0, 500, '+2000') ; }
+                for (var a=0; a < step1_response; a++){ myapples.pop(); }
+                resizeMovement(text, 0, 0, 0, 1000, '2000')
+            }
         }
         
         // STEP2 - friendApples += myApples; myApples -= myApples;
@@ -121,8 +119,6 @@ const Level2_1 = () => {
 
             var initial_myapples = myapples.length;
             var initial_friendapples = friendapples.length;
-            //console.log(initial_myapples, initial_friendapples)
-
 
             // these 2 should match
             var step2_1 = step2_response[0];
@@ -148,53 +144,73 @@ const Level2_1 = () => {
                 }
             }
             
-            if (step3 === false){
-                // Subtract that same value from the variable myApples
-                for (var i = 0; i< step2_2; i++){ 
-                    var thisapple = scene.getObjectByName("myapple_" + i)
-                    resizeMovement(thisapple, 0, 0, 0, 500, '+2000') ;
-                    myapples.pop()
+            var text;
+            if (step3 === false){   // Subtract that same value from the variable myApples
+                if (initial_myapples >= step2_2){   // pode subtrair mas dps check se sao igual ou menos
+                    for (var i = initial_myapples-1; i >= initial_myapples-step2_2; i--){ 
+                        var thisapple = scene.getObjectByName("myapple_" + i)
+                        resizeMovement(thisapple, 0, 0, 0, 500, '+2000') ;
+                        myapples.pop()
+                    }
+
+                    if (initial_myapples > step2_2){    // tirou o numero errado, volta a meter as maças
+
+                        point.position.set(0, 9, 15)
+                        text = createText("Wrong values for this step, try again!", 0.32, 0xb50000, true, false, 0xffffff)
+                        text.rotation.x += 0.3;
+                        showText(text, scene, point)
+
+                        for (var i = initial_myapples-step2_2; i < initial_myapples; i++){
+                            var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000}));
+                            apple.name = "myapple_"+i;
+
+                            apple.rotation.y += i
+                            myapples.push(apple)
+                            
+                            apple.position.set(-3, 20, 17)
+                            scene.add(apple);
+                            createMovement(apple, -3, 1+i, 17, 800, '+2000')
+                        }
+                            
+                    }
+
+                } else {    // subtrai myapples mas é pq myapples < step2_2
+                    for (var i = initial_myapples-1; i >= 0; i--){ 
+                        var thisapple = scene.getObjectByName("myapple_" + i)
+                        resizeMovement(thisapple, 0, 0, 0, 500, '+2000') ;
+                        myapples.pop()
+                    }
                 }
-            }
+                }
             
             if ((step2_1 === step2_2) && (step2_1 === initial_myapples) && (step2_2 === initial_myapples)) { // step2 goal achieved
+                for (var a=0; a < initial_myapples; a++){ myapples.pop(); }     
+
+            } else if ((step2_1 !== step2_2) || (step2_1 !== initial_myapples) || (step2_2 !== initial_myapples)) { // step2 goal not achieved
                 
-                console.log("step2 successful"); 
-                for (var a=0; a < initial_myapples; a++){ myapples.pop(); }
-
-            } 
-            // else if ((step2_1 === step2_2) || (step2_1 === initial_myapples) || (step2_2 === initial_myapples)) { // step2 goal not achieved
-                
-            //     console.log("not correct calculation, try again") 
-            //     // need to put back myapples = 5 and friendapples = 4
-
-            //     var curr_myapples = myapples.length;
-            //     var curr_friendapples = friendapples.length;
-            //     console.log(curr_myapples, curr_friendapples)
-
-            //     if (curr_friendapples !== initial_friendapples) { // 
-            //         for (var a=0; a < (curr_friendapples-initial_friendapples); a++){ friendapples.pop(); }
-            //     }
-            // }   
+                for (var a=step2_1+initial_friendapples-1; a >= initial_friendapples; a--){ 
+                    resizeMovement(friendapples[a], 0, 0, 0, 500, '+2000') ; 
+                }
+                for (var a=0; a < step2_1; a++){ friendapples.pop(); }
+                resizeMovement(text, 0, 0, 0, 1000, '2000')
+            }
                 
         }
 
         // STEP3 - int extraApples = friendApples % 2; friendApples = 0;
 
         // ! this response is sent from backend, should be [1, 0] (?) aqui tmb devia passar o sinal q ele mete (+, -, *, %)
-        var step3_response = [1, 1];
+        var step3_response = [2, 2];
 
-        
         if (step3 === true){
-            var step3_1 = step3_response[0];
-            var step3_2 = step3_response[1];
             
             var initial_friendapples = friendapples.length;
             
-            var extra_apples = initial_friendapples - (initial_friendapples-step3_1);
-
-            point.position.set(0, 11, 12)
-            showText(createText("extraApples: " + extra_apples, 0.4, 0xffffff, true, false, 0x383838), scene, point)
+            var extra_apples = initial_friendapples - (initial_friendapples-step3_response[0]);
+            point.position.set(0, -3, 12.2)
+            const extra = createText("extraApples", 0.4, 0xffffff, true, false, 0x171717)
+            extra.rotation.x -= 0.5
+            showText(extra, scene, point)
 
             for (var i = 0; i< extra_apples; i++){
                 var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xbbc95d}));
@@ -205,9 +221,8 @@ const Level2_1 = () => {
                 createMovement(apple, 0, 1+i, 17, 400, '+2000')
             }
 
-            console.log(step3_2, initial_friendapples)
-            if (step3_2 > initial_friendapples){   // se sao mais aumenta maças
-                for (var i = 0; i< (step3_2 - initial_friendapples); i++){;
+            if (step3_response[1] > initial_friendapples){   // se sao mais aumenta maças
+                for (var i = (step3_response[1] - initial_friendapples-1); i>=0 ; i--){;
                     var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0x98eb34}));
                     apple.name = "friendapple_"+ (i+initial_friendapples);
                     apple.rotation.y += i
@@ -216,33 +231,57 @@ const Level2_1 = () => {
                     createMovement(apple, 3, 1+(i+initial_friendapples), 17, 600, '+2000')
                 }
 
-            } else if (step3_2 < initial_friendapples){    // se sao menos, diminui
-                for (var i = 0; i< (initial_friendapples - step3_2); i++){ 
-                    var thisapple = scene.getObjectByName("friendapple_" + ((initial_friendapples-1)-i ))
+            } else if (step3_response[1] < initial_friendapples){    // se sao menos, diminui
+                for (var i = initial_friendapples -1; i >= step3_response[1]; i--){ 
+                    var thisapple = scene.getObjectByName("friendapple_" + i)
                     resizeMovement(thisapple, 0, 0, 0, 300, '+2000') ;
                 }
             }
+            for (var a=0; a < (initial_friendapples-step3_response[1]); a++){friendapples.pop(); }     
+            
+            if (step3_response[1] !== 0 ) { // errado -- tirar extrapple e meter de novo 9 maças
+                point.position.set(0, 9, 15)
+                text = createText("Wrong values for this step, try again!", 0.32, 0xb50000, true, false, 0xffffff)
+                text.rotation.x += 0.3;
+                showText(text, scene, point)
 
-            for (var a=0; a < (initial_friendapples-step3_2); a++){friendapples.pop(); }            
-            console.log("step3 complete")
+                for (var i = extra_apples-1; i>= 0; i--){   // delete extra apples
+                    var extraapple = scene.getObjectByName("extraapple_" + i)
+                    resizeMovement(extraapple, 0, 0, 0, 800, '+2000') ;
+                }
+                resizeMovement(extra, 0, 0, 0, 600, '+2000') ;  // remove extra text
+                
+                // put back friendapples
+                for (var i = step3_response[1]; i< initial_friendapples ; i++){;
+                    var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0x98eb34}));
+                    apple.name = "friendapple_"+ i;
+                    apple.rotation.y += i
+                    apple.position.set(3, 18, 17)
+                    scene.add(apple);
+                    createMovement(apple, 3, 1+i, 17, 600, '+2000')
+                }
+                resizeMovement(text, 0, 0, 0, 300, '+2000') ;  // remove extra text
+
+            }
         }
 
-        var friendText = createText("friendApples: " + friendapples.length, 0.36, 0xffffff, true, false, 0x171717)
-        friendText.rotation.x += 0.2
-        var myText = createText("myApples: " + myapples.length, 0.36, 0xffffff, true, false, 0x171717)
-        myText.rotation.x += 0.2
+        // just text
+        var friendText = createText("friendApples", 0.25, 0xffffff, true, false, 0x171717)
+        friendText.rotation.x -= 0.5
+        var myText = createText("myApples", 0.25, 0xffffff, true, false, 0x171717)
+        myText.rotation.x -= 0.5
 
         if (step1 === false && step2 === false && step3 === false){ 
-            point.position.set(6, 11, 12)
+            point.position.set(friend.position.x-5, friend.position.y-5, friend.position.z+12.2)
             showText(friendText, scene, point)
     
-            point.position.set(-6, 11, 12)
+            point.position.set(player.position.x+5, player.position.y-5, player.position.z+12.2)
             showText(myText, scene, point)
         } else {
-            friendText.position.set(6, 9, 12)
+            friendText.position.set(friend.position.x-5, friend.position.y-7, friend.position.z+12.2)
             scene.add(friendText)
 
-            myText.position.set(-6, 9, 12)
+            myText.position.set(player.position.x+5, player.position.y-7, player.position.z+12.2)
             scene.add(myText)
         }
 
