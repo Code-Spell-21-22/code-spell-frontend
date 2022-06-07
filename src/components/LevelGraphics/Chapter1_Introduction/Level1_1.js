@@ -4,9 +4,9 @@ import * as THREE from "three";
 
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {resizeMovement, showObject} from '../Builders/tweenMotions';
+import {createText, showText} from '../Builders/createText';
 import {createPlayer} from '../Builders/createPlayer';
 import {createTree} from '../Builders/createItems'
-import {createText} from '../Builders/createText';
 
 const TWEEN = require('@tweenjs/tween.js')
 
@@ -20,13 +20,37 @@ const Level1_1 = () => {
         // create camera and scene
         // this is default camera 
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
-        camera = createCamera(0, 7, 24, 0, 5, 0);
+        camera = createCamera(0, 7, 34, 0, 5, 0);
         scene = createScene();
         
+        // SPOTLIGHT ///////////////////////////
+        const spotLight = new THREE.SpotLight( 0xffffff, 2, -Math.PI );
+    
+        spotLight.position.set( 0, 13, 0 );
+    
+        const targetObject = new THREE.Object3D();
+        targetObject.position.set(0, 13, -200)
+        scene.add(targetObject);
+    
+        spotLight.target = targetObject;
+        scene.add( spotLight );
+        /////////////////////////////////////////
+
+        var player;
         // * create player => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 1
         if (step1 === true) {
-            showObject(scene, createPlayer());
-            showObject(scene, createTree());
+            player = createPlayer();
+            player.position.z = 12
+            showObject(scene, player);
+
+            const tree1 = createTree();
+            tree1.position.x = 10;
+            showObject(scene, tree1);
+
+            const tree2 = createTree();
+            tree2.position.set(-10, 0, -15);
+            showObject(scene, tree2);
+
 
         }
         
@@ -35,12 +59,7 @@ const Level1_1 = () => {
         
         // * create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
         // const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, bubbleColor)
-        if (step2 === true){
-            const text =  createText(step2_response, 0.5, 0x171717, true, true, 0xffffff);
-            text.scale.set(0, 0, 0)
-            scene.add(text);
-            resizeMovement(text, 1, 1, 1, 1000, '+2000');
-        } 
+        if (step2 === true){ showText(createText(step2_response, 0.5, 0x171717, true, true, 0xffffff), scene, player) } 
         
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
