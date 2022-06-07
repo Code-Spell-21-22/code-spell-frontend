@@ -3,8 +3,9 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import {createScene, createCamera} from '../Builders/createEnvironment';
-import {resizeMovement} from '../Builders/tweenMotions';
+import {resizeMovement, showObject} from '../Builders/tweenMotions';
 import {createPlayer} from '../Builders/createPlayer';
+import {createTree} from '../Builders/createItems'
 import {createText} from '../Builders/createText';
 
 const TWEEN = require('@tweenjs/tween.js')
@@ -19,13 +20,14 @@ const Level1_1 = () => {
         // create camera and scene
         // this is default camera 
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
-        camera = createCamera(0, 7, 24, 0, 0, 0);
+        camera = createCamera(0, 7, 24, 0, 5, 0);
         scene = createScene();
         
         // * create player => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 1
         if (step1 === true) {
-            const player = createPlayer();
-            scene.add(player); 
+            showObject(scene, createPlayer());
+            showObject(scene, createTree());
+
         }
         
         // ! this response comes from backend
