@@ -11,7 +11,7 @@ export const isStompClientConnected = () => {
 
 export const connect = () => {
 
-    let socket = new SockJS('http://dev.codespell.live:8090/code-spell/websocket');
+    let socket = new SockJS('https://websockets.dev.codespell.live/code-spell/websocket');
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
