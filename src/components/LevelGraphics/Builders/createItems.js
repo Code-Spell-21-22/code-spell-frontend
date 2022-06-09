@@ -7,8 +7,7 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import boxmodel from '../../../models/box/box.obj'
 import treemodel from '../../../models/tree/Tree2.fbx'
 import swordmodel from '../../../models/sword/sword.obj'
-import applemodel from '../../../models/apple/apple.obj'
-import appletexture from '../../../models/apple/apple.jpg'
+
 import shieldmodel from '../../../models/shield/shield.obj'
 
 export const createInventory = (scene) => {
