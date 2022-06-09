@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const apiAddress = process.env.REACT_APP_API_URL + "/api";
+const authToken = localStorage.getItem('code_spell_token');
 
 async function postLogin(email, password) {
     return axios.post(apiAddress + '/auth/login', {
@@ -18,38 +19,67 @@ async function postRegister(username, email, password) {
 }
 
 async function getUserDetails(username) {
-    return axios.get(apiAddress + '/user/' + username + '/details');
+    return axios.get(apiAddress + '/user/' + username + '/details', {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
+        }
+    });
 }
 
 async function getUserAchievements(username) {
-    return axios.get(apiAddress + '/user/' + username + '/achievements');
+    return axios.get(apiAddress + '/user/' + username + '/achievements', {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
+        }
+    });
 }
 
 async function putUserPassword(username, password) {
     return axios.put(apiAddress + '/user/' + username + '/password', {
         new_password: password
+    }, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
+        }
     });
 }
 
 async function putUserName(username, name) {
     return axios.put(apiAddress + '/user/' + username + '/name', {
         new_name: name
-    });
-}
-
-
-async function getLevelLeaderboard(levelid, language, level, skill_level) {
-    return axios.get(apiAddress + '/level/' + levelid + '/leaderboards', {
-        params: {
-            language: language,
-            level: level,
-            skill_level: skill_level
+    }, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
         }
     });
 }
 
-async function getLevelDocumentation(levelid) {
-    return axios.get(apiAddress + '/level/' + levelid + '/documentation')
+
+async function getLevelLeaderboard(levelId, language, level, skillLevel) {
+    return axios.get(apiAddress + '/level/' + levelId + '/leaderboards', {
+        params: {
+            language: language,
+            level: level,
+            skill_level: skillLevel
+        },
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
+        }
+    });
+}
+
+async function getLevelDocumentation(levelId) {
+    return axios.get(apiAddress + '/level/' + levelId + '/documentation', {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
+        }
+    })
 }
 
 async function getLevels(language, skill_level, chapter) {
@@ -58,26 +88,39 @@ async function getLevels(language, skill_level, chapter) {
             language: language,
             skill_level: skill_level,
             chapter: chapter
+        },
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
         }
     });
 }
 
-async function getChapter(language, skill_level) {
+async function getChapter(language, skillLevel) {
     return axios.get(apiAddress + '/chapter', {
         params: {
             language: language,
-            skill_level: skill_level,
+            skill_level: skillLevel,
+        },
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
         }
     });
 }
 
-async function getPossibleSoluctions(levelid) {
-    return axios.get(apiAddress + '/level/' + levelid + '/solutions')
+async function getPossibleSolutions(levelId) {
+    return axios.get(apiAddress + '/level/' + levelId + '/solutions', {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
+        }
+    })
 }
 
 
-async function postLevelSolution(levelid, solutionid, code) {
-    return axios.post(apiAddress + '/level/' + levelid + '/submit/' + solutionid, code, {
+async function postLevelSolution(levelId, solutionId, code) {
+    return axios.post(apiAddress + '/level/' + levelId + '/submit/' + solutionId, code, {
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('code_spell_token'),
             'Content-Type': 'text/plain'
@@ -85,16 +128,31 @@ async function postLevelSolution(levelid, solutionid, code) {
     });
 }
 
-async function getLevelGoals(levelid) {
-    return axios.get(apiAddress + '/level/' + levelid + '/goals');
+async function getLevelGoals(levelId) {
+    return axios.get(apiAddress + '/level/' + levelid + '/goals', {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
+        }
+    });
 }
 
-async function getLevel(levelid) {
-    return axios.get(apiAddress + '/level/' + levelid);
+async function getLevel(levelId) {
+    return axios.get(apiAddress + '/level/' + levelId, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
+        }
+    });
 }
 
-async function getSolution(levelid, solutionid) {
-    return axios.get(apiAddress + '/level/' + levelid + '/solutions/' + solutionid);
+async function getSolution(levelId, solutionId) {
+    return axios.get(apiAddress + '/level/' + levelId + '/solutions/' + solutionId, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
+        }
+    });
 
 }
 
@@ -105,7 +163,7 @@ export {
     getSolution,
     getLevel,
     getLevelGoals,
-    getPossibleSoluctions,
+    getPossibleSolutions,
     postLevelSolution,
     getLevels,
     getLevelLeaderboard,
