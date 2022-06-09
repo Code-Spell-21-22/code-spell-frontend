@@ -41,18 +41,16 @@ const Level1_1 = () => {
         if (step1 === true) {
             player = createPlayer();
             player.position.z = 12
-            showObject(scene, player);
+            if (step2 === false){ showObject(scene, player); } else { scene.add( player ); }
 
             const tree1 = createTree();
             tree1.position.x = 10;
-            showObject(scene, tree1);
+            if (step2 === false){ showObject(scene, tree1); } else { scene.add( tree1 ); }
 
             const tree2 = createTree();
             tree2.position.set(-6, 0, -15);
             tree2.rotateY(Math.PI/3)
-            showObject(scene, tree2);
-
-
+            if (step2 === false){ showObject(scene, tree2); } else { scene.add( tree2 ); }
         }
         
         // ! this response comes from backend
