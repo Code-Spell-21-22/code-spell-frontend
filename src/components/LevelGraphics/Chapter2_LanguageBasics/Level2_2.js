@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 
 import * as THREE from "three";
 
-import {createMovement, resizeMovement} from '../Builders/tweenMotions';
+import {createMovement, resizeMovement, showObject} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createText, showText}  from '../Builders/createText';
 import {createPlayer} from '../Builders/createPlayer';
@@ -46,17 +46,20 @@ const Level2_1 = () => {
         // player
         const player = createPlayer();
         player.position.set(-8 ,2, 12)
-        scene.add(player); 
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, player) } 
+        else { scene.add(player); } 
 
         // friend
         const friend = createPlayer();
         friend.position.set(8 ,2 , 12)
         friend.material.color = new THREE.Color(0xffe603)
-        scene.add(friend); 
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, friend) } 
+        else { scene.add(friend); } 
         
 
         const tree = createTree();
-        scene.add(tree);
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, tree) } 
+        else { scene.add(tree);  }
 
 
         for (var i = 0; i< 4; i++){
