@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 
 import * as THREE from "three";
 
-import {createMovement, transitionObjectColor} from '../Builders/tweenMotions';
+import {createMovement, transitionObjectColor, showObject} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createTree, createFence} from "../Builders/createItems";
 import {createText, showText} from '../Builders/createText';
@@ -12,7 +12,7 @@ import {createNight} from '../Builders/createSky';
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = true; var step2 = true; var step3 = true;
+var step1 = false; var step2 = false; var step3 = false;
 
 //* The while and do-while Statement
 const Level2_6 = () => {
@@ -27,16 +27,17 @@ const Level2_6 = () => {
         
         const player = createPlayer();
         player.position.set(0 ,2, 20)
-        scene.add(player); 
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, player) } else { scene.add(player); }  
 
         const tree = createTree();
-        tree.position.set(16 , 0, 4) 
+        tree.position.set(16,0,4) 
         tree.scale.set(1.3,1.3,1.3)
-        scene.add(tree);
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, tree) } else { scene.add(tree); }  
 
-        const fence = createFence()
-        fence.position.z = -10
-        scene.add(fence)
+        const fence = createFence();
+        fence.position.set( 7.2, 0, -24 ) // scale here
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, fence) } else { scene.add(fence); }  
+
 
         scene.background = new THREE.Color(0x142433);
         scene.add(createNight(100))
