@@ -17,8 +17,8 @@ var step1 = false; var step2 = false; var step3 = false;
 let myapples = []
 let friendapples = []
 
-// * Variables
-const Level2_1 = () => {
+// * Operators
+const Level2_2 = () => {
     
     useEffect(() => {
 
@@ -46,20 +46,23 @@ const Level2_1 = () => {
         // player
         const player = createPlayer();
         player.position.set(-8 ,2, 12)
-        if (step1 === false && step2 === false && step3 === false){ showObject(scene, player) } 
-        else { scene.add(player); } 
-
-        // friend
+        
         const friend = createPlayer();
         friend.position.set(8 ,2 , 12)
         friend.material.color = new THREE.Color(0xffe603)
-        if (step1 === false && step2 === false && step3 === false){ showObject(scene, friend) } 
-        else { scene.add(friend); } 
-        
 
         const tree = createTree();
-        if (step1 === false && step2 === false && step3 === false){ showObject(scene, tree) } 
-        else { scene.add(tree);  }
+
+        if (step1 === false && step2 === false && step3 === false){ 
+            showObject(scene, player) 
+            showObject(scene, friend)
+            showObject(scene, tree) 
+
+        } else { 
+            scene.add(player); 
+            scene.add(friend);
+            scene.add(tree);
+        }
 
 
         for (var i = 0; i< 4; i++){
@@ -129,7 +132,7 @@ const Level2_1 = () => {
 
             // Add the value of variable myApples to variable friendsApples
             for (var i = 0; i< step2_1; i++){;
-                var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0x98eb34}));
+                var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000}));
                 apple.name = "friendapple_"+ (i+4);
                 apple.rotation.y += i
                 friendapples.push(apple)
@@ -203,7 +206,7 @@ const Level2_1 = () => {
         // STEP3 - int extraApples = friendApples % 2; friendApples = 0;
 
         // ! this response is sent from backend, should be [1, 0] (?) aqui tmb devia passar o sinal q ele mete (+, -, *, %)
-        var step3_response = [2, 2];
+        var step3_response = [1, 0];
 
         if (step3 === true){
             
@@ -216,7 +219,7 @@ const Level2_1 = () => {
             showText(extra, scene, point)
 
             for (var i = 0; i< extra_apples; i++){
-                var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xbbc95d}));
+                var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000}));
                 apple.name = "extraapple_"+i;
                 apple.rotation.y += i
                 apple.position.set(0, 20, 17)
@@ -226,7 +229,7 @@ const Level2_1 = () => {
 
             if (step3_response[1] > initial_friendapples){   // se sao mais aumenta maças
                 for (var i = (step3_response[1] - initial_friendapples-1); i>=0 ; i--){;
-                    var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0x98eb34}));
+                    var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000}));
                     apple.name = "friendapple_"+ (i+initial_friendapples);
                     apple.rotation.y += i
                     apple.position.set(3, 18, 17)
@@ -256,7 +259,7 @@ const Level2_1 = () => {
                 
                 // put back friendapples
                 for (var i = step3_response[1]; i< initial_friendapples ; i++){;
-                    var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0x98eb34}));
+                    var apple = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({color : 0xb50000}));
                     apple.name = "friendapple_"+ i;
                     apple.rotation.y += i
                     apple.position.set(3, 18, 17)
@@ -323,4 +326,4 @@ const Level2_1 = () => {
 
  };
   
- export default Level2_1;
+ export default Level2_2;
