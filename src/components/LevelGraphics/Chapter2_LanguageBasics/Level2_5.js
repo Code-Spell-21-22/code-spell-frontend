@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 
 import * as THREE from "three";
 
-import {createMovement, resizeMovement, transitionObjectColor} from '../Builders/tweenMotions';
+import {createMovement, resizeMovement, transitionObjectColor, showObject} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createTree, createFence} from "../Builders/createItems";
 import {createText, showText} from '../Builders/createText';
@@ -12,7 +12,7 @@ import {createDay} from '../Builders/createSky';
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = true; var step2 = true; var step3 = false;
+var step1 = false; var step2 = false; var step3 = false;
 
 // * The for Statement
 const Level2_5 = () => {
@@ -25,7 +25,7 @@ const Level2_5 = () => {
         scene = createScene();
         
         // SPOTLIGHT ////////////////////////////////////
-        const spotLight = new THREE.SpotLight( 0xffffff, 2.5, 100, -Math.PI);
+        const spotLight = new THREE.SpotLight( 0xffffff, 2, 100, -Math.PI);
     
         spotLight.position.set( 0, 16, 24 );
     
@@ -39,20 +39,21 @@ const Level2_5 = () => {
 
         const player = createPlayer();
         player.position.set(0 ,2, 20)
-        scene.add(player); 
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, player) } else { scene.add(player); }  
 
         const tree = createTree();
         tree.position.set(16,0,4) 
         tree.scale.set(1.3,1.3,1.3)
-        scene.add(tree);
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, tree) } else { scene.add(tree); }  
 
         const fence = createFence();
-        fence.position.z = -10
-        scene.add(fence)
+        fence.position.set( 7.2, 0, -24 ) // scale here
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, fence) } else { scene.add(fence); }  
+
 
         const day = createDay();
         day.position.set(-25, 10, -40);
-        scene.add(day)
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, day) } else { scene.add(day); }  
 
         const totalSteps = 12;  
 

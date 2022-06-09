@@ -1,4 +1,3 @@
-
 import * as THREE from "three";
 let camera, scene;
  
@@ -39,10 +38,10 @@ export const createScene = () => {
 
     // const spotLight = new THREE.SpotLight( 0xffffff, 3, -Math.PI );
     
-    // spotLight.position.set( 0, 13, 12 );
+    // spotLight.position.set( 0, 40, 20 );
 
     // const targetObject = new THREE.Object3D();
-    // targetObject.position.set(0, 13, -10)
+    // targetObject.position.set(0, 20, -10)
     // scene.add(targetObject);
 
     // spotLight.target = targetObject;
