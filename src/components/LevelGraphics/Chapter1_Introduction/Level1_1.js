@@ -64,12 +64,16 @@ const Level1_1 = (props) => {
         // this is default camera 
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
         camera = createCamera(0, 7, 34, 0, 5, 0);
-        scene = createScene();
-        if (step1 === false && step2 === false){ showObject(scene, camera); } else { scene.add( camera ); }
-        if (step2 === false && step2 === false){ showObject(scene, scene); } else { scene.add( scene ); }
+        scene = createScene(0x348C31, false);
+
+        if (steps && !steps[0] && !steps[1]) {
+            showObject(scene, camera);
+        } else {
+            scene.add( camera );
+        }
         
         // SPOTLIGHT ///////////////////////////
-        const spotLight = new THREE.SpotLight( 0xffffff, 2, -Math.PI );
+        const spotLight = new THREE.SpotLight( 0xffffff, 2, -Math.PI);
     
         spotLight.position.set( 0, 13, 0 );
     
@@ -81,21 +85,29 @@ const Level1_1 = (props) => {
         scene.add( spotLight );
         /////////////////////////////////////////
 
-        var player;
+        let player;
         // * create player => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 1
-        if (step1 === true) {
+
+        const tree1 = createTree();
+        tree1.position.x = 10;
+
+        const tree2 = createTree();
+        tree2.position.set(-6, 0, -15);
+        tree2.rotateY(Math.PI/3)
+
+        showObject(scene, tree1);
+        showObject(scene, tree2);
+
+        if (steps && steps[0]) {
+
             player = createPlayer();
             player.position.z = 12
-            if (step2 === false){ showObject(scene, player); } else { scene.add( player ); }
 
-            const tree1 = createTree();
-            tree1.position.x = 10;
-            if (step2 === false){ showObject(scene, tree1); } else { scene.add( tree1 ); }
-
-            const tree2 = createTree();
-            tree2.position.set(-6, 0, -15);
-            tree2.rotateY(Math.PI/3)
-            if (step2 === false){ showObject(scene, tree2); } else { scene.add( tree2 ); }
+            if (!steps[1]) {
+                showObject(scene, player);
+            } else {
+                scene.add( player );
+            }
 
         }
 
@@ -105,16 +117,9 @@ const Level1_1 = (props) => {
         // * create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
         // const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, bubbleColor)
 
-        if (step2 === true){ showText(createText(step2_response, 0.5, 0x171717, true, true, 0xffffff), scene, player) } 
-        
-        /*
-        if (executionStatus && steps && steps[1]){
-            const text =  createText(step2_response, 0.5, 0x171717, true, true, 0xffffff);
-            text.scale.set(0, 0, 0)
-            scene.add(text);
-            resizeMovement(text, 1, 1, 1, 1000, '+2000');
+        if (steps && steps[1]) {
+            showText(createText(step2_response, 0.5, 0x171717, true, true, 0xffffff), scene, player)
         }
-        */
 
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -140,7 +145,7 @@ const Level1_1 = (props) => {
 
     const startAnimation = (time) => {
 
-        let animationDuration = 1000;
+        let animationDuration = 3000;
 
         TWEEN.update(time)
 
@@ -155,7 +160,6 @@ const Level1_1 = (props) => {
 
         if (document.getElementById("three_js"))
             document.getElementById("three_js").parentNode.replaceChild(renderer.domElement, document.getElementById("three_js"));
-
 
     };
 
