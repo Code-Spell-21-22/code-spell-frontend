@@ -129,7 +129,7 @@ async function postLevelSolution(levelId, solutionId, code) {
 }
 
 async function getLevelGoals(levelId) {
-    return axios.get(apiAddress + '/level/' + levelid + '/goals', {
+    return axios.get(apiAddress + '/level/' + levelId + '/goals', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
             'Content-Type': 'text/plain'
