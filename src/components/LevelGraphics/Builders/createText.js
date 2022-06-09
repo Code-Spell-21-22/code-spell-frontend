@@ -25,6 +25,7 @@ export const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, b
     const center = textGeo.boundingBox.getCenter(new THREE.Vector3());
     const size = textGeo.boundingBox.getSize(new THREE.Vector3());
 
+    console.log(size)
     if (hasSpeechBubble == true){
 
         const box_color = new THREE.MeshBasicMaterial( {color: bubbleColor});
