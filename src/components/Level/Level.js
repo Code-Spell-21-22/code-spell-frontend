@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Card, Col, Container} from "react-bootstrap";
+import {Button, Card, Col, Container, Spinner} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import {faBars, faGreaterThan} from "@fortawesome/free-solid-svg-icons";
 import NavbarVertical from "../NavbarVertical/NavbarVertical";
@@ -17,8 +17,13 @@ import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
-import {connect, disconnect, isStompClientConnected} from "../../web_sockets/WebSocket";
-import axios from "axios";
+import {connect, isStompClientConnected, updateListenableCodeId} from "../../web_sockets/WebSocket";
+import {
+    selectErrors,
+    selectExecutionStatus,
+    selectId,
+    selectSteps
+} from "../../features/code/codeSlice";
 
 const Level = () => {
 
@@ -26,12 +31,19 @@ const Level = () => {
     const language = useSelector(selectLanguage);
     const difficulty = useSelector(selectDifficulty);
 
+    const steps = useSelector(selectSteps);
+    const executionStatus = useSelector(selectExecutionStatus);
+    const codeReportId = useSelector(selectId);
+    const errors = useSelector(selectErrors);
+
     const initialCode = "//Step 1"+ '\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}' + "\n\n\n//Step 2"+"\n\n\n//Step 3";
 
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(undefined);
     const [level, setLevel] = useState(undefined);
     const [code, setCode] = useState(initialCode);
+    const [errorFound, setErrorFound] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const output = useSelector(state => state.code.output);
 
@@ -40,7 +52,7 @@ const Level = () => {
     // TODO: Obtain current level
     const [currentLevel, setCurrentLevel] = useState(
         {
-            "id": "0",
+            "id": "628c9c42cc425b74e59c3658",
             "title": "Variables",
             "description": "Description about variables level.",
             "language": "JAVA",
@@ -69,6 +81,10 @@ const Level = () => {
 
     }, []);
 
+    useEffect(() => {
+        setLoading(false);
+    }, [codeReportId]);
+
     const navbarHandler = () => {
         setNavbarOpen(!navbarOpen);
     };
@@ -90,9 +106,16 @@ const Level = () => {
 
         let solutionId = generateUUID(); //generate with Crypto.randomUUID()
         let header = "Bearer " + localStorage.hasOwnProperty("code_spell_token");
-        postLevelSolution(level.id, solutionId, code, header)
-            .then(r => console.log(r))
-            .catch(e => console.log(e));
+
+        updateListenableCodeId(solutionId); // Update Websockets
+
+        postLevelSolution(currentLevel.id, solutionId, code, header)
+            .then(r => {
+                console.log(r);
+                setLoading(true)
+            })
+            .catch(e => {console.log(e); setLoading(false)});
+
     }
 
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';
@@ -138,17 +161,25 @@ const Level = () => {
                             <span style={{fontSize: "0.8vw"}}>{currentLevel.description}</span>
                         </Row>
                     </Card>
-                    <Card className="shadow p-3 mb-4 bg-white" style={{height: "64vh", borderRadius: "10px"}}>
+                    <Card className="shadow p-3 mb-3 bg-white" style={{height: "48vh", borderRadius: "10px"}}>
                         <Row className="justify-content-start d-flex">
                             <CodeMirror
-                                height="60vh"
+                                height="44vh"
                                 value= {'class HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}'}
                                 extensions={[java()]}
                                 theme={oneDark}
                                 onChange={(value, viewUpdate) => {
-                                    //this.setState({code: value});
+                                    setCode(value);
                                 }}
                             />
+                        </Row>
+                    </Card>
+                    <Card className="shadow p-3 mb-3 bg-white" style={{borderRadius: "10px", minHeight: "150px"}}>
+                        <Row className="justify-content-start d-flex m-2">
+                            <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>Output</span>
+                            <Row style={{maxHeight: "70px", overflowY: "auto"}}>
+                                {outputPanels}
+                            </Row>
                         </Row>
                     </Card>
                     <Row>
@@ -159,7 +190,11 @@ const Level = () => {
                                 <span style={{color: "#2C5AA2"}}>ERRORS</span>
                             </Button>
                         </Col>
-                        <Col className="col-3"></Col>
+                        <Col className="col-3 align-items-center justify-content-end d-flex">
+                            {loading &&
+                                <Spinner animation="border" variant="light"/>
+                            }
+                        </Col>
                         <Col className="col-3">
                             <Button className="w-100 shadow justify-content-center align-items-center d-flex"
                                     style={{
@@ -190,20 +225,9 @@ const Level = () => {
 
                     {!selectedOption &&
                         <Row className="justify-content-right d-flex">
-                            <Level1_1/>
+                            <Level1_1 executionStatus={executionStatus} steps={steps}/>
                         </Row>
                     }
-                    {!selectedOption &&
-                        <Row className="justify-content-right d-flex mx-4">
-                            <Card className="shadow p-3 mb-3 bg-white" style={{borderRadius: "10px", minHeight: "150px"}}>
-                                <Row className="justify-content-start d-flex m-2">
-                                    <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>Output</span>
-                                    {outputPanels}
-                                </Row>
-                            </Card>
-                        </Row>
-                    }
-
 
                     {selectedOption !== undefined &&
                         <GenericModal content_type={selectedOption} level={currentLevel}

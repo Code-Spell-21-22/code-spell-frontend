@@ -4,10 +4,15 @@ import { updateOutput, updateId, updateScore, updateSteps, updateExecutionStatus
 import {store} from "../app/store";
 
 let stompClient = null;
+let listenableCodeId = null;
 
 export const isStompClientConnected = () => {
   return stompClient !== null;
 };
+
+export const updateListenableCodeId = (id) => {
+    listenableCodeId = id;
+}
 
 export const connect = () => {
 
@@ -17,10 +22,14 @@ export const connect = () => {
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/code-spell/outgoing/execution-report', function (response) {
-            console.log(JSON.parse(response.body));
 
-            const id  = JSON.parse(response.body).id;
-            store.dispatch(updateId(id));
+            // console.log(JSON.parse(response.body));
+
+            const codeReportId  = JSON.parse(response.body).id;
+
+            if (!listenableCodeId || codeReportId !== listenableCodeId) return;
+
+            store.dispatch(updateId(codeReportId));
 
             const output = JSON.parse(response.body).output;
             store.dispatch(updateOutput(output));
@@ -39,6 +48,9 @@ export const connect = () => {
 
             const analysisStatus = JSON.parse(response.body).analysisStatus;
             store.dispatch(updateAnalysisStatus(analysisStatus));
+
+            listenableCodeId = null;
+
         });
     });
 };
