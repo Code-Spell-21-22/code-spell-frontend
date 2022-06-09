@@ -20,47 +20,51 @@ const Level2_1 = () => {
     
     useEffect(() => {
         
-        var age, speech
         // create camera and scene
         // this is default camera 
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
         camera = createCamera(0, 6.5, 34, 0, 4, 0);
         scene = createScene();
         
-        // player
-        const player = createPlayer();
-        player.position.set(-8 ,2, 8)
-        showObject(scene, player)
 
-        // inventory
-        showObject(scene, createInventory())
-        
-        // sword
         const sword = createSword();
-        showObject(scene, sword)
-
-        // shield
         const shield = createShield();
-        showObject(scene, createShield())
+        const player = createPlayer();
+
+        player.position.set(-8 ,2, 8)
+        if (step1 === false && step2 === false && step3 === false){ 
+            showObject(scene, player); 
+            showObject(scene, createInventory());
+            showObject(scene, sword);
+            showObject(scene, shield);
+
+        } else { 
+            scene.add( player ); 
+            scene.add( createInventory() ); 
+            scene.add( sword ); 
+            scene.add( shield ); 
+        }
 
         // ! this response is sent from backend
         // [player object, age]
-        var step1_response = [player, 30];
+        var step1_response = [player, 50];
         
         // * edit player age => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 1
-        if (step1 === true){
-            const ageBox = ageEditor(step1_response);
-            scene.add(ageBox);
-        }
-        age = step1_response[1]
+        if (step1 === true){ scene.add(ageEditor(step1_response)); }
         
         // ! this response is sent from backend
         var step2_response = "I'm learning variables";
         
         // * create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
         // createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, bubbleColor)
-        if (step2 === true){ showText(createText(step2_response, 0.5, 0x171717, true, true, 0xffffff), scene, player) }
-        speech = step2_response;
+        if (step2 === true){ 
+            const text = createText(step2_response, 0.5, 0x171717, true, true, 0xffffff);
+            if (step3 === false){ showText(text, scene, player) 
+            } else { 
+                text.position.set(player.position.x, player.position.y-2, player.position.z)
+                scene.add(text)
+            }
+        }
 
         // * create movement => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 3
         //  const createMovement = (obj, x, y, z, timeTo, delay)

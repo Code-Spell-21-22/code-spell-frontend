@@ -14,7 +14,7 @@ export const ageEditor = (array) => {
 
     if (age > 0 && age <= 50){
         resizeMovement(player, parseFloat(young_size[age-1]), parseFloat(young_size[age-1]), parseFloat(young_size[age-1]), 1000, '+2000')
-        transitionObjectColor(player, new THREE.Color('rgb(' + 255 + ',' + parseFloat(young_colors[age]) + ',' + parseFloat(young_colors[age]) + ')'), 1000, '+0')
+        transitionObjectColor(player, new THREE.Color('rgb(' + 255 + ',' + parseFloat(young_colors[age-1]) + ',' + parseFloat(young_colors[age-1]) + ')'), 1000, '+0')
         
     } else if (age > 50 && age <= 99) {
         resizeMovement(player, parseFloat(old_size[age-51]), parseFloat(old_size[age-51]), parseFloat(old_size[age-51]), 1000, '+2000')
