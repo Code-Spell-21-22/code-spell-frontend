@@ -17,7 +17,7 @@ import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
-import {connect, isStompClientConnected} from "../../web_sockets/WebSocket";
+import {connect, isStompClientConnected, updateListenableCodeId} from "../../web_sockets/WebSocket";
 import {
     selectErrors,
     selectExecutionStatus,
@@ -106,9 +106,16 @@ const Level = () => {
 
         let solutionId = generateUUID(); //generate with Crypto.randomUUID()
         let header = "Bearer " + localStorage.hasOwnProperty("code_spell_token");
+
+        updateListenableCodeId(solutionId); // Update Websockets
+
         postLevelSolution(currentLevel.id, solutionId, code, header)
-            .then(r => {console.log(r); setLoading(true)})
+            .then(r => {
+                console.log(r);
+                setLoading(true)
+            })
             .catch(e => {console.log(e); setLoading(false)});
+
     }
 
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';
