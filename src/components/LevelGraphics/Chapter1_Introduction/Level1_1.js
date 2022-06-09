@@ -48,7 +48,8 @@ const Level1_1 = () => {
             showObject(scene, tree1);
 
             const tree2 = createTree();
-            tree2.position.set(-10, 0, -15);
+            tree2.position.set(-6, 0, -15);
+            tree2.rotateY(Math.PI/3)
             showObject(scene, tree2);
 
 
