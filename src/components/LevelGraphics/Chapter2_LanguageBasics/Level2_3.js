@@ -2,16 +2,16 @@ import React, { useEffect, useRef } from "react";
 
 import * as THREE from "three";
 
-import {createMovement, transitionColor} from '../Builders/tweenMotions';
+import {createMovement, transitionColor, showObject} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createDay, createNight} from '../Builders/createSky';
-import {createPlayer} from '../Builders/createPlayer';
 import {createText, showText} from '../Builders/createText';
+import {createPlayer} from '../Builders/createPlayer';
 
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = false; var step2 = false; var step3 = false;
+var step1 = true; var step2 = false; var step3 = false;
 
 // * The if-then and if-then-else Statements
 const Level2_3 = () => {
@@ -23,14 +23,29 @@ const Level2_3 = () => {
         camera = createCamera(0, 7, 34, 0, 4, 0);
         scene = createScene();
         
+        // SPOTLIGHT ///////////////////////////
+        const spotLight = new THREE.SpotLight( 0xffffff, 3, -Math.PI );
+
+        spotLight.position.set( 0, 13, 12 );
+    
+        const targetObject = new THREE.Object3D();
+        targetObject.position.set(0, 13, -10)
+        scene.add(targetObject);
+    
+        spotLight.target = targetObject;
+        scene.add( spotLight );
+        /////////////////////////////////////////
+
         const player = createPlayer();
         player.position.set(0 ,2, 12)
-        scene.add(player); 
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, player) } else { scene.add(player) }
+
         
         // by default is day
         scene.background = new THREE.Color(0x2f78e1)
         const day = createDay()
-        scene.add(day)
+        if (step1 === false && step2 === false && step3 === false){ showObject(scene, day) } else { scene.add(day) }
+
 
         var stars = 50;
         

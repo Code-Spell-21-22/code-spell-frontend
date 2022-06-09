@@ -7,36 +7,43 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import boxmodel from '../../../models/box/box.obj'
 import treemodel from '../../../models/tree/Tree2.fbx'
 import swordmodel from '../../../models/sword/sword.obj'
-import applemodel from '../../../models/apple/apple.obj'
-import appletexture from '../../../models/apple/apple.jpg'
 import shieldmodel from '../../../models/shield/shield.obj'
 
-export const createInventory = (scene) => {
-        // Instantiate a loader
-        const loader = new OBJLoader();
+import fencemodel from '../../../models/fence/fence.obj'
+import fencetexture from '../../../models/fence/fence.jpeg'
 
-        loader.load(
-            // resource URL
-            boxmodel,
-            // called when the resource is loaded
-            function ( inventory ) {
-                inventory.scale.set( 15, 15, 15 ) // scale here
-                inventory.position.set( 4.8, 2, 12 ) // scale here
-                inventory.rotateX(-Math.PI / 2);
 
-                // For any meshes in the model, add our material.
-                inventory.traverse( function ( node ) {
-                    if ( node.isMesh ) node.material = new THREE.MeshPhongMaterial({color: 0x78522f});
-                } );
+export const createInventory = () => {
+    const group = new THREE.Group();
 
-                scene.add(inventory)
-            }, 
-            // called while loading is progressing
-            function ( xhr ) { console.log( ('inventory ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
-            // called when loading has errors
-            function ( error ) { console.log( 'An error happened '); }
-        );
+    // Instantiate a loader
+    const loader = new OBJLoader();
+
+    loader.load(
+        // resource URL
+        boxmodel,
+        // called when the resource is loaded
+        function ( inventory ) {
+            inventory.scale.set( 15, 15, 15 ) // scale here
+            inventory.position.set( 4.8, 2, 12 ) // scale here
+            inventory.rotateX(-Math.PI / 2);
+
+            // For any meshes in the model, add our material.
+            inventory.traverse( function ( node ) {
+                if ( node.isMesh ) node.material = new THREE.MeshPhongMaterial({color: 0x78522f});
+            } );
+
+            group.add(inventory)
+
+        }, 
+        // called while loading is progressing
+        function ( xhr ) { console.log( ('inventory ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+        // called when loading has errors
+        function ( error ) { console.log( 'An error happened '); }
+    );
+    return group;    
 }
+
 
 export const createSword = () => {
     const group = new THREE.Group();
@@ -116,6 +123,37 @@ export const createTree = () => {
         }, 
         // called while loading is progressing
         function ( xhr ) { console.log( ('tree ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+        // called when loading has errors
+        function ( error ) { console.log( 'An error happened' ); }
+    );
+    return group;
+}
+
+export const createFence = () => {
+    const group = new THREE.Group();
+
+    // Instantiate a loader
+    const loader = new OBJLoader();
+
+    loader.load(
+        // resource URL
+        fencemodel,
+        // called when the resource is loaded
+        function ( fence ) {
+            fence.scale.set( 3, 3, 3 ) // scale here
+            //fence.position.set( 7.2, 0, -14 ) // scale here
+            fence.rotateY(-Math.PI / 2)
+
+            fence.traverse( function ( node ) {
+                if ( node.isMesh ) node.material = new THREE.MeshPhongMaterial({color : 0x292115})
+                // new THREE.MeshPhongMaterial({map: new THREE.TextureLoader().load(fencetexture)});
+            } );
+
+            
+            group.add(fence)
+        }, 
+        // called while loading is progressing
+        function ( xhr ) { console.log( ('fence ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
         // called when loading has errors
         function ( error ) { console.log( 'An error happened' ); }
     );
