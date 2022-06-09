@@ -10,33 +10,38 @@ import swordmodel from '../../../models/sword/sword.obj'
 import shieldmodel from '../../../models/shield/shield.obj'
 
 import fencemodel from '../../../models/fence/fence.obj'
-//import fencetexture from '../../../models/fence/fence.jpeg'
+import fencetexture from '../../../models/fence/fence.jpeg'
 
-export const createInventory = (scene) => {
-        // Instantiate a loader
-        const loader = new OBJLoader();
 
-        loader.load(
-            // resource URL
-            boxmodel,
-            // called when the resource is loaded
-            function ( inventory ) {
-                inventory.scale.set( 15, 15, 15 ) // scale here
-                inventory.position.set( 4.8, 2, 12 ) // scale here
-                inventory.rotateX(-Math.PI / 2);
+export const createInventory = () => {
+    const group = new THREE.Group();
 
-                // For any meshes in the model, add our material.
-                inventory.traverse( function ( node ) {
-                    if ( node.isMesh ) node.material = new THREE.MeshPhongMaterial({color: 0x78522f});
-                } );
+    // Instantiate a loader
+    const loader = new OBJLoader();
 
-                scene.add(inventory)
-            }, 
-            // called while loading is progressing
-            function ( xhr ) { console.log( ('inventory ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
-            // called when loading has errors
-            function ( error ) { console.log( 'An error happened '); }
-        );
+    loader.load(
+        // resource URL
+        boxmodel,
+        // called when the resource is loaded
+        function ( inventory ) {
+            inventory.scale.set( 15, 15, 15 ) // scale here
+            inventory.position.set( 4.8, 2, 12 ) // scale here
+            inventory.rotateX(-Math.PI / 2);
+
+            // For any meshes in the model, add our material.
+            inventory.traverse( function ( node ) {
+                if ( node.isMesh ) node.material = new THREE.MeshPhongMaterial({color: 0x78522f});
+            } );
+
+            group.add(inventory)
+
+        }, 
+        // called while loading is progressing
+        function ( xhr ) { console.log( ('inventory ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+        // called when loading has errors
+        function ( error ) { console.log( 'An error happened '); }
+    );
+    return group;    
 }
 
 export const createSword = () => {

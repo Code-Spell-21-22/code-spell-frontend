@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import {createInventory, createSword, createShield} from '../Builders/createItems';
-import {createMovement, resizeMovement} from '../Builders/tweenMotions';
+import {createMovement, resizeMovement, showObject} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createText, showText} from '../Builders/createText';
 import {createPlayer} from '../Builders/createPlayer';
@@ -30,19 +30,18 @@ const Level2_1 = () => {
         // player
         const player = createPlayer();
         player.position.set(-8 ,2, 8)
-        scene.add(player); 
+        showObject(scene, player)
 
         // inventory
-        createInventory(scene);
-
+        showObject(scene, createInventory())
+        
         // sword
         const sword = createSword();
-        scene.add(sword);
+        showObject(scene, sword)
 
         // shield
         const shield = createShield();
-        scene.add(shield);
-
+        showObject(scene, createShield())
 
         // ! this response is sent from backend
         // [player object, age]
