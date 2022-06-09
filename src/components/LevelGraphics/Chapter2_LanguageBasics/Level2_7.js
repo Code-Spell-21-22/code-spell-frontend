@@ -2,11 +2,17 @@ import React, { useEffect, useRef } from "react";
 
 import * as THREE from "three";
 
-import {resizeMovement, createMovement, rotationMovement, jumpingMovement} from '../Builders/tweenMotions';
+import {resizeMovement, createMovement, rotationMovement, jumpingMovement, showObject} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createText, showText} from '../Builders/createText';
-import {createDay} from '../Builders/createSky'
 import {createPlayer} from '../Builders/createPlayer';
+import {createDay} from '../Builders/createSky'
+
+import apple from '../../../textures/apple.jpg'
+import melon from '../../../textures/melon.jpg'
+import orange from '../../../textures/orange.jpg'
+import blueberry from '../../../textures/blueberry.jpeg'
+
 
 const TWEEN = require('@tweenjs/tween.js')
 
@@ -22,10 +28,11 @@ const Level2_7 = () => {
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
         camera = createCamera(0, 8, 24, 0, 8, 0);
         scene = createScene();
-        
+
         const day = createDay();
         day.position.set(10, 15, -30)
-        scene.add(day)
+        if (step1 === false && step2 === false){ showObject(scene, day) } else { scene.add(day); }  
+
 
         // spotlight /////////////////
         const spotLight = new THREE.SpotLight( 0xffffff, 1.2, -Math.PI );
@@ -41,7 +48,7 @@ const Level2_7 = () => {
         //////////////////////////////
         const player = createPlayer();
         player.position.set(0, 2, -4)
-        scene.add(player); 
+        if (step1 === false && step2 === false){ showObject(scene, player) } else { scene.add(player); }  
 
         const fruits = ["apple", "orange", "apple", "blueberry", "melon", "orange", "orange"];
         const fruitspositions = [-15, -10, -5, 0, 5, 10, 15];
@@ -52,26 +59,26 @@ const Level2_7 = () => {
             var currfruit = fruits[f];
             switch(currfruit){
                 case "apple":
-                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.75, 20, 20), new THREE.MeshPhongMaterial({color : 0xeb4034}))
+                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.70, 20, 20), new THREE.MeshPhongMaterial({map : new THREE.TextureLoader().load(apple), color : 0xff4a4a}))
                     currfruit.name = "apple";
                     break;
                 case "orange":
-                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.80, 20, 20), new THREE.MeshPhongMaterial({color : 0xf59031}))
+                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.80, 20, 20), new THREE.MeshPhongMaterial({map : new THREE.TextureLoader().load(orange), color : 0xffd34d}))
                     currfruit.name = "orange";
                     break;
                 case "blueberry":
-                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.55, 20, 20), new THREE.MeshPhongMaterial({color : 0x2d0770}))
+                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 20), new THREE.MeshPhongMaterial({map : new THREE.TextureLoader().load(blueberry)}))
                     currfruit.name = "blueberry";
                     break;
                 case "melon":
-                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(0.95, 20, 20), new THREE.MeshPhongMaterial({color : 0xbfed61}))
+                    currfruit = new THREE.Mesh(new THREE.SphereGeometry(1.05, 20, 20), new THREE.MeshPhongMaterial({map : new THREE.TextureLoader().load(melon), color : 0xdfff75}))
                     currfruit.name = "melon";
                     break;
             }
 
             currfruit.position.set(fruitspositions[f], 12, -16)
             fruitobjects.push(currfruit)
-            scene.add(currfruit)
+            if (step1 === false && step2 === false){ showObject(scene, currfruit) } else { scene.add(currfruit); }  
         }
         
          //* STEP1 -Write a for statement that iterates through the elements of variable fruits 

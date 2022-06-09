@@ -1,3 +1,6 @@
+import * as THREE from "three";
+import {createMovement, resizeMovement, transitionObjectColor} from '../Builders/tweenMotions';
+
 export const ageEditor = (array) => {
 
     const player = array[0];
@@ -10,16 +13,12 @@ export const ageEditor = (array) => {
     var old_size = []; for (let i = 1; i >= 0.71; i-=0.006) { old_size.push(i) }
 
     if (age > 0 && age <= 50){
-        player.scale.set(parseFloat(young_size[age-1]), parseFloat(young_size[age-1]), parseFloat(young_size[age-1]));
-
-        var color = 'rgb(' + 255 + ',' + parseFloat(young_colors[age]) + ',' + parseFloat(young_colors[age]) + ')';
-        player.material.color.set(color);
+        resizeMovement(player, parseFloat(young_size[age-1]), parseFloat(young_size[age-1]), parseFloat(young_size[age-1]), 1000, '+2000')
+        transitionObjectColor(player, new THREE.Color('rgb(' + 255 + ',' + parseFloat(young_colors[age]) + ',' + parseFloat(young_colors[age]) + ')'), 1000, '+0')
         
     } else if (age > 50 && age <= 99) {
-        player.scale.set(parseFloat(old_size[age-51]), parseFloat(old_size[age-51]), parseFloat(old_size[age-51]));
-        
-        var color = 'rgb(' + parseFloat(old_colors[age-51]) + ',' + 0 + ',' + 0 + ')';
-        player.material.color.set(color)
+        resizeMovement(player, parseFloat(old_size[age-51]), parseFloat(old_size[age-51]), parseFloat(old_size[age-51]), 1000, '+2000')
+        transitionObjectColor(player, new THREE.Color('rgb(' + parseFloat(old_colors[age-51]) + ',' + 0 + ',' + 0 + ')'), 1000, '+0')
     }
 
     return player;
