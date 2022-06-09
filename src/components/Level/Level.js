@@ -18,7 +18,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 import {connect, isStompClientConnected} from "../../web_sockets/WebSocket";
-import {selectAnalysisStatus, selectErrors, selectExecutionStatus, selectSteps} from "../../features/code/codeSlice";
+import {
+    selectErrors,
+    selectExecutionStatus,
+    selectId,
+    selectSteps
+} from "../../features/code/codeSlice";
 
 const Level = () => {
 
@@ -28,7 +33,7 @@ const Level = () => {
 
     const steps = useSelector(selectSteps);
     const executionStatus = useSelector(selectExecutionStatus);
-    const analysisStatus = useSelector(selectAnalysisStatus);
+    const codeReportId = useSelector(selectId);
     const errors = useSelector(selectErrors);
 
     const initialCode = "//Step 1"+ '\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}' + "\n\n\n//Step 2"+"\n\n\n//Step 3";
@@ -78,7 +83,7 @@ const Level = () => {
 
     useEffect(() => {
         setLoading(false);
-    }, [analysisStatus]);
+    }, [codeReportId]);
 
     const navbarHandler = () => {
         setNavbarOpen(!navbarOpen);

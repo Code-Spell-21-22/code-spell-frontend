@@ -57,7 +57,7 @@ export const CodeSlice = createSlice({
     }
 });
 
-export const selectId = (state) => state.chapters.id;
+export const selectId = (state) => state.code.id;
 export const selectAnalysisStatus = (state) => state.code.analysisStatus;
 export const selectExecutionStatus = (state) => state.code.executionStatus;
 export const selectSteps = (state) => state.code.steps;
