@@ -11,7 +11,7 @@ import {createTree} from '../Builders/createItems'
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = true; var step2 = true;
+var step1 = false; var step2 = false;
 
 // * Hello World
 const Level1_1 = () => {
@@ -22,6 +22,8 @@ const Level1_1 = () => {
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
         camera = createCamera(0, 7, 34, 0, 5, 0);
         scene = createScene();
+        if (step1 === false && step2 === false){ showObject(scene, camera); } else { scene.add( camera ); }
+        if (step2 === false && step2 === false){ showObject(scene, scene); } else { scene.add( scene ); }
         
         // SPOTLIGHT ///////////////////////////
         const spotLight = new THREE.SpotLight( 0xffffff, 2, -Math.PI );
