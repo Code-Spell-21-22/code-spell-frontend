@@ -4,14 +4,14 @@ import { updateOutput, updateId, updateScore, updateSteps, updateExecutionStatus
 import {store} from "../app/store";
 
 let stompClient = null;
-let codeId = null;
+let listenableCodeId = null;
 
 export const isStompClientConnected = () => {
   return stompClient !== null;
 };
 
-export const updateCodeId = (id) => {
-    codeId = id;
+export const updateListenableCodeId = (id) => {
+    listenableCodeId = id;
 }
 
 export const connect = () => {
@@ -22,33 +22,35 @@ export const connect = () => {
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/code-spell/outgoing/execution-report', function (response) {
+
             // console.log(JSON.parse(response.body));
 
-            const id  = JSON.parse(response.body).id;
+            const codeReportId  = JSON.parse(response.body).id;
 
-            if (codeId && id === codeId) {
-                store.dispatch(updateId(id));
+            if (!listenableCodeId || codeReportId !== listenableCodeId) return;
 
-                const output = JSON.parse(response.body).output;
-                store.dispatch(updateOutput(output));
+            store.dispatch(updateId(codeReportId));
 
-                const score = JSON.parse(response.body).score;
-                store.dispatch(updateScore(score));
+            const output = JSON.parse(response.body).output;
+            store.dispatch(updateOutput(output));
 
-                const steps = JSON.parse(response.body).steps;
-                store.dispatch(updateSteps(steps));
+            const score = JSON.parse(response.body).score;
+            store.dispatch(updateScore(score));
 
-                const executionStatus = JSON.parse(response.body).executionStatus;
-                store.dispatch(updateExecutionStatus(executionStatus));
+            const steps = JSON.parse(response.body).steps;
+            store.dispatch(updateSteps(steps));
 
-                const errors = JSON.parse(response.body).errors;
-                store.dispatch(updateErrors(errors));
+            const executionStatus = JSON.parse(response.body).executionStatus;
+            store.dispatch(updateExecutionStatus(executionStatus));
 
-                const analysisStatus = JSON.parse(response.body).analysisStatus;
-                store.dispatch(updateAnalysisStatus(analysisStatus));
+            const errors = JSON.parse(response.body).errors;
+            store.dispatch(updateErrors(errors));
 
-                codeId = null;
-            }
+            const analysisStatus = JSON.parse(response.body).analysisStatus;
+            store.dispatch(updateAnalysisStatus(analysisStatus));
+
+            listenableCodeId = null;
+
         });
     });
 };
