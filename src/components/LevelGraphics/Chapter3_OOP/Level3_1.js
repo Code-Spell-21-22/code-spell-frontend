@@ -4,6 +4,7 @@ import * as THREE from "three";
 
 import {createBlueprint, addBlueprintItems, addBlueprintLayout, buildBox} from '../Builders/createBlueprint';
 import {createScene, createCamera} from '../Builders/createEnvironment';
+import {showObject} from '../Builders/createItems'
 import {createPlayer} from '../Builders/createPlayer';
 
 let camera, scene, renderer;
@@ -22,6 +23,8 @@ const Level3_1 = () => {
         const player = createPlayer();
         player.position.set(8, 2, 12)
         scene.add(player);  
+        if (step1 === false && step2 === false && step3 === false && step4 === false){ showObject(scene, player) } else { scene.add(player); }  
+
 
         if (step4 === false){     
             // ! this response is sent from backend

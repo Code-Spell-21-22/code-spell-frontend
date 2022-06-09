@@ -6,43 +6,44 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 
 import boxmodel from '../../../models/box/box.obj'
 import treemodel from '../../../models/tree/Tree2.fbx'
-import grassmodel from '../../../models/grass/grass.obj'
 import swordmodel from '../../../models/sword/sword.obj'
 import shieldmodel from '../../../models/shield/shield.obj'
-
-import applemodel from '../../../models/apple/apple.obj'
-import appletexture from '../../../models/apple/apple.jpg'
 
 import fencemodel from '../../../models/fence/fence.obj'
 import fencetexture from '../../../models/fence/fence.jpeg'
 
 
-export const createInventory = (scene) => {
-        // Instantiate a loader
-        const loader = new OBJLoader();
+export const createInventory = () => {
+    const group = new THREE.Group();
 
-        loader.load(
-            // resource URL
-            boxmodel,
-            // called when the resource is loaded
-            function ( inventory ) {
-                inventory.scale.set( 15, 15, 15 ) // scale here
-                inventory.position.set( 4.8, 2, 12 ) // scale here
-                inventory.rotateX(-Math.PI / 2);
+    // Instantiate a loader
+    const loader = new OBJLoader();
 
-                // For any meshes in the model, add our material.
-                inventory.traverse( function ( node ) {
-                    if ( node.isMesh ) node.material = new THREE.MeshPhongMaterial({color: 0x78522f});
-                } );
+    loader.load(
+        // resource URL
+        boxmodel,
+        // called when the resource is loaded
+        function ( inventory ) {
+            inventory.scale.set( 15, 15, 15 ) // scale here
+            inventory.position.set( 4.8, 2, 12 ) // scale here
+            inventory.rotateX(-Math.PI / 2);
 
-                scene.add(inventory)
-            }, 
-            // called while loading is progressing
-            function ( xhr ) { console.log( ('inventory ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
-            // called when loading has errors
-            function ( error ) { console.log( 'An error happened '); }
-        );
+            // For any meshes in the model, add our material.
+            inventory.traverse( function ( node ) {
+                if ( node.isMesh ) node.material = new THREE.MeshPhongMaterial({color: 0x78522f});
+            } );
+
+            group.add(inventory)
+
+        }, 
+        // called while loading is progressing
+        function ( xhr ) { console.log( ('inventory ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+        // called when loading has errors
+        function ( error ) { console.log( 'An error happened '); }
+    );
+    return group;    
 }
+
 
 export const createSword = () => {
     const group = new THREE.Group();
@@ -122,35 +123,6 @@ export const createTree = () => {
         }, 
         // called while loading is progressing
         function ( xhr ) { console.log( ('tree ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
-        // called when loading has errors
-        function ( error ) { console.log( 'An error happened' ); }
-    );
-    return group;
-}
-
-export const createGrass = () => {
-    const group = new THREE.Group();
-
-    // Instantiate a loader
-    const loader = new OBJLoader();
-
-    loader.load(
-        // resource URL
-        grassmodel,
-        // called when the resource is loaded
-        function ( grass ) {
-            grass.scale.set( 0.06, 0.06, 0.06 ) // scale here
-            grass.position.set( 0, 0, 0 ) // scale here
-
-            grass.traverse( function ( node ) {
-                if ( node.isMesh ) node.material =  new THREE.MeshPhongMaterial({color: 0x143316});
-            } );
-
-            
-            group.add(grass)
-        }, 
-        // called while loading is progressing
-        function ( xhr ) { console.log( ('grass ' + xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
         // called when loading has errors
         function ( error ) { console.log( 'An error happened' ); }
     );

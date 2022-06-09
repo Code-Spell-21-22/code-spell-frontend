@@ -98,3 +98,11 @@ export const transitionObjectColor = (obj, hex, timeTo, delay) => {
 
     movements[0].start(delay);
 };
+
+export const showObject = (scene, object) => {
+
+    object.scale.set(0, 0, 0)
+    scene.add(object)
+    resizeMovement(object, 1, 1, 1, 1000, '+1000');
+}
+
