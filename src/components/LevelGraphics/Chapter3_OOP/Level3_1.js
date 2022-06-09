@@ -4,11 +4,13 @@ import * as THREE from "three";
 
 import {createBlueprint, addBlueprintItems, addBlueprintLayout, buildBox} from '../Builders/createBlueprint';
 import {createScene, createCamera} from '../Builders/createEnvironment';
-import {showObject} from '../Builders/createItems'
 import {createPlayer} from '../Builders/createPlayer';
+import {showObject} from '../Builders/tweenMotions'
+
+const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = false; var step2 = false; var step3 = false; var step4 = false;
+var step1 = true; var step2 = false; var step3 = false; var step4 = false;
 
 // * Classes
 const Level3_1 = () => {
@@ -21,10 +23,8 @@ const Level3_1 = () => {
         scene = createScene();
 
         const player = createPlayer();
-        player.position.set(8, 2, 12)
-        scene.add(player);  
+        player.position.set(8, 2, 12) 
         if (step1 === false && step2 === false && step3 === false && step4 === false){ showObject(scene, player) } else { scene.add(player); }  
-
 
         if (step4 === false){     
             // ! this response is sent from backend
@@ -34,8 +34,7 @@ const Level3_1 = () => {
             if (step1 === true){
                 // * create blueprint => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 1
                 // createBlueprint = (class_name)
-                const blueprint =  createBlueprint(step1_response);
-                scene.add(blueprint) 
+                scene.add(createBlueprint(step1_response));
             }
     
             // ! this response is sent from backend
@@ -93,7 +92,8 @@ const Level3_1 = () => {
 
         window.addEventListener( 'resize', onWindowResize );    
 
-        var animate = function() { 
+        var animate = function(time) { 
+            TWEEN.update(time)
             requestAnimationFrame(animate);
             renderer.render( scene, camera ); 
         };
