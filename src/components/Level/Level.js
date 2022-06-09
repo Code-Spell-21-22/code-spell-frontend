@@ -17,8 +17,8 @@ import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
-import {connect, disconnect, isStompClientConnected} from "../../web_sockets/WebSocket";
-import axios from "axios";
+import {connect, isStompClientConnected} from "../../web_sockets/WebSocket";
+import {selectErrors, selectExecutionStatus, selectSteps} from "../../features/code/codeSlice";
 
 const Level = () => {
 
@@ -26,12 +26,17 @@ const Level = () => {
     const language = useSelector(selectLanguage);
     const difficulty = useSelector(selectDifficulty);
 
+    const steps = useSelector(selectSteps);
+    const executionStatus = useSelector(selectExecutionStatus);
+    const errors = useSelector(selectErrors);
+
     const initialCode = "//Step 1"+ '\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}' + "\n\n\n//Step 2"+"\n\n\n//Step 3";
 
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(undefined);
     const [level, setLevel] = useState(undefined);
     const [code, setCode] = useState(initialCode);
+    const [errorFound, setErrorFound] = useState(false);
 
     const output = useSelector(state => state.code.output);
 
@@ -40,7 +45,7 @@ const Level = () => {
     // TODO: Obtain current level
     const [currentLevel, setCurrentLevel] = useState(
         {
-            "id": "0",
+            "id": "628c9c42cc425b74e59c3658",
             "title": "Variables",
             "description": "Description about variables level.",
             "language": "JAVA",
@@ -90,7 +95,7 @@ const Level = () => {
 
         let solutionId = generateUUID(); //generate with Crypto.randomUUID()
         let header = "Bearer " + localStorage.hasOwnProperty("code_spell_token");
-        postLevelSolution(level.id, solutionId, code, header)
+        postLevelSolution(currentLevel.id, solutionId, code, header)
             .then(r => console.log(r))
             .catch(e => console.log(e));
     }
@@ -146,7 +151,7 @@ const Level = () => {
                                 extensions={[java()]}
                                 theme={oneDark}
                                 onChange={(value, viewUpdate) => {
-                                    //this.setState({code: value});
+                                    setCode(value);
                                 }}
                             />
                         </Row>
@@ -190,7 +195,7 @@ const Level = () => {
 
                     {!selectedOption &&
                         <Row className="justify-content-right d-flex">
-                            <Level1_1/>
+                            <Level1_1 executionStatus={executionStatus} steps={steps}/>
                         </Row>
                     }
                     {!selectedOption &&
