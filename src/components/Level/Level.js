@@ -19,8 +19,8 @@ import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 import {connect, isStompClientConnected, updateListenableCodeId} from "../../web_sockets/WebSocket";
 import {
+    selectAnalysisStatus,
     selectErrors,
-    selectExecutionStatus,
     selectId,
     selectSteps
 } from "../../features/code/codeSlice";
@@ -32,7 +32,7 @@ const Level = () => {
     const difficulty = useSelector(selectDifficulty);
 
     const steps = useSelector(selectSteps);
-    const executionStatus = useSelector(selectExecutionStatus);
+    const analysisStatus = useSelector(selectAnalysisStatus);
     const codeReportId = useSelector(selectId);
     const errors = useSelector(selectErrors);
 
@@ -40,9 +40,7 @@ const Level = () => {
 
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(undefined);
-    const [level, setLevel] = useState(undefined);
     const [code, setCode] = useState(initialCode);
-    const [errorFound, setErrorFound] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const output = useSelector(state => state.code.output);
@@ -62,6 +60,12 @@ const Level = () => {
         }
     );
 
+    let mockCodeReport = [
+        {'id': 1, 'successful': true, 'args': null},
+        {'id': 2, 'successful': true, 'args': null},
+        {'id': 3, 'successful': true, 'args': ['Hey', 'Hello']},
+    ]
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -73,11 +77,6 @@ const Level = () => {
             connect();
 
         dispatch(fetchLevels(language, difficulty));
-
-        /*
-        if (levels.length > 0)
-            setLevel(levels.find(level => level.number.toString() === levelNumber));
-        */
 
     }, []);
 
@@ -225,7 +224,7 @@ const Level = () => {
 
                     {!selectedOption &&
                         <Row className="justify-content-right d-flex">
-                            <Level1_1 executionStatus={executionStatus} steps={steps}/>
+                            <Level1_1 analysisStatus={analysisStatus} steps={steps} codeId={codeReportId}/>
                         </Row>
                     }
 
