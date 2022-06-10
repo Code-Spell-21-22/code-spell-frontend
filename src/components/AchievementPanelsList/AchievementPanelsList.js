@@ -8,6 +8,8 @@ const AchievementPanelsList = (props) => {
 
     const [language, setLanguage] = useState(props.language);
 
+
+
     const achievementsJava = [{"id": 0, "title": "Achievement 1", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": true},
         {"id": 1, "title": "Achievement 2", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": false},
         {"id": 2, "title": "Achievement 3", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "completed": false},
