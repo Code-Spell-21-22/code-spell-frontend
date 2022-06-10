@@ -82,7 +82,7 @@ const Level1_1 = (props) => {
 
     const createNewScene = () => {
 
-        let scene = createScene(0x348C31, false);
+        let scene = createScene( 0x348C31, true);
 
         scene.add(camera);
 
@@ -167,7 +167,7 @@ const Level1_1 = (props) => {
 
             moveToRight(player, 3, () => {
                 let text1 = createText("Your code doesn't seem correct...", 0.5, 0x171717, true, true, 0xffffff);
-                let text2 = createText("Maybe you should look for syntax errors??", 0.5, 0x171717, true, true, 0xffffff);
+                let text2 = createText("Maybe you should look for syntax errors?", 0.5, 0x171717, true, true, 0xffffff);
                 popUpText(text1, scene, player, () => {
                     popUpText(text2, scene, player, () => {
                         moveToLeft(player, 3);
