@@ -35,7 +35,7 @@ export const resizeMovement = (obj, x, y, z, timeTo, delay) => {
     movements[0].start(delay);
 };
 
-export const rotationMovement = (obj, fruit, y0, y1, timeTo, delay) => {
+export const rotationMovement = (obj, fruit, y0, timeTo, delay) => {
 
     // var tween0 = new TWEEN.Tween( obj.position ).to( new THREE.Vector3( obj.position.x, y0, obj.position.z ), timeTo/5 ); 
     // var tween1 = new TWEEN.Tween( obj.rotation ).to({ y: "-" + 2*Math.PI}, timeTo);
@@ -45,7 +45,7 @@ export const rotationMovement = (obj, fruit, y0, y1, timeTo, delay) => {
         .onStart(function(){
             new TWEEN.Tween( obj.rotation ).to({ y: "-" + Math.PI}, timeTo).start() })
     
-    var tween2 = new TWEEN.Tween( obj.position ).to( new THREE.Vector3( fruit.position.x, y1, fruit.position.z ), timeTo )
+    var tween2 = new TWEEN.Tween( obj.position ).to( new THREE.Vector3( fruit.position.x, obj.position.y, fruit.position.z ), timeTo )
         .onStart(function(){
             new TWEEN.Tween( obj.rotation ).to({ y: "-" + Math.PI}, timeTo).start() })
 

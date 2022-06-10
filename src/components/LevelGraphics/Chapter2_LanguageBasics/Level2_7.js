@@ -17,7 +17,7 @@ import blueberry from '../../../textures/blueberry.jpeg'
 const TWEEN = require('@tweenjs/tween.js')
 
 let camera, scene, renderer;
-var step1 = false; var step2 = false;
+var step1 = true; var step2 = false;
 
 //* Branching Statements
 const Level2_7 = () => {
@@ -111,7 +111,7 @@ const Level2_7 = () => {
                         const point = new THREE.Object3D(new THREE.Vector3());
                         point.position.set(fruit.position.x, player.position.y, fruit.position.z)
 
-                        rotationMovement(player, fruit, 4, 2, 800, '+2000')
+                        rotationMovement(player, fruit, 4, 800, '+2000')
                         showText(createText(step1_response[2], 0.8, 0x171717, true, true, 0xffffff), scene, point)
                         
                         break;
