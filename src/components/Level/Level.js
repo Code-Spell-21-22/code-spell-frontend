@@ -19,12 +19,11 @@ import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 import {connect, isStompClientConnected, updateListenableCodeId} from "../../web_sockets/WebSocket";
 import {
+    selectAnalysisStatus,
     selectErrors,
-    selectExecutionStatus,
     selectId,
-    selectSteps, updateSteps
+    selectSteps
 } from "../../features/code/codeSlice";
-import {store} from "../../app/store";
 
 const Level = () => {
 
@@ -33,7 +32,7 @@ const Level = () => {
     const difficulty = useSelector(selectDifficulty);
 
     const steps = useSelector(selectSteps);
-    const executionStatus = useSelector(selectExecutionStatus);
+    const analysisStatus = useSelector(selectAnalysisStatus);
     const codeReportId = useSelector(selectId);
     const errors = useSelector(selectErrors);
 
@@ -41,9 +40,7 @@ const Level = () => {
 
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(undefined);
-    const [level, setLevel] = useState(undefined);
     const [code, setCode] = useState(initialCode);
-    const [errorFound, setErrorFound] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const output = useSelector(state => state.code.output);
@@ -80,11 +77,6 @@ const Level = () => {
             connect();
 
         dispatch(fetchLevels(language, difficulty));
-
-        /*
-        if (levels.length > 0)
-            setLevel(levels.find(level => level.number.toString() === levelNumber));
-        */
 
     }, []);
 
@@ -209,7 +201,7 @@ const Level = () => {
                                         height: "6vh",
                                         minHeight: "50px",
                                         backgroundColor: "#3f73c2"
-                                    }} onClick={() => store.dispatch(updateSteps(mockCodeReport))}>
+                                    }} onClick={submitCode.bind(this)}>
                                 <span style={{color: "#13305d"}}>RUN</span>
                             </Button>
                         </Col>
@@ -232,7 +224,7 @@ const Level = () => {
 
                     {!selectedOption &&
                         <Row className="justify-content-right d-flex">
-                            <Level1_1 executionStatus={executionStatus} steps={steps}/>
+                            <Level1_1 analysisStatus={analysisStatus} steps={steps} codeId={codeReportId}/>
                         </Row>
                     }
 

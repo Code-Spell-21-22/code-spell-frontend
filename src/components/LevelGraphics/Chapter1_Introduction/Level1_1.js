@@ -3,7 +3,10 @@ import React, {useEffect, useState} from "react";
 import * as THREE from "three";
 
 import {createScene, createCamera} from '../Builders/createEnvironment';
-import {jumpingMovement, resizeMovement, rotationMovement, showObject} from '../Builders/tweenMotions';
+import {
+    clearTweenMovements,
+    jumpingMovement, moveToLeft, moveToRight,
+} from '../Builders/tweenMotions';
 import {createText, hideText, popUpText, showText} from '../Builders/createText';
 import {createPlayer} from '../Builders/createPlayer';
 import {createTree} from '../Builders/createItems'
@@ -17,10 +20,9 @@ const Level1_1 = (props) => {
 
     let renderer, camera, scene;
 
-    let [executionStatus, setExecutionStatus] = useState(undefined);
+    let [analysisStatus, setAnalysisStatus] = useState(undefined);
     let [steps, setSteps] = useState(undefined);
     let [args, setArgs] = useState('');
-    let [animationCount, setAnimationCount] = useState(0);
 
     // Adding onWindowResize event when the component is mounted
     useEffect(() => {
@@ -37,28 +39,28 @@ const Level1_1 = (props) => {
     // When the steps props change we will update the steps and arguments
     useEffect(() => {
 
+        let stepsList;
+
         if (props.steps) {
-
-            let stepsList = [props.steps[0].successful, props.steps[1].successful, props.steps[2].successful];
-
-            setSteps(stepsList);
+            stepsList = [props.steps[0].successful, props.steps[1].successful, props.steps[2].successful];
             setArgs(props.steps[2].args);
-
         }
+
+        setSteps(stepsList);
 
     }, [props.steps]);
 
     // When the execution status props change we will update the steps and arguments
     useEffect(() => {
-        setExecutionStatus(props.executionStatus);
-    }, [props.executionStatus]);
+        setAnalysisStatus(props.analysisStatus);
+    }, [props.analysisStatus]);
 
     // When the steps change, we clear the current animation and start again.
     useEffect(() => {
         clearAnimation();
         renderAnimation();
         startAnimation();
-    }, [steps, executionStatus]);
+    }, [steps, analysisStatus, props.codeId]);
 
     const renderAnimation = () => {
 
@@ -76,13 +78,11 @@ const Level1_1 = (props) => {
         renderer.autoClear = true;
         renderer.resetState();
 
-        setAnimationCount(animationCount++);
-
     };
 
     const createNewScene = () => {
 
-        let scene = createScene(0x348C31, true);
+        let scene = createScene(0x348C31, false);
 
         scene.add(camera);
 
@@ -115,25 +115,65 @@ const Level1_1 = (props) => {
         scene.add(tree1)
         scene.add(tree2)
 
-        if (steps && steps[0]) {
+        player = createPlayer();
+        player.position.z = 12
+        player.position.x = -16
 
-            const step2_response = ['Hey', 'Hello', 'How are you?'];
+        scene.add(player);
 
-            player = createPlayer();
-            player.position.z = 12
+        if (steps && steps[0] && steps[1]) {
 
+            const step2_response = args;
 
-            showObject(scene, player, 300, -10000*(animationCount-1));
-            jumpingMovement(player, 3);
+            moveToRight(player, 3, () => {
+                jumpingMovement(player, 3, true, () => {
 
-            if (steps[1]) {
+                    if (steps[2]) {
 
-                step2_response.forEach(response => {
-                    let text = createText(response, 0.5, 0x171717, true, true, 0xffffff);
-                    popUpText(text, scene, player);
+                        step2_response.forEach(response => {
+                            let text = createText(response, 0.5, 0x171717, true, true, 0xffffff);
+                            popUpText(text, scene, player);
+                        });
+
+                    } else {
+
+                        let text = createText("?????", 0.5, 0x171717, true, true, 0xffffff);
+                        popUpText(text, scene, player);
+
+                    }
+
                 });
+            });
 
-            }
+        } else if (steps && steps[0]) {
+
+            moveToRight(player, 3, () => {
+                let text1 = createText("Something is not right...", 0.5, 0x171717, true, true, 0xffffff);
+                popUpText(text1, scene, player, () => {
+                    moveToLeft(player, 3);
+                });
+            });
+
+        } else if (!steps && !analysisStatus) {
+
+            moveToRight(player, 3, () => {
+                let text = createText("Hello!", 0.5, 0x171717, true, true, 0xffffff);
+                popUpText(text, scene, player, () => {
+                    moveToLeft(player, 3);
+                });
+            });
+
+        }  else if (!steps && analysisStatus) {
+
+            moveToRight(player, 3, () => {
+                let text1 = createText("Your code doesn't seem correct...", 0.5, 0x171717, true, true, 0xffffff);
+                let text2 = createText("Maybe you should look for syntax errors??", 0.5, 0x171717, true, true, 0xffffff);
+                popUpText(text1, scene, player, () => {
+                    popUpText(text2, scene, player, () => {
+                        moveToLeft(player, 3);
+                    });
+                });
+            });
 
         }
 
@@ -153,7 +193,7 @@ const Level1_1 = (props) => {
             canvasElements[0].remove();
         }
 
-        animationCount++;
+        clearTweenMovements();
 
     };
 

@@ -77,11 +77,11 @@ export const showText = (text, scene, player) => {
 
 }
 
-export const popUpText = (text, scene, player) => {
+export const popUpText = (text, scene, player, onComplete) => {
 
     text.scale.set(0, 0, 0)
     text.position.set(player.position.x, player.position.y-2, player.position.z)
     scene.add(text)
-    popUpMovement(text, 1, 1, 1, 500);
+    popUpMovement(text, 1, 1, 1, 500, onComplete);
 
 }
