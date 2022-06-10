@@ -16,13 +16,27 @@ import Levels from "./components/Levels/Levels";
 import Level from "./components/Level/Level";
 import Leaderboards from "./components/Leaderboards/Leaderboards";
 import Achievements from "./components/Achievements/Achievements";
-import {ToastContainer} from "react-toastify";
+import {Flip, ToastContainer} from "react-toastify";
 import Settings from "./components/Settings/Settings";
 import Account from "./components/Account/Account";
 
 function App() {
 
     let logged_in = localStorage.hasOwnProperty("code_spell_token")
+
+    let toastContainer = <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        theme={"light"}
+        rtl={false}
+        transition={Flip}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+    style={{color: "#000000"}}/>;
 
     if (!logged_in) {
         return (<div style={{backgroundImage: "url(/Background_2.png)",
@@ -36,7 +50,7 @@ function App() {
                     </Routes>
                 </Router>
             </Container>
-            <ToastContainer/>
+            {toastContainer}
         </div>
         );
     }
@@ -58,7 +72,7 @@ function App() {
                   </Routes>
               </Router>
           </Row>
-          <ToastContainer/>
+          {toastContainer}
       </div>
     );
 }
