@@ -18,8 +18,8 @@ async function postRegister(username, email, password) {
     });
 }
 
-async function getUserDetails(username) {
-    return axios.get(apiAddress + '/user/' + username + '/details', {
+async function getUserDetails(email) {
+    return axios.get(apiAddress + '/user/' + email + '/details', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
             'Content-Type': 'text/plain'
@@ -27,8 +27,8 @@ async function getUserDetails(username) {
     });
 }
 
-async function getUserAchievements(username) {
-    return axios.get(apiAddress + '/user/' + username + '/achievements', {
+async function getUserAchievements(email) {
+    return axios.get(apiAddress + '/user/' + email + '/achievements', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
             'Content-Type': 'text/plain'
@@ -36,8 +36,17 @@ async function getUserAchievements(username) {
     });
 }
 
-async function putUserPassword(username, password) {
-    return axios.put(apiAddress + '/user/' + username + '/password', {
+async function getAllAchievements(email) {
+    return axios.get(apiAddress + '/achievements', {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'text/plain'
+        }
+    });
+}
+
+async function putUserPassword(email, password) {
+    return axios.put(apiAddress + '/user/' + email + '/password', {
         new_password: password
     }, {
         headers: {
@@ -47,8 +56,8 @@ async function putUserPassword(username, password) {
     });
 }
 
-async function putUserName(username, name) {
-    return axios.put(apiAddress + '/user/' + username + '/name', {
+async function putUserName(email, name) {
+    return axios.put(apiAddress + '/user/' + email + '/name', {
         new_name: name
     }, {
         headers: {
@@ -122,7 +131,7 @@ async function getPossibleSolutions(levelId) {
 async function postLevelSolution(levelId, solutionId, code) {
     return axios.post(apiAddress + '/level/' + levelId + '/submit/' + solutionId, code, {
         headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('code_spell_token'),
+            'Authorization': 'Bearer ' + authToken,
             'Content-Type': 'text/plain'
         }
     });
@@ -169,6 +178,7 @@ export {
     getLevelLeaderboard,
     getLevelDocumentation,
     getUserAchievements,
+    getAllAchievements,
     getUserDetails,
     putUserName,
     putUserPassword

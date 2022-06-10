@@ -6,13 +6,20 @@ import {faCode, faRankingStar} from "@fortawesome/free-solid-svg-icons";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 import {useEffect, useState} from "react";
-import {fetchProgress, selectProgress} from "../../features/progress/progressSlice";
+import {
+    fetchUserDetails,
+    selectEmail,
+    selectProgress,
+    selectUsername
+} from "../../features/userDetails/userDetailsSlice";
 
 const UserPanel = () => {
 
     const language = useSelector(selectLanguage);
     const difficulty = useSelector(selectDifficulty);
     const progress = useSelector(selectProgress);
+    const username = useSelector(selectUsername);
+    const email = useSelector(selectEmail);
 
     const [selectedProgress, setSelectedProgress] = useState(undefined);
 
@@ -21,13 +28,16 @@ const UserPanel = () => {
     useEffect(() => {
        dispatch(fetchLanguage());
        dispatch(fetchDifficulty());
-       dispatch(fetchProgress());
+       dispatch(fetchUserDetails());
+
     }, [dispatch]);
 
     useEffect(() => {
-        for (let idx in progress) {
-            if (progress[idx].language.toUpperCase() === language.toUpperCase()) {
-                setSelectedProgress(progress[idx]);
+        if (progress && language) {
+            for (let idx in progress) {
+                if (progress[idx].language && progress[idx].language.toUpperCase() === language.toUpperCase()) {
+                    setSelectedProgress(progress[idx]);
+                }
             }
         }
     }, [progress]);
@@ -43,8 +53,8 @@ const UserPanel = () => {
                     <Image src="/python.png" style={{width: "100%", maxWidth: "140px"}}/>
                 </Col>
                 <Col>
-                    <span style={{fontSize: "1.2vw", color: "#1E4172"}}>USERNAME</span>
-                    <h3 style={{fontSize: "0.8vw"}}>USER0000@GMAIL.COM</h3>
+                    <span style={{fontSize: "1.3vw", color: "#1E4172", fontWeight: "bold"}}>{username}</span>
+                    <h3 style={{fontSize: "0.9vw"}}>{email}</h3>
 
                     <span style={{fontSize: "0.8vw"}}>PROGRESS</span>
                     <h3 style={{fontSize: "0.8vw"}}>{language} {progressPercentage}%</h3>

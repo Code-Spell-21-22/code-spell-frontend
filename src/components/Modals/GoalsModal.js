@@ -1,25 +1,40 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStar, faStarOfLife} from "@fortawesome/free-solid-svg-icons";
 import Row from "react-bootstrap/Row";
 import {Col, Container} from "react-bootstrap";
+import {getLevelGoals} from "../../utils/api/apihandler";
 
-const GoalsModal = () => {
+const GoalsModal = (props) => {
+
+    const [level, setLevel] = React.useState(props.level);
+    const [goals, setGoals] = React.useState([]);
+
+    useEffect(() => {
+        getLevelGoals(level.id).then(res => {
+            setGoals(res.data);
+        });
+    }, [level]);
+
+    let goalPanels = [];
+    if (goals) {
+        for (let idx in goals) {
+            let goal = goals[idx];
+
+            goalPanels.push(
+                <Row key={idx} className="mx-3 my-5">
+                    <span style={{fontSize: "0.7vw"}}>{level.title}</span>
+                    <h1 style={{fontSize: "2vw"}}>{goal.title}</h1>
+
+                    <p className="my-4" style={{fontSize: "0.8vw"}}>{goal.description}</p>
+                </Row>
+            );
+        }
+    }
+
     return (
         <Container>
-            <Row className="mx-3 my-5">
-                <span style={{fontSize: "0.7vw"}}>VARIABLES</span>
-                <h1 style={{fontSize: "2vw"}}>Lorem ipsum dolor sit amet</h1>
-
-                <p className="my-4" style={{fontSize: "0.8vw"}}>Lorem ipsum dolor sit amet, consectetur
-                    adipiscing elit. Nullam tincidunt, lacus a dictum tempor, lorem magna venenatis augue, a tempor ante nunc quis est.
-                    Phasellus porta non enim non malesuada. In elementum bibendum dui non laoreet.
-                    Nam aliquam lacus imperdiet lorem vehicula dictum quis id sapien.</p>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A animi atque cumque debitis, eaque eius
-                    eos ex harum ipsam iusto laboriosam perspiciatis quasi, sequi unde ut vero vitae? Repellat,
-                    totam?</p>
-            </Row>
+            {goalPanels}
             <Row className="mx-3 my-5">
                 <Col className="col-2 text-center">
                     <FontAwesomeIcon icon={faStarOfLife} />

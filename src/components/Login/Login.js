@@ -31,6 +31,8 @@ const Login = () => {
         .then((response) => {
             notify(response.data.message);
             localStorage.setItem('code_spell_token', response.data.token);
+            localStorage.setItem('user_email', email);
+
             setTimeout(() => window.location.replace("/"), 2000);
         }, (error) => {
             notify(JSON.parse(error.request.response)['message']);

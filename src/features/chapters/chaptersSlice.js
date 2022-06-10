@@ -23,5 +23,7 @@ export const { updateChapters } = ChaptersSlice.actions;
 export default ChaptersSlice.reducer;
 
 export const fetchChapters = (language, difficulty) => async dispatch => {
-    getChapter(language, difficulty).then(data => {dispatch(updateChapters(data))});
+    getChapter(language, difficulty).then(res => {
+        dispatch(updateChapters(res.data))
+    });
 }

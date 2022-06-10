@@ -46,9 +46,10 @@ const LevelsPanelsList = (props) => {
 
     useEffect(() => {
         if (chapter && levels) {
-            setFilteredLevels(levels.filter(level => level.chapter === chapter.id));
+            setFilteredLevels(levels.filter(level => level.chapterId === chapter.id));
         }
     }, [chapter, levels]);
+
 
     const levelPanelClicked = (level) => {
         setSelectedLevel(level);
@@ -63,23 +64,23 @@ const LevelsPanelsList = (props) => {
 
         if (selectedLevel !== undefined && level.id === selectedLevel.id) {
             levelPanels.push(
-                <Card className="shadow p-3 mb-3 rounded text-center"
+                <Card key={levelIdx} className="shadow p-3 mb-3 rounded text-center"
                       style={{backgroundColor: "#4b86e0", border: "none"}}
                       onClick={levelPanelClicked.bind(this, level)}>
-                    <span style={{fontSize: "0.8vw", color: "white"}}>{level.number} {level.title}</span>
+                    <span style={{fontSize: "0.8vw", color: "white"}}>{level.number}. {level.title}</span>
                 </Card>
             )
         } else if (currentLevel !== undefined && level.number > currentLevel.number) {
             levelPanels.push(
-                <Card className="shadow p-3 mb-3 bg-white rounded text-center" style={{opacity: "0.6"}}>
-                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.number} {level.title}</span>
+                <Card key={levelIdx} className="shadow p-3 mb-3 bg-white rounded text-center" style={{opacity: "0.6"}}>
+                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.number}. {level.title}</span>
                 </Card>
             )
 
         } else {
             levelPanels.push(
-                <Card className="shadow p-3 mb-3 bg-white rounded text-center" onClick={levelPanelClicked.bind(this, level)}>
-                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.number} {level.title}</span>
+                <Card key={levelIdx} className="shadow p-3 mb-3 bg-white rounded text-center" onClick={levelPanelClicked.bind(this, level)}>
+                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.number}. {level.title}</span>
                 </Card>
             )
         }

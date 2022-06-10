@@ -23,23 +23,25 @@ const DifficultyPanelsList = (props) => {
                 <DifficultyPanel
                     active={selectedDifficulty}
                     title={"Novice"}
-                    description={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tincidunt, lacus a dictum tempor, lorem magna venenatis augue."}
+                    description={"Choose Novice difficulty if you are new to programming and you want to focus on just learning."}
                     clickBehavior={difficultyPanelClicked.bind(this, "Novice")}
                 />
             </Col>
             <Col>
                 <DifficultyPanel
+                    disabled={true}
                     active={selectedDifficulty}
                     title={"Experienced"}
-                    description={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tincidunt, lacus a dictum tempor, lorem magna venenatis augue."}
+                    description={"Choose Experienced difficulty if you already have some experience with programming and you want to improve your coding."}
                     clickBehavior={difficultyPanelClicked.bind(this, "Experienced")}
                 />
             </Col>
             <Col>
                 <DifficultyPanel
+                    disabled={true}
                     active={selectedDifficulty}
                     title={"Advanced"}
-                    description={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tincidunt, lacus a dictum tempor, lorem magna venenatis augue."}
+                    description={"Choose Advanced difficulty if you are already familiar with programming and you want to give yourself a challenge."}
                     clickBehavior={difficultyPanelClicked.bind(this, "Advanced")}
                 />
             </Col>

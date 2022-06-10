@@ -49,7 +49,7 @@ function App() {
                   <Routes>
                       <Route  path="/" element={<Dashboard />}/>
                       <Route  path="/levels" element={<Levels />}/>
-                      <Route  path="/levels/:levelNumber" element={<Level />}/>
+                      <Route  path="/levels/:levelId" element={<Level />}/>
                       <Route  path="/leaderboards" element={<Leaderboards />}/>
                       <Route  path="/achievements" element={<Achievements />}/>
                       <Route  path={"/settings"} element={<Settings />}/>

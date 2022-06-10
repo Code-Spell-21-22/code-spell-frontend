@@ -23,5 +23,5 @@ export const { updateLevels } = LevelsSlice.actions;
 export default LevelsSlice.reducer;
 
 export const fetchLevels = (language, difficulty) => async dispatch => {
-    getLevels(language, difficulty).then(data => {dispatch(updateLevels(data))});
+    getLevels(language, difficulty).then(res => {dispatch(updateLevels(res.data))});
 }

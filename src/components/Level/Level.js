@@ -9,32 +9,26 @@ import GenericModal from "../Modals/GenericModal";
 import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
-import {postLevelSolution} from '../../utils/api/apihandler';
+import {getLevel, postLevelSolution} from '../../utils/api/apihandler';
 
 import Level1_1 from "../LevelGraphics/Chapter1_Introduction/Level1_1"
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
-import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
+import {fetchDifficulty, fetchLanguage} from "../../features/settings/settingsSlice";
 import {connect, isStompClientConnected, updateListenableCodeId} from "../../web_sockets/WebSocket";
 import {
-    selectAnalysisStatus,
-    selectErrors,
+    selectAnalysisStatus, selectExecutionStatus,
     selectId,
     selectSteps
 } from "../../features/code/codeSlice";
 
 const Level = () => {
 
-    const levels = useSelector(selectLevels);
-    const language = useSelector(selectLanguage);
-    const difficulty = useSelector(selectDifficulty);
-
     const steps = useSelector(selectSteps);
     const analysisStatus = useSelector(selectAnalysisStatus);
+    const executionStatus = useSelector(selectExecutionStatus);
     const codeReportId = useSelector(selectId);
-    const errors = useSelector(selectErrors);
 
     const initialCode = "//Step 1"+ '\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}' + "\n\n\n//Step 2"+"\n\n\n//Step 3";
 
@@ -45,26 +39,9 @@ const Level = () => {
 
     const output = useSelector(state => state.code.output);
 
-    let { levelNumber } = useParams();
+    let { levelId } = useParams();
 
-    // TODO: Obtain current level
-    const [currentLevel, setCurrentLevel] = useState(
-        {
-            "id": "628c9c42cc425b74e59c3658",
-            "title": "Variables",
-            "description": "Description about variables level.",
-            "language": "JAVA",
-            "skill": "NOVICE",
-            "number": 1.1,
-            "chapter": "89a2183ja126a712j"
-        }
-    );
-
-    let mockCodeReport = [
-        {'id': 1, 'successful': true, 'args': null},
-        {'id': 2, 'successful': true, 'args': null},
-        {'id': 3, 'successful': true, 'args': ['Hey', 'Hello']},
-    ]
+    const [currentLevel, setCurrentLevel] = useState("");
 
     const dispatch = useDispatch();
 
@@ -76,7 +53,9 @@ const Level = () => {
         if (!isStompClientConnected())
             connect();
 
-        dispatch(fetchLevels(language, difficulty));
+        getLevel(levelId).then(res => {
+            setCurrentLevel(res.data);
+        });
 
     }, []);
 
@@ -98,7 +77,7 @@ const Level = () => {
             (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)));
     };
 
-    const submitCode = () => {
+    const runCode = () => {
 
         if (!isStompClientConnected())
             connect();
@@ -117,6 +96,16 @@ const Level = () => {
 
     }
 
+    const submitCode = () => {
+
+        runCode().then(() => {
+            if (analysisStatus === "SUCCESS" && executionStatus === "SUCCESS") {
+                // TODO
+                setTimeout(() => window.location.replace("/levels"), 2000);
+            }
+        });
+    }
+
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';
 
     if (!currentLevel) return;
@@ -129,7 +118,6 @@ const Level = () => {
             outputPanels.push(<span style={{fontSize: "0.8vw"}}>{o}</span>);
         }
     }
-
 
     return (
         <Container className="container-fluid mx-3 mt-5">
@@ -156,7 +144,7 @@ const Level = () => {
                 <Col className="col-6">
                     <Card className="shadow p-3 mb-3 bg-white" style={{borderRadius: "10px"}}>
                         <Row className="justify-content-start d-flex m-2">
-                            <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>Level {currentLevel.number}</span>
+                            <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>{currentLevel.number}. {currentLevel.title}</span>
                             <span style={{fontSize: "0.8vw"}}>{currentLevel.description}</span>
                         </Row>
                     </Card>
@@ -201,19 +189,19 @@ const Level = () => {
                                         height: "6vh",
                                         minHeight: "50px",
                                         backgroundColor: "#3f73c2"
-                                    }} onClick={submitCode.bind(this)}>
+                                    }} onClick={runCode.bind(this)}>
                                 <span style={{color: "#13305d"}}>RUN</span>
                             </Button>
                         </Col>
                         <Col className="col-3">
-                            <Button className="w-100 shadow justify-content-center align-items-center d-flex"
+                            <Button className="w-100 shadow justify-content-center align-items-center d-flex" onClick={runCode.bind(this)}
                                     style={{
                                         backgroundColor: "#1E4172",
                                         border: "none",
                                         height: "6vh",
                                         minHeight: "50px"
                                     }}>
-                                    <span style={{color: "white"}}>NEXT LEVEL <FontAwesomeIcon icon={faGreaterThan}
+                                    <span style={{color: "white"}}>SUBMIT <FontAwesomeIcon icon={faGreaterThan}
                                                                                                style={{color: "white"}}/>
                                     </span>
                             </Button>

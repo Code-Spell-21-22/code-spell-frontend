@@ -7,9 +7,9 @@ import Navbar from "../Navbar/Navbar";
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 import {Doughnut} from 'react-chartjs-2';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchProgress, selectProgress} from "../../features/progress/progressSlice";
+import {fetchUserDetails, selectProgress} from "../../features/userDetails/userDetailsSlice";
 import {useEffect, useState} from "react";
-import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
+import {fetchDifficulty, fetchLanguage, selectLanguage} from "../../features/settings/settingsSlice";
 
 const Levels = () => {
 
@@ -25,7 +25,7 @@ const Levels = () => {
     useEffect(() => {
         dispatch(fetchLanguage());
         dispatch(fetchDifficulty());
-        dispatch(fetchProgress());
+        dispatch(fetchUserDetails());
     }, [dispatch]);
 
     useEffect(() => {
@@ -83,7 +83,7 @@ const Levels = () => {
         start =
             <Button className="shadow w-75 justify-content-center align-items-center d-flex"
                     style={{backgroundColor: "#3f73c2", border: "none", height: "6vh"}}
-                    href={"/levels/" + selectedLevel.number}>
+                    href={"/levels/" + selectedLevel.id}>
                 <span style={{color: "white"}}>START</span>
             </Button>;
     } else {

@@ -48,8 +48,6 @@ const SignUp = () => {
         if(!testPw.test(pw)){
             setPassword(!password);
         }
-
-    
     }
 
     const notify = (message) => toast(message);

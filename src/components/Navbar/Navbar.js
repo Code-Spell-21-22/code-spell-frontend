@@ -12,6 +12,7 @@ const Navbar = (props) => {
 
     const handleExit = () => {
         localStorage.removeItem('code_spell_token');
+        localStorage.removeItem('user_email');
         setTimeout(() => window.location.replace("/"), 2000);
     }
 
