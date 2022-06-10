@@ -21,7 +21,7 @@ export const createScene = (planeColor=0xffffff, enableGrid=true) => {
 
     // grid
     if (enableGrid) {
-        const gridHelper = new THREE.GridHelper( 100, 15 );
+        const gridHelper = new THREE.GridHelper( 100, 15, 0x000000, 0x000000 );
         scene.add( gridHelper );
     }
 

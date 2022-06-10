@@ -22,8 +22,9 @@ import {
     selectErrors,
     selectExecutionStatus,
     selectId,
-    selectSteps
+    selectSteps, updateSteps
 } from "../../features/code/codeSlice";
+import {store} from "../../app/store";
 
 const Level = () => {
 
@@ -61,6 +62,12 @@ const Level = () => {
             "chapter": "89a2183ja126a712j"
         }
     );
+
+    let mockCodeReport = [
+        {'id': 1, 'successful': true, 'args': null},
+        {'id': 2, 'successful': true, 'args': null},
+        {'id': 3, 'successful': true, 'args': ['Hey', 'Hello']},
+    ]
 
     const dispatch = useDispatch();
 
@@ -202,7 +209,7 @@ const Level = () => {
                                         height: "6vh",
                                         minHeight: "50px",
                                         backgroundColor: "#3f73c2"
-                                    }} onClick={submitCode.bind(this)}>
+                                    }} onClick={() => store.dispatch(updateSteps(mockCodeReport))}>
                                 <span style={{color: "#13305d"}}>RUN</span>
                             </Button>
                         </Col>

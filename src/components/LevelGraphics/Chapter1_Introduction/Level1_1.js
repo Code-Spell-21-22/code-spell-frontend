@@ -3,21 +3,24 @@ import React, {useEffect, useState} from "react";
 import * as THREE from "three";
 
 import {createScene, createCamera} from '../Builders/createEnvironment';
-import {resizeMovement, showObject} from '../Builders/tweenMotions';
-import {createText, showText} from '../Builders/createText';
+import {jumpingMovement, resizeMovement, rotationMovement, showObject} from '../Builders/tweenMotions';
+import {createText, hideText, popUpText, showText} from '../Builders/createText';
 import {createPlayer} from '../Builders/createPlayer';
 import {createTree} from '../Builders/createItems'
 
 const TWEEN = require('@tweenjs/tween.js')
 
+let currentFrame = 1;
+
 // * Hello World
 const Level1_1 = (props) => {
 
-    let renderer, camera, scene, frame;
+    let renderer, camera, scene;
 
     let [executionStatus, setExecutionStatus] = useState(undefined);
     let [steps, setSteps] = useState(undefined);
     let [args, setArgs] = useState('');
+    let [animationCount, setAnimationCount] = useState(0);
 
     // Adding onWindowResize event when the component is mounted
     useEffect(() => {
@@ -25,10 +28,9 @@ const Level1_1 = (props) => {
         let onWindowResize = function () {
             camera.aspect = window.innerWidth / 3 / (window.innerHeight - window.innerHeight / 5);
             camera.updateProjectionMatrix();
-            renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
+            renderer.setSize(window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
         };
         window.addEventListener('resize', onWindowResize);
-
 
     }, []);
 
@@ -40,7 +42,7 @@ const Level1_1 = (props) => {
             let stepsList = [props.steps[0].successful, props.steps[1].successful, props.steps[2].successful];
 
             setSteps(stepsList);
-            setArgs(props.steps[2].args[0]);
+            setArgs(props.steps[2].args);
 
         }
 
@@ -55,7 +57,7 @@ const Level1_1 = (props) => {
     useEffect(() => {
         clearAnimation();
         renderAnimation();
-        startAnimation(0);
+        startAnimation();
     }, [steps, executionStatus]);
 
     const renderAnimation = () => {
@@ -64,23 +66,35 @@ const Level1_1 = (props) => {
         // this is default camera 
         //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
         camera = createCamera(0, 7, 34, 0, 5, 0);
-        scene = createScene(0x348C31, false);
+        scene = createNewScene();
 
-        if (steps && !steps[0] && !steps[1]) {
-            showObject(scene, camera);
-        } else {
-            scene.add( camera );
-        }
-        
+        /////////////////////////////////////////////////////////////
+        renderer = new THREE.WebGLRenderer( { antialias: true } );
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
+        renderer.shadowMap.enabled = true;
+        renderer.autoClear = true;
+        renderer.resetState();
+
+        setAnimationCount(animationCount++);
+
+    };
+
+    const createNewScene = () => {
+
+        let scene = createScene(0x348C31, true);
+
+        scene.add(camera);
+
         // SPOTLIGHT ///////////////////////////
         const spotLight = new THREE.SpotLight( 0xffffff, 2, -Math.PI);
-    
+
         spotLight.position.set( 0, 13, 0 );
-    
+
         const targetObject = new THREE.Object3D();
         targetObject.position.set(0, 13, -200)
         scene.add(targetObject);
-    
+
         spotLight.target = targetObject;
         scene.add( spotLight );
         /////////////////////////////////////////
@@ -88,46 +102,44 @@ const Level1_1 = (props) => {
         let player;
         // * create player => THIS IS GOING TO BE TRIGGERED BY USER CODE - STEP 1
 
-        const tree1 = createTree();
+        let tree1 = createTree();
         tree1.position.x = 10;
 
         const tree2 = createTree();
         tree2.position.set(-6, 0, -15);
         tree2.rotateY(Math.PI/3)
 
-        showObject(scene, tree1);
-        showObject(scene, tree2);
+        //showObject(scene, tree1, 750, '-' + (currentFrame));
+        //showObject(scene, tree2, 750, '-' + (currentFrame*100));
+
+        scene.add(tree1)
+        scene.add(tree2)
 
         if (steps && steps[0]) {
+
+            const step2_response = ['Hey', 'Hello', 'How are you?'];
 
             player = createPlayer();
             player.position.z = 12
 
-            if (!steps[1]) {
-                showObject(scene, player);
-            } else {
-                scene.add( player );
+
+            showObject(scene, player, 300, -10000*(animationCount-1));
+            jumpingMovement(player, 3);
+
+            if (steps[1]) {
+
+                step2_response.forEach(response => {
+                    let text = createText(response, 0.5, 0x171717, true, true, 0xffffff);
+                    popUpText(text, scene, player);
+                });
+
             }
 
         }
 
-        // ! this response comes from backend
-        const step2_response = args;
+        return scene;
 
-        // * create text => THIS IS GOING TO BE TRIGGERED BY USER CODE -STEP 2
-        // const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, bubbleColor)
-
-        if (steps && steps[1]) {
-            showText(createText(step2_response, 0.5, 0x171717, true, true, 0xffffff), scene, player)
-        }
-
-        /////////////////////////////////////////////////////////////
-        renderer = new THREE.WebGLRenderer( { antialias: true } );
-        renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
-        renderer.shadowMap.enabled = true;
-
-    };
+    }
 
     const clearAnimation = () => {
 
@@ -141,21 +153,15 @@ const Level1_1 = (props) => {
             canvasElements[0].remove();
         }
 
+        animationCount++;
+
     };
 
-    const startAnimation = (time) => {
+    const startAnimation = () => {
 
-        let animationDuration = 3000;
+        TWEEN.update()
 
-        TWEEN.update(time)
-
-        if (frame % animationDuration === 0) {
-            console.log("Stopping animation")
-            cancelAnimationFrame(frame+1);
-            return;
-        }
-
-        frame = requestAnimationFrame(startAnimation)
+        currentFrame = requestAnimationFrame(startAnimation)
         renderer.render(scene, camera)
 
         if (document.getElementById("three_js"))
