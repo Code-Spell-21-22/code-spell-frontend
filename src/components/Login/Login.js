@@ -14,28 +14,25 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-
     const onInputChanged = (state, event) => {
         state(event.target.value);
     };
 
-    const notify = (message) => toast(message);
-
     const onSubmit = () => {
         if (!email|| !password){
-            notify("Please fill all fields");
+            toast.warning("Please fill all fields");
             return;
         }
             
         postLogin(email, password)
         .then((response) => {
-            notify(response.data.message);
+            toast.success(response.data.message)
             localStorage.setItem('code_spell_token', response.data.token);
             localStorage.setItem('user_email', email);
 
             setTimeout(() => window.location.replace("/"), 2000);
         }, (error) => {
-            notify(JSON.parse(error.request.response)['message']);
+            toast.error(JSON.parse(error.request.response)['message']);
             console.log(error);
         });
 

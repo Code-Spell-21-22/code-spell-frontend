@@ -22,7 +22,6 @@ async function getUserDetails(email) {
     return axios.get(apiAddress + '/user/' + email + '/details', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
         }
     });
 }
@@ -31,7 +30,6 @@ async function getUserAchievements(email) {
     return axios.get(apiAddress + '/user/' + email + '/achievements', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
         }
     });
 }
@@ -51,7 +49,7 @@ async function putUserPassword(email, password) {
     }, {
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
+            'Content-Type': 'application/json'
         }
     });
 }
@@ -62,7 +60,7 @@ async function putUserName(email, name) {
     }, {
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
+            'Content-Type': 'application/json'
         }
     });
 }
@@ -77,7 +75,6 @@ async function getLevelLeaderboard(levelId, language, level, skillLevel) {
         },
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
         }
     });
 }
@@ -86,7 +83,6 @@ async function getLevelDocumentation(levelId) {
     return axios.get(apiAddress + '/level/' + levelId + '/documentation', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
         }
     })
 }
@@ -100,7 +96,6 @@ async function getLevels(language, skill_level, chapter) {
         },
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
         }
     });
 }
@@ -113,7 +108,6 @@ async function getChapter(language, skillLevel) {
         },
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
         }
     });
 }
@@ -122,7 +116,6 @@ async function getPossibleSolutions(levelId) {
     return axios.get(apiAddress + '/level/' + levelId + '/solutions', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
         }
     })
 }
@@ -141,7 +134,6 @@ async function getLevelGoals(levelId) {
     return axios.get(apiAddress + '/level/' + levelId + '/goals', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
         }
     });
 }
@@ -150,26 +142,87 @@ async function getLevel(levelId) {
     return axios.get(apiAddress + '/level/' + levelId, {
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
         }
     });
 }
 
-async function getSolution(levelId, solutionId) {
-    return axios.get(apiAddress + '/level/' + levelId + '/solutions/' + solutionId, {
+async function getAllAchievements() {
+    return axios.get(apiAddress + '/achievements', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
+        }
+    });
+}
+
+async function getAchievementDetails(achievementId) {
+    return axios.get(apiAddress + `/achievements/${achievementId}`, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+        }
+    });
+}
+
+async function postFinalSolution(levelId, codeReportId, score, code, settings) {
+
+    let body;
+
+    if (settings) {
+        body = {
+            levelId: levelId,
+            codeReportId: codeReportId,
+            score: score,
+            code: code,
+            settings: settings
+        }
+    } else {
+        body = {
+            levelId: levelId,
+            codeReportId: codeReportId,
+            score: score,
+            code: code,
+        }
+    }
+
+    return axios.post(apiAddress + '/solution', body, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
     });
 
+}
+
+async function getAllUserSolutions() {
+    return axios.get(apiAddress + '/solution', {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+        }
+    });
+}
+
+async function getAllSolutionsForLevel(levelId) {
+    return axios.get(apiAddress + `/solution/${levelId}`, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+        }
+    });
+}
+
+async function putAchievementToUser(email, achievementId) {
+    return axios.put(apiAddress + `/user/${email}/achievements`, {
+        achievementId: achievementId
+    }, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
+        }
+    });
 }
 
 export {
     postRegister,
     postLogin,
     getChapter,
-    getSolution,
     getLevel,
     getLevelGoals,
     getPossibleSolutions,
@@ -181,5 +234,11 @@ export {
     getAllAchievements,
     getUserDetails,
     putUserName,
-    putUserPassword
+    putUserPassword,
+    getAllAchievements,
+    getAchievementDetails,
+    postFinalSolution,
+    getAllUserSolutions,
+    getAllSolutionsForLevel,
+    putAchievementToUser
 };

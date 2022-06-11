@@ -2,6 +2,7 @@ import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 import { updateOutput, updateId, updateScore, updateSteps, updateExecutionStatus, updateErrors, updateAnalysisStatus } from "../features/code/codeSlice";
 import {store} from "../app/store";
+import {toast} from "react-toastify";
 
 let stompClient = null;
 let listenableCodeId = null;
@@ -48,6 +49,8 @@ export const connect = () => {
 
             const analysisStatus = JSON.parse(response.body).analysisStatus;
             store.dispatch(updateAnalysisStatus(analysisStatus));
+
+            toast.success("Code execution finished", {icon: "🚀"});
 
             listenableCodeId = null;
 

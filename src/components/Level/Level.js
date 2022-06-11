@@ -9,7 +9,7 @@ import GenericModal from "../Modals/GenericModal";
 import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
-import {getLevel, postCodeRun, postCodeSolution} from '../../utils/api/apihandler';
+import {postLevelSolution} from '../../utils/api/apihandler';
 
 import Level1_1 from "../LevelGraphics/Chapter1_Introduction/Level1_1"
 import {useEffect, useState} from "react";
@@ -66,6 +66,21 @@ const Level = () => {
         setLoading(false);
     }, [codeReportId]);
 
+    useEffect(() => {
+
+        let errorsButton = document.getElementById("errorsButton");
+        let errorsButtonSpan = document.getElementById("errorsButtonSpan");
+
+        if (errors && errors.length > 0) {
+            errorsButton.style.backgroundColor = "#FD5D5D";
+            errorsButtonSpan.style.color = "#FFFFFF";
+        } else {
+            errorsButton.style.backgroundColor = "#FFFFFF";
+            errorsButtonSpan.style.color = "#2C5AA2";
+        }
+
+    }, [errors]);
+
     const navbarHandler = () => {
         setNavbarOpen(!navbarOpen);
     };
@@ -88,12 +103,16 @@ const Level = () => {
         let solutionId = generateUUID(); //generate with Crypto.randomUUID()
         updateListenableCodeId(solutionId); // Update Websockets
 
-        postCodeRun(currentLevel.id, solutionId, code)
+        postLevelSolution(currentLevel.id, solutionId, code)
             .then(r => {
+                toast.success("Your code is running", {icon: "🚀"})
                 console.log(r);
-                setLoading(true)
+                setLoading(true);
             })
-            .catch(e => {console.log(e); setLoading(false)});
+            .catch(e => {
+                toast.warning("Unable to run the code")
+                console.log(e); setLoading(false)
+            });
 
     }
 
@@ -119,6 +138,7 @@ const Level = () => {
             outputPanels.push(<span style={{fontSize: "0.8vw"}}>{o}</span>);
         }
     }
+
 
     return (
         <Container className="container-fluid mx-3 mt-5">
@@ -172,10 +192,10 @@ const Level = () => {
                     </Card>
                     <Row>
                         <Col className="col-3">
-                            <Button onClick={optionHandler.bind(this, "errors")}
-                                    className="w-100 me-5 shadow bg-white justify-content-center align-items-center d-flex"
-                                    style={{border: "none", height: "6vh", minHeight: "50px"}}>
-                                <span style={{color: "#2C5AA2"}}>ERRORS</span>
+                            <Button id="errorsButton" onClick={optionHandler.bind(this, "errors")}
+                                    className="w-100 me-5 shadow justify-content-center align-items-center d-flex"
+                                    style={{border: "none", height: "6vh", minHeight: "50px", backgroundColor: "#FFFFFF"}}>
+                                <span id="errorsButtonSpan" style={{color: "#2C5AA2"}}>ERRORS</span>
                             </Button>
                         </Col>
                         <Col className="col-3 align-items-center justify-content-end d-flex">
@@ -225,9 +245,10 @@ const Level = () => {
                         </Col>
                     </Row>
                 </Col>
-                <Col className="mx-3 p-0 mb-4 col-4" style={{minHeight: "50vh", borderRadius: "10px", backgroundColor: "white"}} >
+                <Col className="m-3 p-3 mb-4 col-4" style={{minHeight: "50vh", borderRadius: "10px", backgroundColor: "white"}} >
 
                     {!selectedOption &&
+
                         <Row className="justify-content-right d-flex">
                             <Level1_1 analysisStatus={analysisStatus} steps={steps} codeId={codeReportId}/>
                         </Row>

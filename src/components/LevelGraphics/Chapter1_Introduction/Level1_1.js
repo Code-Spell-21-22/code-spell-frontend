@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 
 import * as THREE from "three";
 
@@ -7,13 +7,12 @@ import {
     clearTweenMovements,
     jumpingMovement, moveToLeft, moveToRight,
 } from '../Builders/tweenMotions';
-import {createText, hideText, popUpText, showText} from '../Builders/createText';
+import {createText, popUpText} from '../Builders/createText';
 import {createPlayer} from '../Builders/createPlayer';
 import {createTree} from '../Builders/createItems'
+import {addPopUpToChain, clearPopUpChain, startPopUpChain} from "../Builders/chainPopupTest";
 
 const TWEEN = require('@tweenjs/tween.js')
-
-let currentFrame = 1;
 
 // * Hello World
 const Level1_1 = (props) => {
@@ -130,10 +129,14 @@ const Level1_1 = (props) => {
 
                     if (steps[2]) {
 
+                        clearPopUpChain();
+
                         step2_response.forEach(response => {
                             let text = createText(response, 0.5, 0x171717, true, true, 0xffffff);
-                            popUpText(text, scene, player);
+                            addPopUpToChain(text, scene, player);
                         });
+
+                        startPopUpChain();
 
                     } else {
 
@@ -194,6 +197,7 @@ const Level1_1 = (props) => {
         }
 
         clearTweenMovements();
+        clearPopUpChain();
 
     };
 
@@ -201,7 +205,7 @@ const Level1_1 = (props) => {
 
         TWEEN.update()
 
-        currentFrame = requestAnimationFrame(startAnimation)
+        requestAnimationFrame(startAnimation)
         renderer.render(scene, camera)
 
         if (document.getElementById("three_js"))
