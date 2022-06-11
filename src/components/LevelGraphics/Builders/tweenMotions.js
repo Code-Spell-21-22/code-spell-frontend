@@ -238,6 +238,70 @@ export const transitionObjectColor = (obj, hex, timeTo, delay) => {
             movements[i].chain(movements[i+1]);
         }
     }
+    
+    movements[0].start(delay);
+};
+
+export const rotationMovement = (obj, fruit, y0, y1, timeTo, delay) => {
+
+    // var tween0 = new TWEEN.Tween( obj.position ).to( new THREE.Vector3( obj.position.x, y0, obj.position.z ), timeTo/5 ); 
+    // var tween1 = new TWEEN.Tween( obj.rotation ).to({ y: "-" + 2*Math.PI}, timeTo);
+    // var tween2 = new TWEEN.Tween( obj.position ).to( new THREE.Vector3( obj.position.x, y1, obj.position.z ), timeTo/5 ); 
+
+    var tween1 = new TWEEN.Tween( obj.position ).to( new THREE.Vector3( fruit.position.x, y0, fruit.position.z ), timeTo )
+        .onStart(function(){
+            new TWEEN.Tween( obj.rotation ).to({ y: "-" + Math.PI}, timeTo).start() })
+    
+    var tween2 = new TWEEN.Tween( obj.position ).to( new THREE.Vector3( fruit.position.x, y1, fruit.position.z ), timeTo )
+        .onStart(function(){
+            new TWEEN.Tween( obj.rotation ).to({ y: "-" + Math.PI}, timeTo).start() })
+
+    //movements.push(tween0);
+    movements.push(tween1);
+    movements.push(tween2);
+
+    if (movements.length >= 2) {
+        for (let i = 0; i < movements.length - 1; i++){
+            movements[i].chain(movements[i+1]);
+        }
+    }
+
+    movements[0].start(delay);
+
+}
+
+export const jumpingMovement = () => {
+
+}
+
+export const transitionColor = (scene, hex, timeTo, delay) => {
+
+    var newColor = new THREE.Color( hex );
+    var tween = new TWEEN.Tween( scene.background ).to( newColor, timeTo ); 
+
+    movements.push(tween);
+
+    if (movements.length >= 2) {
+        for (let i = 0; i < movements.length - 1; i++){
+            movements[i].chain(movements[i+1]);
+        }
+    }
+
+    movements[0].start(delay);
+};
+
+export const transitionObjectColor = (obj, hex, timeTo, delay) => {
+
+    var newColor = new THREE.Color( hex );
+    var tween = new TWEEN.Tween( obj.material.color ).to( newColor, timeTo ); 
+
+    movements.push(tween);
+
+    if (movements.length >= 2) {
+        for (let i = 0; i < movements.length - 1; i++){
+            movements[i].chain(movements[i+1]);
+        }
+    }
 
     movements[0].start(delay);
 };
@@ -249,5 +313,4 @@ export const showObject = (scene, object, animationTime=750, delay='+1000', onCo
     resizeMovement(object, 1, 1, 1, 500, delay, onComplete);
 
 }
-
 

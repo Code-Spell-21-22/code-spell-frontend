@@ -10,6 +10,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
 import {postLevelSolution} from '../../utils/api/apihandler';
+import Level2_3 from "../LevelGraphics/Chapter2_LanguageBasics/Level2_3"
 
 import Level1_1 from "../LevelGraphics/Chapter1_Introduction/Level1_1"
 import {useEffect, useState} from "react";
@@ -244,9 +245,10 @@ const Level = () => {
                     {!selectedOption &&
 
                         <Row className="justify-content-right d-flex">
-                            <Level1_1 analysisStatus={analysisStatus} steps={steps} codeId={codeReportId}/>
+                            <Level2_3 className="m-0" />  
                         </Row>
                     }
+
 
                     {selectedOption !== undefined &&
                         <GenericModal content_type={selectedOption} level={currentLevel}
