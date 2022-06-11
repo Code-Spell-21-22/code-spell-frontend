@@ -7,13 +7,14 @@ import Navbar from "../Navbar/Navbar";
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 import {Doughnut} from 'react-chartjs-2';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchUserDetails, selectProgress} from "../../features/userDetails/userDetailsSlice";
+import {fetchUserDetails, fetchUserProgress, selectProgress} from "../../features/userDetails/userDetailsSlice";
 import {useEffect, useState} from "react";
-import {fetchDifficulty, fetchLanguage, selectLanguage} from "../../features/settings/settingsSlice";
+import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 
 const Levels = () => {
 
     const language = useSelector(selectLanguage);
+    const difficulty = useSelector(selectDifficulty);
     const progress = useSelector(selectProgress);
 
     const [selectedChapter, setSelectedChapter] = useState(undefined);
@@ -27,6 +28,12 @@ const Levels = () => {
         dispatch(fetchDifficulty());
         dispatch(fetchUserDetails());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (language && difficulty) {
+            dispatch(fetchUserProgress(language, difficulty));
+        }
+    }, [language, difficulty]);
 
     useEffect(() => {
         for (let idx in progress) {
@@ -52,11 +59,11 @@ const Levels = () => {
     let total = 0;
     let percentage = 0;
 
-    if (selectedProgress) {
-        completed = selectedProgress.completed_levels;
-        total = selectedProgress.total_levels;
-        notCompleted = total - completed;
-        percentage = selectedProgress.percentage * 100;
+    if (progress) {
+        completed = progress.Completed;
+        total = progress.Total;
+        notCompleted = total - completed
+        percentage = Math.round(completed / total * 100);
     }
 
     const data = {

@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 import {useEffect, useState} from "react";
 import {
-    fetchUserDetails,
+    fetchUserDetails, fetchUserProgress,
     selectEmail,
     selectProgress,
     selectUsername
@@ -21,7 +21,7 @@ const UserPanel = () => {
     const username = useSelector(selectUsername);
     const email = useSelector(selectEmail);
 
-    const [selectedProgress, setSelectedProgress] = useState(undefined);
+    const [progressPercentage, SetProgressPercentage] = useState(0);
 
     const dispatch = useDispatch();
 
@@ -29,22 +29,19 @@ const UserPanel = () => {
        dispatch(fetchLanguage());
        dispatch(fetchDifficulty());
        dispatch(fetchUserDetails());
-
     }, [dispatch]);
 
     useEffect(() => {
-        if (progress && language) {
-            for (let idx in progress) {
-                if (progress[idx].language && progress[idx].language.toUpperCase() === language.toUpperCase()) {
-                    setSelectedProgress(progress[idx]);
-                }
-            }
+        if (language && difficulty) {
+            dispatch(fetchUserProgress(language, difficulty));
+        }
+    }, [language, difficulty]);
+
+    useEffect(() => {
+        if (progress) {
+            SetProgressPercentage(Math.round(progress.Completed / progress.Total * 100));
         }
     }, [progress]);
-
-    let progressPercentage = 0;
-    if (selectedProgress)
-        progressPercentage = selectedProgress.percentage * 100;
 
     return(
         <Card className="shadow p-3 mb-5 bg-white rounded">

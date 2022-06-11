@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {getUserDetails} from "../../utils/api/apihandler";
+import {getAllUserSolutions, getLevels, getUserDetails} from "../../utils/api/apihandler";
 
 // Default values
 const initialState = {
     username: "",
     email: "",
     password: "",
-    progress: []
+    progress: {}
 };
 
 export const userDetailsSlice = createSlice({
@@ -44,9 +44,19 @@ export const fetchUserDetails = () => async dispatch => {
             dispatch(updateUsername(res.data.username));
             dispatch(updateEmail(res.data.email));
             dispatch(updatePassword(res.data.password));
-            // dispatch(updateProgress(res.data.progress));
-            dispatch(updateProgress([]));
         });
     }
 };
+
+export const fetchUserProgress = (language, difficulty) => async dispatch => {
+
+    getLevels(language, difficulty).then(res => {
+        const nLevels = res.data.length;
+
+        getAllUserSolutions().then(res => {
+            let progress = {'Completed': res.data.length, 'Total': nLevels};
+            dispatch(updateProgress(progress));
+        });
+    });
+}
 

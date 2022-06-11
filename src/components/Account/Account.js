@@ -7,7 +7,7 @@ import {faCircleCheck, faEdit, faStar} from "@fortawesome/free-solid-svg-icons";
 import Row from "react-bootstrap/Row";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {fetchUserDetails, selectProgress} from "../../features/userDetails/userDetailsSlice";
+import {fetchUserDetails, fetchUserProgress, selectProgress} from "../../features/userDetails/userDetailsSlice";
 import {putUserName, putUserPassword} from "../../utils/api/apihandler";
 import {toast} from "react-toastify";
 
@@ -18,12 +18,18 @@ const Account = () => {
 
     const [newUsername, setNewUsername] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [progressPercentage, SetProgressPercentage] = useState(0);
 
     useEffect(() => {
         dispatch(fetchUserDetails());
+        dispatch(fetchUserProgress("Java", "Novice"));
     }, [dispatch]);
 
-    const notify = (message) => toast(message);
+    useEffect(() => {
+        if (progress) {
+            SetProgressPercentage(Math.round(progress.Completed / progress.Total * 100));
+        }
+    }, [progress]);
 
     const checkUsername = (username) =>{
         //from 3 to 20 in length no _ or . at the start/end/consecutive only allows for A-Z Numbers and _ .
@@ -40,14 +46,14 @@ const Account = () => {
 
         let username = newUsername;
         console.log(username);
-        if(!username && !changeUsername(username)){
-            notify("Please provide an username, only A-Z,0-9 , _ and . are allowed!");
+        if(!username && !checkUsername(username)){
+            toast.warning("Please provide an username, only A-Z,0-9 , _ and . are allowed!");
             return;
         }
 
         let email = localStorage.getItem('user_email');
         putUserName(email, username).then(() => {
-            notify("Username changed successfully");
+            toast.success("Username changed successfully", {icon: "🚀"});
         });
     }
 
@@ -55,28 +61,25 @@ const Account = () => {
 
         let password = newPassword;
         if (!password && !passwordStrength(password)) {
-            notify("Please provide a password, at least 8 characters, one uppercase letter, one lowercase letter and one number!");
+            toast.warning("Please provide a password, at least 8 characters, one uppercase letter, one lowercase letter and one number!");
             return;
         }
 
         let email = localStorage.getItem('user_email');
         putUserPassword(email, password).then(res => {
-            notify("Password changed successfully");
+            toast.success("Password changed successfully", {icon: "🚀"});
         });
     }
 
-    let progressBars = [];
-    for (let idx in progress) {
-        progressBars.push(
-            <Row key={idx}>
-                <p className="mb-0 mt-5" style={{fontSize: "0.9vw", fontWeight: "bold", color: "#1E4172"}}>
-                    <FontAwesomeIcon icon={faCircleCheck}/> {progress[idx].language}
-                </p>
-                <p className="text-end" style={{fontSize: "0.8vw"}}>{progress[idx].percentage * 100}%</p>
-                <ProgressBar animated now={progress[idx].percentage * 100}/>
-            </Row>
-        );
-    }
+    let progressBar =
+        <Row>
+            <p className="mb-0 mt-5" style={{fontSize: "0.9vw", fontWeight: "bold", color: "#1E4172"}}>
+                <FontAwesomeIcon icon={faCircleCheck}/> Java
+            </p>
+            <p className="text-end" style={{fontSize: "0.8vw"}}>{progressPercentage}%</p>
+            <ProgressBar animated now={progressPercentage}/>
+        </Row>
+    ;
 
     return (
         <Container>
@@ -145,7 +148,7 @@ const Account = () => {
                                     </Col>
                                 </Card>
                                 <Row className="mb-5 justify-content-center d-flex">
-                                    {progressBars}
+                                    {progressBar}
                                 </Row>
                             </Row>
                         </Card>
