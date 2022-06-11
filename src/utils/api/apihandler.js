@@ -57,13 +57,8 @@ async function putUserName(email, name) {
 }
 
 
-async function getLevelLeaderboard(levelId, language, level, skillLevel) {
+async function getLevelLeaderboard(levelId) {
     return axios.get(apiAddress + '/level/' + levelId + '/leaderboards', {
-        params: {
-            language: language,
-            level: level,
-            skill_level: skillLevel
-        },
         headers: {
             'Authorization': 'Bearer ' + authToken,
         }
