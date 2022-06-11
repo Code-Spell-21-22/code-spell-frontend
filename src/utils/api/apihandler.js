@@ -34,15 +34,6 @@ async function getUserAchievements(email) {
     });
 }
 
-async function getAllAchievements(email) {
-    return axios.get(apiAddress + '/achievements', {
-        headers: {
-            'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'text/plain'
-        }
-    });
-}
-
 async function putUserPassword(email, password) {
     return axios.put(apiAddress + '/user/' + email + '/password', {
         new_password: password
@@ -235,7 +226,6 @@ export {
     getUserDetails,
     putUserName,
     putUserPassword,
-    getAllAchievements,
     getAchievementDetails,
     postFinalSolution,
     getAllUserSolutions,

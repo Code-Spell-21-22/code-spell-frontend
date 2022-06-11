@@ -9,7 +9,7 @@ import GenericModal from "../Modals/GenericModal";
 import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
-import {postLevelSolution} from '../../utils/api/apihandler';
+import {getLevel, postFinalSolution, postLevelSolution} from '../../utils/api/apihandler';
 
 import Level1_1 from "../LevelGraphics/Chapter1_Introduction/Level1_1"
 import {useEffect, useState} from "react";
@@ -18,7 +18,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchDifficulty, fetchLanguage} from "../../features/settings/settingsSlice";
 import {connect, isStompClientConnected, updateListenableCodeId} from "../../web_sockets/WebSocket";
 import {
-    selectAnalysisStatus, selectExecutionStatus,
+    selectAnalysisStatus, selectErrors, selectExecutionStatus,
     selectId, selectScore,
     selectSteps
 } from "../../features/code/codeSlice";
@@ -26,11 +26,15 @@ import {toast} from "react-toastify";
 
 const Level = () => {
 
+    const language = useSelector(fetchLanguage);
+    const difficulty = useSelector(fetchDifficulty);
+
     const steps = useSelector(selectSteps);
     const analysisStatus = useSelector(selectAnalysisStatus);
     const executionStatus = useSelector(selectExecutionStatus);
     const score = useSelector(selectScore);
     const codeReportId = useSelector(selectId);
+    const errors = useSelector(selectErrors);
 
     const initialCode = "//Step 1"+ '\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}' + "\n\n\n//Step 2"+"\n\n\n//Step 3";
 
@@ -46,7 +50,6 @@ const Level = () => {
     const [currentLevel, setCurrentLevel] = useState("");
 
     const dispatch = useDispatch();
-    const notify = (message) => toast(message);
 
     useEffect(() => {
 
@@ -71,12 +74,14 @@ const Level = () => {
         let errorsButton = document.getElementById("errorsButton");
         let errorsButtonSpan = document.getElementById("errorsButtonSpan");
 
-        if (errors && errors.length > 0) {
-            errorsButton.style.backgroundColor = "#FD5D5D";
-            errorsButtonSpan.style.color = "#FFFFFF";
-        } else {
-            errorsButton.style.backgroundColor = "#FFFFFF";
-            errorsButtonSpan.style.color = "#2C5AA2";
+        if (errorsButtonSpan && errorsButton) {
+            if (errors && errors.length > 0) {
+                errorsButton.style.backgroundColor = "#FD5D5D";
+                errorsButtonSpan.style.color = "#FFFFFF";
+            } else {
+                errorsButton.style.backgroundColor = "#FFFFFF";
+                errorsButtonSpan.style.color = "#2C5AA2";
+            }
         }
 
     }, [errors]);
@@ -105,25 +110,27 @@ const Level = () => {
 
         postLevelSolution(currentLevel.id, solutionId, code)
             .then(r => {
-                toast.success("Your code is running", {icon: "🚀"})
+                toast.success("Your code is running", {icon: "🚀"});
                 console.log(r);
                 setLoading(true);
             })
             .catch(e => {
-                toast.warning("Unable to run the code")
+                toast.warning("Unable to run the code");
                 console.log(e); setLoading(false)
             });
-
     }
 
     const submitCode = () => {
 
-        postCodeSolution(currentLevel.id, codeReportId, score, code).then(r => {
-            console.log(r);
-            // notify("Code submitted successfully");
-            // setTimeout(() => window.location.replace("/levels"), 2000);
+        let settings = {'language': language, 'skillLevel': difficulty};
+        postFinalSolution(currentLevel.id, codeReportId, score, code, settings).then(r => {
+            toast.success("Level completed, congratulations!", {icon: "🚀"})
+            setTimeout(() => window.location.replace("/levels"), 2000);
         })
-            .catch(e => {console.log(e)});
+            .catch(e => {
+                toast.warning("Your solution isn't correct");
+                console.log(e)});
+
     }
 
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';
@@ -245,11 +252,11 @@ const Level = () => {
                         </Col>
                     </Row>
                 </Col>
-                <Col className="m-3 p-3 mb-4 col-4" style={{minHeight: "50vh", borderRadius: "10px", backgroundColor: "white"}} >
+                <Col className="m-3 p-3 mb-4 col-4">
 
                     {!selectedOption &&
 
-                        <Row className="justify-content-right d-flex">
+                        <Row className="justify-content-right py-4 px-2 d-flex"  style={{minHeight: "50vh", borderRadius: "10px", backgroundColor: "white"}} >
                             <Level1_1 analysisStatus={analysisStatus} steps={steps} codeId={codeReportId}/>
                         </Row>
                     }
