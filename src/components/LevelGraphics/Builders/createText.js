@@ -1,6 +1,7 @@
 import * as THREE from "three";
 
-import { resizeMovement } from '../Builders/tweenMotions';
+
+import {popUpMovement, resizeMovement} from '../Builders/tweenMotions';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 
@@ -24,12 +25,9 @@ export const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, b
     textGeo.computeBoundingBox();
     const center = textGeo.boundingBox.getCenter(new THREE.Vector3());
     const size = textGeo.boundingBox.getSize(new THREE.Vector3());
-    
-    final.position.set( -center.x, 6, 0.7 );
-    all.add(final);
-            
-    
-    if (hasSpeechBubble == true){
+
+    console.log(size)
+    if (hasSpeechBubble === true){
 
         const box_color = new THREE.MeshBasicMaterial( {color: bubbleColor});
         
@@ -37,12 +35,18 @@ export const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, b
         // p.rotateY( - Math.PI / 2 );
 
         // speech bubble
-        const speech = new THREE.Mesh( new THREE.BoxGeometry( 1, 1.5, size.x+1 ), box_color);
+        const speech = new THREE.Mesh( new THREE.BoxGeometry( 1, size.y+1, size.x+1 ), box_color);
         speech.rotateY( - Math.PI / 2 );
-        speech.position.set( 0, 6.2, 0 ) // scale here
+        if (center.y < 0) {
+            speech.position.set( 0, 7, 0 ) // scale here
+            final.position.set( -center.x, speech.position.y+0.5, 0.7 );
+        } else {
+            speech.position.set( 0, 6.2, 0 ) // scale here
+            final.position.set( -center.x, 6, 0.7 );
+        }
         all.add(speech)
     
-        if (hasTri == true){
+        if (hasTri === true){
             const shape = new THREE.Shape();
     
             shape.moveTo( -0.6, 0 );
@@ -54,7 +58,10 @@ export const createText = (text, fontSize, textColor, hasSpeechBubble, hasTri, b
             tri.position.set( 0, 5.6, 0 ) // scale here
             all.add(tri)
         }
+
+        all.add(final);
     }
+
 
     } );
 
@@ -67,5 +74,15 @@ export const showText = (text, scene, player) => {
     text.scale.set(0, 0, 0)
     text.position.set(player.position.x, player.position.y-2, player.position.z)
     scene.add(text)
-    resizeMovement(text, 1, 1, 1, 1000, '+1000');
+    resizeMovement(text, 1, 1, 1, 500, '+0');
+
+}
+
+export const popUpText = (text, scene, player, onComplete) => {
+
+    text.scale.set(0, 0, 0)
+    text.position.set(player.position.x, player.position.y-2, player.position.z)
+    scene.add(text)
+    popUpMovement(text, 1, 1, 1, 500, onComplete);
+
 }

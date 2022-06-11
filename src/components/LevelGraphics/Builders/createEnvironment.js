@@ -9,26 +9,28 @@ export const createCamera = (posx, posy, posz, lx, ly, lz) => {
     return camera;
 }
 
-export const createScene = () => {    
+export const createScene = (planeColor=0xffffff, enableGrid=true) => {
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x2e78e1);
-    
+
     // The X axis is red. The Y axis is green. The Z axis is blue.
     const axesHelper = new THREE.AxesHelper( 10 );
     // scene.add( axesHelper );
 
     // grid
-    const gridHelper = new THREE.GridHelper( 60, 15 );
-    scene.add( gridHelper );
+    if (enableGrid) {
+        const gridHelper = new THREE.GridHelper(100, 15, 0x348C31, 0x303030);
+        scene.add( gridHelper );
+    }
 
     // plane
-    const plane = new THREE.Mesh( new THREE.PlaneGeometry( 60, 60 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+    const plane = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ), new THREE.MeshBasicMaterial( { color: planeColor } ) );
     plane.rotateX( - Math.PI / 2 );
     plane.receiveShadow = true;
     scene.add( plane );
 
-    // lights    
+    // lights
     const ambientLight = new THREE.AmbientLight( 0x606060, 1 );
     scene.add( ambientLight );
 
@@ -37,7 +39,7 @@ export const createScene = () => {
     scene.add( directionalLight );
 
     // const spotLight = new THREE.SpotLight( 0xffffff, 3, -Math.PI );
-    
+
     // spotLight.position.set( 0, 40, 20 );
 
     // const targetObject = new THREE.Object3D();
