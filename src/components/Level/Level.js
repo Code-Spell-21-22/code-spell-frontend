@@ -9,7 +9,7 @@ import GenericModal from "../Modals/GenericModal";
 import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
-import {getLevel, postLevelSolution} from '../../utils/api/apihandler';
+import {getLevel, postCodeRun, postCodeSolution} from '../../utils/api/apihandler';
 
 import Level1_1 from "../LevelGraphics/Chapter1_Introduction/Level1_1"
 import {useEffect, useState} from "react";
@@ -19,15 +19,17 @@ import {fetchDifficulty, fetchLanguage} from "../../features/settings/settingsSl
 import {connect, isStompClientConnected, updateListenableCodeId} from "../../web_sockets/WebSocket";
 import {
     selectAnalysisStatus, selectExecutionStatus,
-    selectId,
+    selectId, selectScore,
     selectSteps
 } from "../../features/code/codeSlice";
+import {toast} from "react-toastify";
 
 const Level = () => {
 
     const steps = useSelector(selectSteps);
     const analysisStatus = useSelector(selectAnalysisStatus);
     const executionStatus = useSelector(selectExecutionStatus);
+    const score = useSelector(selectScore);
     const codeReportId = useSelector(selectId);
 
     const initialCode = "//Step 1"+ '\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}' + "\n\n\n//Step 2"+"\n\n\n//Step 3";
@@ -44,6 +46,7 @@ const Level = () => {
     const [currentLevel, setCurrentLevel] = useState("");
 
     const dispatch = useDispatch();
+    const notify = (message) => toast(message);
 
     useEffect(() => {
 
@@ -83,11 +86,9 @@ const Level = () => {
             connect();
 
         let solutionId = generateUUID(); //generate with Crypto.randomUUID()
-        let header = "Bearer " + localStorage.hasOwnProperty("code_spell_token");
-
         updateListenableCodeId(solutionId); // Update Websockets
 
-        postLevelSolution(currentLevel.id, solutionId, code, header)
+        postCodeRun(currentLevel.id, solutionId, code)
             .then(r => {
                 console.log(r);
                 setLoading(true)
@@ -98,12 +99,12 @@ const Level = () => {
 
     const submitCode = () => {
 
-        runCode().then(() => {
-            if (analysisStatus === "SUCCESS" && executionStatus === "SUCCESS") {
-                // TODO
-                setTimeout(() => window.location.replace("/levels"), 2000);
-            }
-        });
+        postCodeSolution(currentLevel.id, codeReportId, score, code).then(r => {
+            console.log(r);
+            // notify("Code submitted successfully");
+            // setTimeout(() => window.location.replace("/levels"), 2000);
+        })
+            .catch(e => {console.log(e)});
     }
 
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';
@@ -194,17 +195,33 @@ const Level = () => {
                             </Button>
                         </Col>
                         <Col className="col-3">
-                            <Button className="w-100 shadow justify-content-center align-items-center d-flex" onClick={runCode.bind(this)}
-                                    style={{
-                                        backgroundColor: "#1E4172",
-                                        border: "none",
-                                        height: "6vh",
-                                        minHeight: "50px"
-                                    }}>
-                                    <span style={{color: "white"}}>SUBMIT <FontAwesomeIcon icon={faGreaterThan}
+                            {codeReportId &&
+                                <Button className="w-100 shadow justify-content-center align-items-center d-flex"
+                                        onClick={submitCode}
+                                        style={{
+                                            backgroundColor: "#1E4172",
+                                            border: "none",
+                                            height: "6vh",
+                                            minHeight: "50px"
+                                        }}>
+                                        <span style={{color: "white"}}>SUBMIT <FontAwesomeIcon icon={faGreaterThan}
                                                                                                style={{color: "white"}}/>
-                                    </span>
-                            </Button>
+                                        </span>
+                                </Button>
+                            }
+                            {!codeReportId &&
+                                <Button className="w-100 shadow justify-content-center align-items-center d-flex disabled"
+                                        style={{
+                                            backgroundColor: "#1E4172",
+                                            border: "none",
+                                            height: "6vh",
+                                            minHeight: "50px"
+                                        }}>
+                                        <span style={{color: "white"}}>SUBMIT <FontAwesomeIcon icon={faGreaterThan}
+                                                                                               style={{color: "white"}}/>
+                                        </span>
+                                </Button>
+                            }
                         </Col>
                     </Row>
                 </Col>
