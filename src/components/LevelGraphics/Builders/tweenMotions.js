@@ -7,10 +7,12 @@ export const clearTweenMovements = () => {
     movements = []
 };
 
-export const createMovement = (obj, x, y, z, timeTo, delay) => {
+export const createMovement = (obj, x, y, z, timeTo, delay, onComplete) => {
 
-    var targetPosition = new THREE.Vector3( x, y, z );
-    var tween = new TWEEN.Tween( obj.position ).to( targetPosition, timeTo ); 
+    let movements = [];
+
+    let targetPosition = new THREE.Vector3( x, y, z );
+    let tween = new TWEEN.Tween( obj.position ).to( targetPosition, timeTo );
 
     movements.push(tween);
 
@@ -21,22 +23,26 @@ export const createMovement = (obj, x, y, z, timeTo, delay) => {
     }
 
     movements[0].start(delay);
+    movements[movements.length-1].onComplete(onComplete);
+
+
 };
 
-export const moveToFront = (player) => {
+export const moveToFront = (player, times, onComplete) => {
+
+    let movements = []
+
+    player.rotation.set(0,0,0);
 
     let tween1 = new TWEEN.Tween( player.rotation ).to({ x: Math.PI/2}, 300)
         .onStart(function() {
-            new TWEEN.Tween( player.position ).to(new THREE.Vector3( player.position.x, player.position.y, player.position.z+2 ), 300).start()
-            player.position.set(player.position.x, player.position.y, player.position.z+2)
+            new TWEEN.Tween( player.position ).to(new THREE.Vector3( player.position.x, player.position.y, player.position.z+4), 300).start()
         })
         .onRepeat(function() {
-            new TWEEN.Tween( player.position ).to(new THREE.Vector3( player.position.x, player.position.y, player.position.z+2 ), 300).start()
-            player.position.set(player.position.x, player.position.y, player.position.z+2)
+            new TWEEN.Tween( player.position ).to(new THREE.Vector3( player.position.x, player.position.y, player.position.z+4 ), 300).start()
         });
 
-    let tween2 = new TWEEN.Tween(player.position).to(new THREE.Vector3( player.position.x, player.position.y, player.position.z ), 1000).start();
-
+    tween1.repeat(times);
     movements.push(tween1);
 
     if (movements.length >= 2) {
@@ -45,8 +51,8 @@ export const moveToFront = (player) => {
         }
     }
 
-    tween1.chain(tween2);
-    tween1.repeat(5);
+    movements[0].start()
+    movements[movements.length-1].onComplete(onComplete)
 
 }
 
@@ -210,6 +216,22 @@ export const jumpingMovement = (obj, y, invertedAxis=false, onComplete) => {
 
 }
 
+export const transitionObjectColor = (obj, hex, timeTo, delay) => {
+
+    var newColor = new THREE.Color( hex );
+    var tween = new TWEEN.Tween( obj.material.color ).to( newColor, timeTo ); 
+
+    movements.push(tween);
+
+    if (movements.length >= 2) {
+        for (let i = 0; i < movements.length - 1; i++){
+            movements[i].chain(movements[i+1]);
+        }
+    }
+    
+    movements[0].start(delay);
+};
+
 export const transitionColor = (scene, hex, timeTo, delay) => {
 
     var newColor = new THREE.Color( hex );
@@ -226,28 +248,12 @@ export const transitionColor = (scene, hex, timeTo, delay) => {
     movements[0].start(delay);
 };
 
-export const transitionObjectColor = (obj, hex, timeTo, delay) => {
-
-    var newColor = new THREE.Color( hex );
-    var tween = new TWEEN.Tween( obj.material.color ).to( newColor, timeTo ); 
-
-    movements.push(tween);
-
-    if (movements.length >= 2) {
-        for (let i = 0; i < movements.length - 1; i++){
-            movements[i].chain(movements[i+1]);
-        }
-    }
-
-    movements[0].start(delay);
-};
-
-export const showObject = (scene, object, animationTime=750, delay='+1000', onComplete) => {
+export const showObject = (scene, object, animationTime=750, delay='+1000', onComplete=undefined) => {
 
     object.scale.set(0, 0, 0)
     scene.add(object)
-    resizeMovement(object, 1, 1, 1, 500, delay, onComplete);
+
+    resizeMovement(object, 1, 1, 1, animationTime);
 
 }
-
 

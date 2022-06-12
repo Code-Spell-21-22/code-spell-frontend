@@ -44,6 +44,7 @@ export const createInventory = () => {
     return group;    
 }
 
+
 export const createSword = () => {
     const group = new THREE.Group();
     

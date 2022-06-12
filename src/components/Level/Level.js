@@ -10,12 +10,13 @@ import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
 import {
-    getAllAchievements, getCodeProvided,
+    getAllAchievements, getChapter, getCodeProvided,
     getLevel,
     postFinalSolution,
     postLevelSolution,
     putAchievementToUser
 } from '../../utils/api/apihandler';
+import Level2_3 from "../LevelGraphics/Chapter2_LanguageBasics/Level2_3"
 
 import Level1_1 from "../LevelGraphics/Chapter1_Introduction/Level1_1"
 import {useEffect, useState} from "react";
@@ -50,6 +51,7 @@ const Level = () => {
     const [selectedOption, setSelectedOption] = useState(undefined);
     const [code, setCode] = useState(initialCode);
     const [loading, setLoading] = useState(false);
+    const [levelComponent, setLevelComponent] = useState(undefined);
 
     const output = useSelector(selectOutput);
 
@@ -72,10 +74,10 @@ const Level = () => {
         getLevel(levelId).then(res => {
             setCurrentLevel(res.data);
         })
-            .catch(err => {
-                console.log(err)
-                window.location.replace("/levels");
-            });
+        .catch(err => {
+            console.log(err)
+            window.location.replace("/levels");
+        });
 
         getCodeProvided(levelId).then(res => {
             setInitialCode(res.data);
@@ -86,9 +88,13 @@ const Level = () => {
 
     useEffect(() => {
         if (currentLevel) {
+
             getAllAchievements().then(res => {
                 setAchievement(res.data.find(a => a.levelId === currentLevel.id));
             });
+
+            updateGraphicsComponent();
+
         }
     }, [currentLevel]);
 
@@ -113,6 +119,10 @@ const Level = () => {
 
     }, [errors]);
 
+    useEffect(() => {
+        updateGraphicsComponent();
+    }, [codeReportId, steps, analysisStatus]);
+
     const navbarHandler = () => {
         setNavbarOpen(!navbarOpen);
     };
@@ -126,6 +136,22 @@ const Level = () => {
         ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
             (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)));
     };
+
+    const updateGraphicsComponent = () => {
+        if (currentLevel) {
+            switch (currentLevel.number) {
+                case 1:
+                    setLevelComponent(<Level1_1 steps={steps} analysisStatus={analysisStatus} codeId={codeReportId} />);
+                    break;
+                case 3:
+                    setLevelComponent(<Level2_3 steps={steps} analysisStatus={analysisStatus} codeId={codeReportId} />);
+                    break;
+                default:
+                    setLevelComponent(<div>Unable to find graphics component.</div>);
+                    break;
+            }
+        }
+    }
 
     const runCode = () => {
 
@@ -295,15 +321,13 @@ const Level = () => {
                 <Col className="m-3 p-3 mb-4 col-4">
 
                     {!selectedOption &&
-
                         <Row className="justify-content-right py-4 px-2 d-flex"  style={{minHeight: "50vh", borderRadius: "10px", backgroundColor: "white"}} >
-                            <Level1_1 analysisStatus={analysisStatus} steps={steps} codeId={codeReportId}/>
+                            {levelComponent}
                         </Row>
                     }
 
                     {selectedOption !== undefined &&
-                        <GenericModal content_type={selectedOption} level={currentLevel}
-                                      on_option_changed={optionHandler.bind(this)}/>
+                        <GenericModal content_type={selectedOption} level={currentLevel} on_option_changed={optionHandler.bind(this)}/>
                     }
 
                 </Col>
