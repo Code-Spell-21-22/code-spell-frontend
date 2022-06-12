@@ -19,6 +19,7 @@ import Achievements from "./components/Achievements/Achievements";
 import {Flip, ToastContainer} from "react-toastify";
 import Settings from "./components/Settings/Settings";
 import Account from "./components/Account/Account";
+import Solutions from "./components/Solutions/Solutions";
 
 function App() {
 
@@ -62,6 +63,7 @@ function App() {
               <Router>
                   <Routes>
                       <Route  path="/" element={<Dashboard />}/>
+                      <Route  path="/solutions" element={<Solutions />}/>
                       <Route  path="/levels" element={<Levels />}/>
                       <Route  path="/levels/:levelId" element={<Level />}/>
                       <Route  path="/leaderboards" element={<Leaderboards />}/>
