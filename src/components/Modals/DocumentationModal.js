@@ -45,7 +45,9 @@ const DocumentationModal = (props) => {
                     <Card className="p-3">
                         <p className="mb-1"
                            style={{fontSize: "0.8vw", fontWeight: "bold", textTransform: "uppercase"}}>{doc.title}</p>
-                        <h3 className="align-items-center d-flex" style={{fontSize: "0.8vw", color: "#3f73c2"}}>Learn More
+                        <h3 className="align-items-center d-flex" style={{fontSize: "0.8vw", color: "#3f73c2", cursor: "pointer"}}
+                            onClick={() => window.open(doc.link)}>
+                            Learn More
                             <FontAwesomeIcon className="rounded-circle text-white p-2 ms-2"
                                              style={{fontSize: "0.4vw", backgroundColor: "#3f73c2"}}
                                              icon={faGreaterThan}/></h3>

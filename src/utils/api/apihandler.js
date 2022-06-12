@@ -148,17 +148,17 @@ async function getAchievementDetails(achievementId) {
     });
 }
 
-async function postFinalSolution(levelId, codeReportId, score, code, settings) {
+async function postFinalSolution(levelId, codeReportId, score, code, language, difficulty) {
 
     let body;
 
-    if (settings) {
+    if (language && difficulty) {
         body = {
             levelId: levelId,
             codeReportId: codeReportId,
             score: score,
             code: code,
-            settings: settings
+            settings: {language: language.toUpperCase(), skillLevel: difficulty.toUpperCase()}
         }
     } else {
         body = {

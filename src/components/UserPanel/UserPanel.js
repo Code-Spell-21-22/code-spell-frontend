@@ -54,7 +54,7 @@ const UserPanel = () => {
                     <h3 style={{fontSize: "0.9vw"}}>{email}</h3>
 
                     <span style={{fontSize: "0.8vw"}}>PROGRESS</span>
-                    <h3 style={{fontSize: "0.8vw"}}>{language} {progressPercentage}%</h3>
+                    <h3 style={{fontSize: "0.8vw"}}>{language} {progressPercentage || 0}%</h3>
                 </Col>
                 <Col className="col-3">
                     <Card className="text-center mt-1 px-2 py-3 mb-2 shadow" style={{border: "none", backgroundColor: "rgba(39,109,210,0.53)"}}>

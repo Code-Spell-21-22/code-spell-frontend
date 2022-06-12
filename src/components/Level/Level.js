@@ -9,29 +9,37 @@ import GenericModal from "../Modals/GenericModal";
 import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
-import {getLevel, postFinalSolution, postLevelSolution} from '../../utils/api/apihandler';
+import {
+    getAllAchievements,
+    getLevel,
+    postFinalSolution,
+    postLevelSolution,
+    putAchievementToUser
+} from '../../utils/api/apihandler';
 
 import Level1_1 from "../LevelGraphics/Chapter1_Introduction/Level1_1"
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchDifficulty, fetchLanguage} from "../../features/settings/settingsSlice";
+import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 import {connect, isStompClientConnected, updateListenableCodeId} from "../../web_sockets/WebSocket";
 import {
     selectAnalysisStatus, selectErrors, selectExecutionStatus,
-    selectId, selectScore,
+    selectId, selectOutput, selectScore,
     selectSteps
 } from "../../features/code/codeSlice";
 import {toast} from "react-toastify";
+import {fetchUserDetails, selectEmail} from "../../features/userDetails/userDetailsSlice";
 
 const Level = () => {
 
-    const language = useSelector(fetchLanguage);
-    const difficulty = useSelector(fetchDifficulty);
+    const email = useSelector(selectEmail);
+
+    const language = useSelector(selectLanguage);
+    const difficulty = useSelector(selectDifficulty);
 
     const steps = useSelector(selectSteps);
     const analysisStatus = useSelector(selectAnalysisStatus);
-    const executionStatus = useSelector(selectExecutionStatus);
     const score = useSelector(selectScore);
     const codeReportId = useSelector(selectId);
     const errors = useSelector(selectErrors);
@@ -43,27 +51,40 @@ const Level = () => {
     const [code, setCode] = useState(initialCode);
     const [loading, setLoading] = useState(false);
 
-    const output = useSelector(state => state.code.output);
+    const output = useSelector(selectOutput);
 
     let { levelId } = useParams();
 
     const [currentLevel, setCurrentLevel] = useState("");
 
     const dispatch = useDispatch();
+    const [achievement, setAchievement] = useState(undefined);
 
     useEffect(() => {
 
         dispatch(fetchLanguage());
         dispatch(fetchDifficulty());
+        dispatch(fetchUserDetails());
 
         if (!isStompClientConnected())
             connect();
 
         getLevel(levelId).then(res => {
             setCurrentLevel(res.data);
-        });
-
+        })
+            .catch(err => {
+                console.log(err)
+                window.location.replace("/levels");
+            });
     }, []);
+
+    useEffect(() => {
+        if (currentLevel) {
+            getAllAchievements().then(res => {
+                setAchievement(res.data[currentLevel.number - 1]);
+            });
+        }
+    }, [currentLevel]);
 
     useEffect(() => {
         setLoading(false);
@@ -122,20 +143,24 @@ const Level = () => {
 
     const submitCode = () => {
 
-        let settings = {'language': language, 'skillLevel': difficulty};
-        postFinalSolution(currentLevel.id, codeReportId, score, code, settings).then(r => {
-            toast.success("Level completed, congratulations!", {icon: "🚀"})
-            setTimeout(() => window.location.replace("/levels"), 2000);
+        postFinalSolution(currentLevel.id, codeReportId, score, code, language, difficulty).then(r => {
+
+            putAchievementToUser(email, achievement.id).then(r => {
+                toast.success("Level completed, congratulations!", {icon: "🚀"})
+                setTimeout(() => window.location.replace("/levels"), 2000);
+            })
+                .catch(e => {
+                    toast.warning("Something went wrong, try again");
+                    console.log(e);
+                });
+
         })
             .catch(e => {
                 toast.warning("Your solution isn't correct");
                 console.log(e)});
-
     }
 
     const fadeInNavbar = navbarOpen ? 'fadein' : 'fadein hide';
-
-    if (!currentLevel) return;
 
     let outputPanels = [];
     if (!output) {
@@ -146,6 +171,7 @@ const Level = () => {
         }
     }
 
+    if (!currentLevel) return;
 
     return (
         <Container className="container-fluid mx-3 mt-5">
@@ -191,7 +217,14 @@ const Level = () => {
                     </Card>
                     <Card className="shadow p-3 mb-3 bg-white" style={{borderRadius: "10px", minHeight: "150px"}}>
                         <Row className="justify-content-start d-flex m-2">
-                            <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>Output</span>
+                            <Col className="mb-2">
+                                <span style={{fontSize: "1.1vw", fontWeight: "bold"}}>Output</span>
+                            </Col>
+                            <Col className="text-end">
+                                <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bolder"}}>
+                                    Score <span style={{color: "green"}}>{score}</span></span>
+                            </Col>
+
                             <Row style={{maxHeight: "70px", overflowY: "auto"}}>
                                 {outputPanels}
                             </Row>

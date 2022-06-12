@@ -5,10 +5,13 @@ import Row from "react-bootstrap/Row";
 import {Col, Container} from "react-bootstrap";
 import {useSelector} from "react-redux";
 import {faClose} from "@fortawesome/free-solid-svg-icons/faClose";
+import {selectSteps, selectTips} from "../../features/code/codeSlice";
 
 const TipsModal = () => {
 
-    const steps = useSelector(state => state.code.steps);
+    const steps = useSelector(selectSteps);
+    const tips = useSelector(selectTips);
+
     let stepPanels = [];
 
     if (steps) {
@@ -67,10 +70,26 @@ const TipsModal = () => {
         );
     }
 
+    let tipPanels = [];
+    if (tips) {
+        for (let idx in tips) {
+            let tip = tips[idx];
+            tipPanels.push(
+                <Row key={idx}>
+                    <h1 style={{fontSize: "1.1vw"}}>Tip {parseInt(idx) + 1}</h1>
+                    <p className="my-2" style={{fontSize: "0.8vw"}}>{tip}</p>
+                </Row>
+            );
+        }
+    }
+
     return (
         <Container>
             <Row className="mx-1 mt-5 justify-content-start d-flex">
                 {stepPanels}
+            </Row>
+            <Row className="mx-1 mt-5 justify-content-start d-flex">
+                {tipPanels}
             </Row>
         </Container>
 

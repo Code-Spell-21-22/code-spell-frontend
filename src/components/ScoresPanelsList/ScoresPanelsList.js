@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Row from "react-bootstrap/Row";
 import {Card, Col, Container} from "react-bootstrap";
-import {getAllUserSolutions, getLevelLeaderboard} from "../../utils/api/apihandler";
+import {getLevelLeaderboard} from "../../utils/api/apihandler";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUserDetails, selectUsername} from "../../features/userDetails/userDetailsSlice";
 
@@ -25,7 +25,6 @@ const ScoresPanelsList = (props) => {
     useEffect(() => {
         if (level) {
             getLevelLeaderboard(level.id).then(res => {
-                console.log(res.data)
                 setScores(res.data);
             });
         }
@@ -45,7 +44,7 @@ const ScoresPanelsList = (props) => {
 
     let userPanels = [];
     let users = scores.sort((function (u1, u2){
-        return u2.score - u1.score;
+        return parseInt(u2.score) - parseInt(u1.score);
     }))
 
     for (let userIdx in users) {

@@ -7,8 +7,8 @@ import {useEffect, useState} from "react";
 const LanguagePanel = (props) => {
 
     const [active, setActive] = useState(props.active);
-    const [category, setCategory] = useState(props.category);
-    const [title, setTitle] = useState(props.title);
+    const [category] = useState(props.category);
+    const [title] = useState(props.title);
 
     useEffect(() => {
         setActive(props.active);

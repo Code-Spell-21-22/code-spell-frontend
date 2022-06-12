@@ -4,13 +4,21 @@ import {faStar, faStarOfLife} from "@fortawesome/free-solid-svg-icons";
 import Row from "react-bootstrap/Row";
 import {Col, Container} from "react-bootstrap";
 import {getLevelGoals} from "../../utils/api/apihandler";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchLanguage, selectLanguage} from "../../features/settings/settingsSlice";
 
 const GoalsModal = (props) => {
 
+    const language = useSelector(selectLanguage);
     const [level, setLevel] = React.useState(props.level);
     const [goals, setGoals] = React.useState([]);
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
+
+        dispatch(fetchLanguage());
+
         getLevelGoals(level.id).then(res => {
             setGoals(res.data);
         });
@@ -22,11 +30,9 @@ const GoalsModal = (props) => {
             let goal = goals[idx];
 
             goalPanels.push(
-                <Row key={idx} className="mx-3 my-5">
-                    <span style={{fontSize: "0.7vw"}}>{level.title}</span>
-                    <h1 style={{fontSize: "2vw"}}>{goal.title}</h1>
-
-                    <p className="my-4" style={{fontSize: "0.8vw"}}>{goal.description}</p>
+                <Row key={idx} className="mx-1 my-2">
+                    <h1 style={{fontSize: "1.7vw"}}>{goal.title}</h1>
+                    <p style={{fontSize: "0.8vw"}}>{goal.description}</p>
                 </Row>
             );
         }
@@ -34,7 +40,13 @@ const GoalsModal = (props) => {
 
     return (
         <Container>
-            {goalPanels}
+            <Row className="mt-4">
+                <Row className="mx-1">
+                    <span style={{fontSize: "0.7vw"}}>{level.title} - {language}</span>
+                </Row>
+                {goalPanels}
+            </Row>
+            {/*
             <Row className="mx-3 my-5">
                 <Col className="col-2 text-center">
                     <FontAwesomeIcon icon={faStarOfLife} />
@@ -53,6 +65,7 @@ const GoalsModal = (props) => {
                     <h6>30</h6>
                 </Col>
             </Row>
+            */}
         </Container>
     );
 }

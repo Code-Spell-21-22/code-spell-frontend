@@ -4,46 +4,69 @@ import {Col} from "react-bootstrap";
 import AchievementPanel from "../AchievementPanel/AchievementPanel";
 import Row from "react-bootstrap/Row";
 import {getAllAchievements, getUserAchievements} from "../../utils/api/apihandler";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchUserDetails, selectEmail} from "../../features/userDetails/userDetailsSlice";
 
 const AchievementPanelsList = (props) => {
 
+    const email = useSelector(selectEmail);
     const [language, setLanguage] = useState(props.language);
     const [allAchievements, setAllAchievements] = useState([]);
     const [userAchievements, setUserAchievements] = useState([]);
+    const [achievementPanels, setAchievementPanels] = useState([]);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchUserDetails());
+    }, []);
 
     useEffect(() => {
 
-        getUserAchievements().then(res => {
-            setUserAchievements(res.data);
-        })
+        if (email) {
+            getUserAchievements(email).then(res => {
+                console.log(res.data);
+                setUserAchievements(res.data);
+            }).catch(err => {
+                console.log(err);
+            });
 
-        getAllAchievements().then(res => {
-            setAllAchievements(res.data);
-        });
-    }, []);
+            getAllAchievements().then(res => {
+                setAllAchievements(res.data);
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+
+    }, [email]);
 
     useEffect(() => {
         setLanguage(props.language);
     }, [props.language]); // Only re-run the effect if props.language changes
 
-    let achievementsPanels = [];
+    useEffect(() => {
+        let panels = [];
+        for (let achievementIdx in allAchievements) {
 
-    for (let achievementIdx in allAchievements) {
+            let achievement = allAchievements[achievementIdx];
+            let completed = userAchievements.filter(a => a.id === achievement.id).length > 0;
 
-        let achievement = allAchievements[achievementIdx];
-        let completed = userAchievements.find(a => a.id === achievement.id);
+            panels.push(
+                <Col key={achievementIdx} className="col-2">
+                    <AchievementPanel key={achievement.id} language={language} title={achievement.title} description={achievement.description} completed={completed}/>
+                </Col>
+            );
+        }
 
-        achievementsPanels.push(
-            <Col className="col-2">
-                <AchievementPanel key={achievement.id} language={language} title={achievement.title} description={achievement.description} completed={completed}/>
-            </Col>
+        setAchievementPanels(panels);
 
-        );
-    }
+    }, [userAchievements]);
+
+
 
     return (
         <Row>
-            {achievementsPanels}
+            {achievementPanels}
         </Row>
     );
 }

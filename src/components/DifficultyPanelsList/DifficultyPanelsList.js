@@ -32,7 +32,7 @@ const DifficultyPanelsList = (props) => {
                     disabled={true}
                     active={selectedDifficulty}
                     title={"Experienced"}
-                    description={"Choose Experienced difficulty if you already have some experience with programming and you want to improve your coding."}
+                    description={"Choose Experienced difficulty if you already have experience with programming and you want to improve your coding."}
                     clickBehavior={difficultyPanelClicked.bind(this, "Experienced")}
                 />
             </Col>

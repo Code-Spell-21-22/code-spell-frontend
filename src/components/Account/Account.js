@@ -45,8 +45,7 @@ const Account = () => {
     const changeUsername = () => {
 
         let username = newUsername;
-        console.log(username);
-        if(!username && !checkUsername(username)){
+        if(!username || !checkUsername(username)){
             toast.warning("Please provide an username, only A-Z,0-9 , _ and . are allowed!");
             return;
         }
@@ -54,13 +53,15 @@ const Account = () => {
         let email = localStorage.getItem('user_email');
         putUserName(email, username).then(() => {
             toast.success("Username changed successfully", {icon: "🚀"});
+        }).catch(err => {
+            toast.error("Something went wrong");
         });
     }
 
     const changePassword = () => {
 
         let password = newPassword;
-        if (!password && !passwordStrength(password)) {
+        if (!password || !passwordStrength(password)) {
             toast.warning("Please provide a password, at least 8 characters, one uppercase letter, one lowercase letter and one number!");
             return;
         }
@@ -68,6 +69,8 @@ const Account = () => {
         let email = localStorage.getItem('user_email');
         putUserPassword(email, password).then(res => {
             toast.success("Password changed successfully", {icon: "🚀"});
+        }).catch(err => {
+            toast.error("Something went wrong");
         });
     }
 
@@ -76,8 +79,8 @@ const Account = () => {
             <p className="mb-0 mt-5" style={{fontSize: "0.9vw", fontWeight: "bold", color: "#1E4172"}}>
                 <FontAwesomeIcon icon={faCircleCheck}/> Java
             </p>
-            <p className="text-end" style={{fontSize: "0.8vw"}}>{progressPercentage}%</p>
-            <ProgressBar animated now={progressPercentage}/>
+            <p className="text-end" style={{fontSize: "0.8vw"}}>{progressPercentage || 0}%</p>
+            <ProgressBar animated now={progressPercentage || 0}/>
         </Row>
     ;
 
