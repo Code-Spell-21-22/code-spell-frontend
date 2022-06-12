@@ -52,7 +52,7 @@ const Level = () => {
     // TODO: Obtain current level
     const [currentLevel, setCurrentLevel] = useState(
         {
-            "id": "628c9c42cc425b74e59c3658",
+            "id": "62a5f904e348b13c98b6e899",
             "title": "Variables",
             "description": "Description about variables level.",
             "language": "JAVA",
@@ -245,7 +245,7 @@ const Level = () => {
                     {!selectedOption &&
 
                         <Row className="justify-content-right d-flex">
-                            <Level2_3 className="m-0" />  
+                            <Level2_3 steps={steps} analysisStatus={analysisStatus} codeId={codeReportId} />
                         </Row>
                     }
 

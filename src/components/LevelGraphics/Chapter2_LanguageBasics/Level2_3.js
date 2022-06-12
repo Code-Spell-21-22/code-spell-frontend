@@ -1,137 +1,261 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import * as THREE from "three";
 
-import {createMovement, transitionColor, showObject} from '../Builders/tweenMotions';
+import {
+    createMovement,
+    transitionColor,
+    showObject,
+    clearTweenMovements,
+    moveToRight,
+    moveToLeft, moveToFront, resizeMovement
+} from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createDay, createNight} from '../Builders/createSky';
-import {createText, showText} from '../Builders/createText';
+import {createText, popUpText, showText} from '../Builders/createText';
 import {createPlayer} from '../Builders/createPlayer';
+import {addPopUpToChain, clearPopUpChain, startPopUpChain} from "../Builders/chainPopupTest";
 
 const TWEEN = require('@tweenjs/tween.js')
 
-let camera, scene, renderer;
-var step1 = true; var step2 = false; var step3 = false;
-
 // * The if-then and if-then-else Statements
-const Level2_3 = () => {
- 
+const Level2_3 = (props) => {
+
+    let renderer, camera, scene;
+
+    let [analysisStatus, setAnalysisStatus] = useState(undefined);
+    let [steps, setSteps] = useState(undefined);
+    let [args, setArgs] = useState('');
+
+    // Adding onWindowResize event when the component is mounted
     useEffect(() => {
-        // create camera and scene
-        // this is default camera 
-        //createCamera = (posx, posy, posz, lx, ly, lz) - pos (camera position), - l (camera lookAt)
-        camera = createCamera(0, 7, 34, 0, 4, 0);
-        scene = createScene();
-        
-        // SPOTLIGHT ///////////////////////////
-        const spotLight = new THREE.SpotLight( 0xffffff, 3, -Math.PI );
 
-        spotLight.position.set( 0, 13, 12 );
-    
-        const targetObject = new THREE.Object3D();
-        targetObject.position.set(0, 13, -10)
-        scene.add(targetObject);
-    
-        spotLight.target = targetObject;
-        scene.add( spotLight );
-        /////////////////////////////////////////
+        let onWindowResize = function () {
+            camera.aspect = window.innerWidth / 3 / (window.innerHeight - window.innerHeight / 5);
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
+        };
+        window.addEventListener('resize', onWindowResize);
 
-        const player = createPlayer();
-        player.position.set(0 ,2, 12)
-        if (step1 === false && step2 === false && step3 === false){ showObject(scene, player) } else { scene.add(player) }
+    }, []);
 
-        
-        // by default is day
-        scene.background = new THREE.Color(0x2f78e1)
-        const day = createDay()
-        if (step1 === false && step2 === false && step3 === false){ showObject(scene, day) } else { scene.add(day) }
+    // When the steps props change we will update the steps and arguments
+    useEffect(() => {
 
+        let stepsList;
 
-        var stars = 50;
-        
-        //* STEP1 - Update the value of variable step1_response to false. (is true by default)
-        // ! this response comes from backend
-        var step1_response = false;  // should be false so it becomes night
-        
-        if (step1 == true){
-            
-            if (step1_response === false){   // then its night
+        if (props.steps) {
 
-                if (step2 === false ) { // lets make some transitions
-                    createMovement(day, 50, 0, 0, 2000, '+2000')
-    
-                    const night = createNight(stars)
-                    night.position.set(-300, 0, 0);
-                    transitionColor(scene, 0x142433, 1000, '+0')
-                    createMovement(night, 0, 0, 0, 2000, '+0')
-                    scene.add(night)
-                }
-                
-                if (step2 === true) {   // no transitions
-                    scene.background = new THREE.Color(0x142433);
-                    scene.remove(day)
-                    scene.add(createNight(stars))
-                }
-            }
-        }
+            stepsList = [props.steps[0].successful, props.steps[1].successful, props.steps[2].successful];
 
-        //* STEP2 - Write an if-then-else statement that evaluates if variable stars has a value greater than 40
-        // ! this response comes from backend
-        var step2_response = [40, "What a starry sky!","What a beautiful sky!"] 
-        
-        if (step2 === true && step3 === false){
+            let allArgs = []
+            allArgs.push(props.steps[0].args);
+            allArgs.push(props.steps[1].args);
+            allArgs.push(props.steps[2].args);
 
-            var step2_1 = step2_response[0]; var step2_2 = step2_response[1]; var step2_3 = step2_response[2];
-            
-            if (stars > step2_1) { showText(createText(step2_2, 0.5, 0x171717, true, true, 0xffffff), scene, player) } 
-            else { showText(createText(step2_3, 0.5, 0x171717, true, true, 0xffffff), scene, player) }
-        }
-
-        //* STEP3 -Rewrite the previous if-then-else statement in order to only print "So many stars!" to standard output if the value of stars is equal to 50. 
-        // ! this response comes from backend
-        var step3_response = [50, "So many stars!", 40, "What a starry sky!","What a beautiful sky!"] 
-        
-        if (step3 === true) {
-
-            var step3_1 = step3_response[0]; var step3_2 = step3_response[1]; var step3_3 = step3_response[2];
-            var step3_4 = step3_response[3]; var step3_5 = step3_response[4];
-
-            if (stars === step3_1) { showText(createText(step3_2, 0.5, 0x171717, true, true, 0xffffff), scene, player) } 
-            else if (stars > step3_3) { showText(createText(step3_4, 0.5, 0x171717, true, true, 0xffffff), scene, player) } 
-            else { showText(createText(step3_5, 0.5, 0x171717, true, true, 0xffffff), scene, player) }
+            setArgs(allArgs);
 
         }
+
+        setSteps(stepsList);
+
+    }, [props.steps]);
+
+    // When the execution status props change we will update the steps and arguments
+    useEffect(() => {
+        setAnalysisStatus(props.analysisStatus);
+    }, [props.analysisStatus]);
+
+    // When the steps change, we clear the current animation and start again.
+    useEffect(() => {
+        clearAnimation();
+        renderAnimation();
+        startAnimation();
+    }, [steps, analysisStatus, props.codeId]);
+
+    const renderAnimation = () => {
+
+        camera = createCamera(0, 7, 34, 0, 5, 0);
+        scene = createNewScene();
 
         /////////////////////////////////////////////////////////////
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
         renderer.shadowMap.enabled = true;
-    
-        // const controls = new THREE.OrbitControls( camera, renderer.domElement );
-        document.getElementById("threejs").parentNode.replaceChild(renderer.domElement, document.getElementById("threejs"));
+        renderer.autoClear = true;
+        renderer.resetState();
 
-        var onWindowResize = function () {
-            camera.aspect = window.innerWidth / 3 / (window.innerHeight - window.innerHeight / 5);
-            camera.updateProjectionMatrix();
-            renderer.setSize( window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
+    };
 
-        };
+    const clearAnimation = () => {
 
-        window.addEventListener( 'resize', onWindowResize );    
+        let newThreeJsDiv = document.createElement("div");
+        newThreeJsDiv.id = "three_js";
 
-        var animate = function(time) {
-            TWEEN.update(time) 
-            requestAnimationFrame(animate);
-            renderer.render( scene, camera ); 
-        };
+        let canvasElements = document.getElementsByTagName("canvas");
 
-        animate();
+        if (canvasElements.length !== 0) {
+            canvasElements[0].replaceWith(newThreeJsDiv, canvasElements[0]);
+            canvasElements[0].remove();
+        }
 
-    }, []);
+        clearTweenMovements();
+        clearPopUpChain();
+
+    };
+
+    const createNewScene = () => {
+
+        let scene = createScene(0x348C31, true);
+
+        // SPOTLIGHT ///////////////////////////
+        const spotLight = new THREE.SpotLight( 0xffffff, 3, -Math.PI );
+
+        spotLight.position.set( 0, 13, 12 );
+
+        const targetObject = new THREE.Object3D();
+        targetObject.position.set(0, 2, -4)
+        scene.add(targetObject);
+
+        spotLight.target = targetObject;
+        scene.add( spotLight );
+        /////////////////////////////////////////
+
+        let player = createPlayer();
+        let day = createDay();
+
+        player.position.set(0, 2, -11.75);
+
+        showObject(scene, player, 1250);
+
+
+        if (!steps && !analysisStatus) {
+
+            showObject(scene, day, 1500)
+
+            moveToFront(player, 6, () => {
+                let text = createText("Hello!", 0.5, 0x171717, true, true, 0xffffff);
+                popUpText(text, scene, player);
+                targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5)
+            });
+
+        } else if (!steps && analysisStatus) {
+
+            showObject(scene, day, 1500)
+
+            moveToFront(player, 6, () => {
+                let text1 = createText("Your code doesn't seem correct...", 0.5, 0x171717, true, true, 0xffffff);
+                let text2 = createText("Maybe you should look for syntax errors?", 0.5, 0x171717, true, true, 0xffffff);
+                popUpText(text1, scene, player, () => {
+                    popUpText(text2, scene, player);
+                    targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5)
+                });
+            });
+
+        } else if (steps && steps[0] && steps[1] && steps[2]) {
+
+            let stars = parseInt(props.steps[1].args[props.steps[1].args.length-1]);
+            let night = createNight(stars);
+
+            createMovement(day, 50, 0, 0, 1000, 0, () => {
+                night.position.set(-300, 0, 0);
+                transitionColor(scene, 0x142433, 1000, '+0')
+                createMovement(night, 0, 0, 0, 2000, '+0')
+                scene.add(night)
+            });
+
+            moveToFront(player, 6, () => {
+
+                clearPopUpChain();
+
+                props.steps[2].args.forEach(response => {
+                    let text = createText(response, 0.5, 0x171717, true, true, 0xffffff);
+                    addPopUpToChain(text, scene, player);
+                });
+
+                startPopUpChain();
+
+                targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5);
+
+            });
+
+        } else if (steps && steps[0] && steps[1]) {
+
+            let stars = parseInt(props.steps[1].args[props.steps[1].args.length-1]);
+            let night = createNight(stars);
+
+            createMovement(day, 50, 0, 0, 1000, 0, () => {
+                night.position.set(-300, 0, 0);
+                transitionColor(scene, 0x142433, 1000, '+0')
+                createMovement(night, 0, 0, 0, 2000, '+0')
+                scene.add(night)
+            });
+
+            moveToFront(player, 6, () => {
+
+                clearPopUpChain();
+
+                props.steps[2].args.forEach(response => {
+                    let text = createText(response, 0.5, 0x171717, true, true, 0xffffff);
+                    addPopUpToChain(text, scene, player);
+                });
+
+                startPopUpChain();
+
+                targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5);
+
+            });
+
+        } else if (steps && steps[0]) {
+
+            let stars = parseInt(props.steps[0].args[props.steps[0].args.length-1]);
+            let night = createNight(stars);
+
+            createMovement(day, 50, 0, 0, 1000, 0, () => {
+                night.position.set(-300, 0, 0);
+                transitionColor(scene, 0x142433, 1000, '+0')
+                createMovement(night, 0, 0, 0, 2000, '+0')
+                scene.add(night)
+            });
+
+            moveToFront(player, 6, () => {
+                let text1 = createText("It's night but, is it a starry sky?", 0.5, 0x171717, true, true, 0xffffff);
+                popUpText(text1, scene, player);
+                targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5)
+            });
+
+        }  else if (steps) {
+
+            showObject(scene, day, 1500)
+
+            moveToFront(player, 6, () => {
+                let text = createText("Your code is not following this level constraints!", 0.4, 0x171717, true, true, 0xffffff);
+                popUpText(text, scene, player);
+                targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5)
+            });
+
+        }
+
+        return scene;
+
+
+    };
+
+    const startAnimation = () => {
+
+        TWEEN.update()
+
+        requestAnimationFrame(startAnimation)
+        renderer.render(scene, camera)
+
+        if (document.getElementById("three_js"))
+            document.getElementById("three_js").parentNode.replaceChild(renderer.domElement, document.getElementById("three_js"));
+
+    };
 
     return(
-       <div id="threejs"></div>
+       <div id="three_js"></div>
     );
 
  };
