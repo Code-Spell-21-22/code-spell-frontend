@@ -1,6 +1,15 @@
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
-import { updateOutput, updateId, updateScore, updateSteps, updateExecutionStatus, updateErrors, updateAnalysisStatus } from "../features/code/codeSlice";
+import {
+    updateOutput,
+    updateId,
+    updateScore,
+    updateSteps,
+    updateExecutionStatus,
+    updateErrors,
+    updateAnalysisStatus,
+    updateTips
+} from "../features/code/codeSlice";
 import {store} from "../app/store";
 import {toast} from "react-toastify";
 
@@ -40,6 +49,9 @@ export const connect = () => {
 
             const steps = JSON.parse(response.body).steps;
             store.dispatch(updateSteps(steps));
+
+            const tips = JSON.parse(response.body).tips;
+            store.dispatch(updateTips(tips));
 
             const executionStatus = JSON.parse(response.body).executionStatus;
             store.dispatch(updateExecutionStatus(executionStatus));

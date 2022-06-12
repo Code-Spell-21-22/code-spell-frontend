@@ -18,36 +18,25 @@ async function postRegister(username, email, password) {
     });
 }
 
-async function getUserDetails(username) {
-    return axios.get(apiAddress + '/user/' + username + '/details', {
+async function getUserDetails(email) {
+    return axios.get(apiAddress + '/user/' + email + '/details', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
         }
     });
 }
 
-async function getUserAchievements(username) {
-    return axios.get(apiAddress + '/user/' + username + '/achievements', {
+async function getUserAchievements(email) {
+    return axios.get(apiAddress + '/user/' + email + '/achievements', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
         }
     });
 }
 
-async function putUserPassword(username, password) {
-    return axios.put(apiAddress + '/user/' + username + '/password', {
-        new_password: password
-    }, {
-        headers: {
-            'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'application/json'
-        }
-    });
-}
-
-async function putUserName(username, name) {
-    return axios.put(apiAddress + '/user/' + username + '/name', {
-        new_name: name
+async function putUserPassword(email, password) {
+    return axios.put(apiAddress + '/user/' + email + '/password', {
+        newPassword: password
     }, {
         headers: {
             'Authorization': 'Bearer ' + authToken,
@@ -57,13 +46,24 @@ async function putUserName(username, name) {
 }
 
 
-async function getLevelLeaderboard(levelId, language, level, skillLevel) {
-    return axios.get(apiAddress + '/level/' + levelId + '/leaderboards', {
-        params: {
-            language: language,
-            level: level,
-            skill_level: skillLevel
-        },
+async function getLevelLeaderboard(levelId) {
+    return axios.get(apiAddress + '/leaderboard/level/' + levelId, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+        }
+    });
+}
+
+async function getChapterLeaderboard(chapterId) {
+    return axios.get(apiAddress + '/leaderboard/chapter/' + chapterId, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+        }
+    });
+}
+
+async function getOverallLeaderboard() {
+    return axios.get(apiAddress + '/leaderboard', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
         }
@@ -115,7 +115,7 @@ async function getPossibleSolutions(levelId) {
 async function postLevelSolution(levelId, solutionId, code) {
     return axios.post(apiAddress + '/level/' + levelId + '/submit/' + solutionId, code, {
         headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('code_spell_token'),
+            'Authorization': 'Bearer ' + authToken,
             'Content-Type': 'text/plain'
         }
     });
@@ -153,17 +153,17 @@ async function getAchievementDetails(achievementId) {
     });
 }
 
-async function postFinalSolution(levelId, codeReportId, score, code, settings) {
+async function postFinalSolution(levelId, codeReportId, score, code, language, difficulty) {
 
     let body;
 
-    if (settings) {
+    if (language && difficulty) {
         body = {
             levelId: levelId,
             codeReportId: codeReportId,
             score: score,
             code: code,
-            settings: settings
+            settings: {language: language.toUpperCase(), skillLevel: difficulty.toUpperCase()}
         }
     } else {
         body = {
@@ -210,6 +210,15 @@ async function putAchievementToUser(email, achievementId) {
     });
 }
 
+async function getCodeProvided(levelId) {
+    return axios.get(apiAddress + '/level/' + levelId + '/code', {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
+        }
+    });
+}
+
 export {
     postRegister,
     postLogin,
@@ -220,15 +229,17 @@ export {
     postLevelSolution,
     getLevels,
     getLevelLeaderboard,
+    getChapterLeaderboard,
+    getOverallLeaderboard,
     getLevelDocumentation,
     getUserAchievements,
-    getUserDetails,
-    putUserName,
-    putUserPassword,
     getAllAchievements,
+    getUserDetails,
+    putUserPassword,
     getAchievementDetails,
     postFinalSolution,
     getAllUserSolutions,
     getAllSolutionsForLevel,
-    putAchievementToUser
+    putAchievementToUser,
+    getCodeProvided
 };

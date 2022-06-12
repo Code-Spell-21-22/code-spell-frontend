@@ -7,27 +7,35 @@ import Navbar from "../Navbar/Navbar";
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
 import {Doughnut} from 'react-chartjs-2';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchProgress, selectProgress} from "../../features/progress/progressSlice";
+import {fetchUserDetails, fetchUserProgress, selectProgress} from "../../features/userDetails/userDetailsSlice";
 import {useEffect, useState} from "react";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 
 const Levels = () => {
 
     const language = useSelector(selectLanguage);
+    const difficulty = useSelector(selectDifficulty);
     const progress = useSelector(selectProgress);
 
     const [selectedChapter, setSelectedChapter] = useState(undefined);
     const [selectedLevel, setSelectedLevel] = useState(undefined);
-    const [selectedProgress, setSelectedProgress] = useState(undefined);
+    // const [selectedProgress, setSelectedProgress] = useState(undefined);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchLanguage());
         dispatch(fetchDifficulty());
-        dispatch(fetchProgress());
+        dispatch(fetchUserDetails());
     }, [dispatch]);
 
+    useEffect(() => {
+        if (language && difficulty) {
+            dispatch(fetchUserProgress(language, difficulty));
+        }
+    }, [language, difficulty]);
+
+    /*
     useEffect(() => {
         for (let idx in progress) {
             if (progress[idx].language === language.toUpperCase()) {
@@ -35,6 +43,7 @@ const Levels = () => {
             }
         }
     }, [progress]);
+     */
 
     const chapterChangedHandler = (chapter) => {
         setSelectedChapter(chapter);
@@ -46,17 +55,16 @@ const Levels = () => {
     }
 
     // Progress Data
-
     let completed = 0;
     let notCompleted = 0;
     let total = 0;
     let percentage = 0;
 
-    if (selectedProgress) {
-        completed = selectedProgress.completed_levels;
-        total = selectedProgress.total_levels;
-        notCompleted = total - completed;
-        percentage = selectedProgress.percentage * 100;
+    if (progress) {
+        completed = progress.Completed;
+        total = progress.Total;
+        notCompleted = total - completed
+        percentage = Math.round(completed / total * 100);
     }
 
     const data = {
@@ -83,7 +91,7 @@ const Levels = () => {
         start =
             <Button className="shadow w-75 justify-content-center align-items-center d-flex"
                     style={{backgroundColor: "#3f73c2", border: "none", height: "6vh"}}
-                    href={"/levels/" + selectedLevel.number}>
+                    href={"/levels/" + selectedLevel.id}>
                 <span style={{color: "white"}}>START</span>
             </Button>;
     } else {

@@ -19,7 +19,7 @@ const GenericModal = (props) => {
     let content;
     switch (props.content_type) {
         case "goals":
-            content = <GoalsModal/>;
+            content = <GoalsModal level={props.level}/>;
             break;
         case "tips":
             content = <TipsModal/>;
@@ -28,11 +28,13 @@ const GenericModal = (props) => {
             content = <LeaderboardModal level={props.level}/>;
             break;
         case "documentation":
-            content = <DocumentationModal/>;
+            content = <DocumentationModal level={props.level}/>;
             break;
         case "errors":
             content = <ErrorsModal level={props.level}/>;
             break;
+        default:
+            content = <div>No content</div>;
     }
 
     // const fadeIn = selectedOption ? 'fadein' : 'fadein hide';

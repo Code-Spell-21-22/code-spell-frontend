@@ -23,7 +23,7 @@ const NavbarVertical = (props) => {
             <SquareButton icon={faLightbulb} click_behaviour={buttonClicked.bind(this, "tips")} is_disabled={props.is_disabled}/>
             <SquareButton icon={faTrophy} click_behaviour={buttonClicked.bind(this, "leaderboard")} is_disabled={props.is_disabled}/>
             <SquareButton icon={faFile} click_behaviour={buttonClicked.bind(this, "documentation")} is_disabled={props.is_disabled}/>
-            <Link to="/">
+            <Link to="/levels">
                 <SquareButton icon={faSignOut} is_disabled={props.is_disabled}/>
             </Link>
         </Col>

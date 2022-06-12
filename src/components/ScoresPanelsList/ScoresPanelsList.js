@@ -1,59 +1,90 @@
 import React, {useEffect, useState} from 'react';
 import Row from "react-bootstrap/Row";
 import {Card, Col, Container} from "react-bootstrap";
+import {
+    getChapterLeaderboard,
+    getLevelLeaderboard,
+    getOverallLeaderboard
+} from "../../utils/api/apihandler";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchUserDetails, selectUsername} from "../../features/userDetails/userDetailsSlice";
 
 const ScoresPanelsList = (props) => {
 
-    const [chapter, setChapter] = useState(props.chapter);
+    const username = useSelector(selectUsername);
+
     const [level, setLevel] = useState(props.level);
-    const [difficulty, setDifficulty] = useState(props.difficulty);
+    const [chapter, setChapter] = useState(props.chapter);
+
     const [scores, setScores] = useState([]);
 
+    const [userScore, setUserScore] = useState("---");
+    const [userRank, setUserRank] = useState("---");
+
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        setChapter(props.chapter);
+        dispatch(fetchUserDetails());
+    }, []);
+
+    useEffect(() => {
+
         setLevel(props.level);
-        setDifficulty(props.difficulty);
+        setChapter(props.chapter);
+
     }, [props]);
 
     useEffect(() => {
-        if (level !== undefined) {
-            // TODO: API call to get scores
-            const levelScores = [{"id": "0", "email": "user1@gmail.com", "username": "USER_1", "score": 100},
-                {"id": "1", "email": "user2@gmail.com", "username": "USER_2", "score": 90},
-                {"id": "2", "email": "user3@gmail.com", "username": "USER_3", "score": 150},
-                {"id": "3", "email": "userXX@gmail.com", "username": "USER_XX", "score": 200},
-                {"id": "4", "email": "useryy@gmail.com",  "username": "USER_YY", "score": 190}];
-            setScores(levelScores);
-        } else if (chapter !== undefined) {
-            // TODO: API call to get scores
-            const chapterScores = [{"id": "0", "email": "user1@gmail.com", "username": "USER_1", "score": 2000},
-                {"id": "1", "email": "user2@gmail.com", "username": "USER_2", "score": 1300},
-                {"id": "2", "email": "user3@gmail.com", "username": "USER_3", "score": 900},
-                {"id": "3", "email": "userXX@gmail.com", "username": "USER_XX", "score": 2100},
-                {"id": "4", "email": "useryy@gmail.com",  "username": "USER_YY", "score": 1800}];
-            setScores(chapterScores);
+        if (level) {
+            getLevelLeaderboard(level.id).then(res => {
+                setScores(res.data);
+            });
+        } else if (chapter) {
+            getChapterLeaderboard(chapter.id).then(res => {
+                console.log(res.data);
+                setScores(res.data);
+            });
+        } else {
+            getOverallLeaderboard().then(res => {
+                setScores(res.data);
+            });
         }
-    }, [chapter, level]);
+    }, [level, chapter]);
 
+    useEffect(() => {
+        if (scores) {
+
+            for (let i = 0; i < scores.length; i++) {
+                if (scores[i].username === username) {
+                    setUserScore(scores[i].points);
+                    setUserRank(i + 1);
+                }
+            }
+        }
+    }, [scores]);
 
     let userPanels = [];
-
     let users = scores.sort((function (u1, u2){
-        return u2.score - u1.score;
+        return parseInt(u2.score) - parseInt(u1.score);
     }))
 
     for (let userIdx in users) {
+
+        if (parseInt(userIdx) >= 10) {
+            break;
+        }
+
         let user = users[userIdx];
 
         let content = <Row className="h-100 px-3">
-            <Col className="col-2 align-items-center d-flex">
+            <Col className="col-3 align-items-center d-flex">
                 <p className="mb-0" style={{fontSize: "0.8vw"}}>{parseInt(userIdx) + 1}</p>
             </Col>
-            <Col className="col-8 align-items-center d-flex">
+            <Col className="col-6 align-items-center d-flex">
                 <p className="mb-0" style={{fontSize: "0.8vw"}}>{user.username}</p>
             </Col>
-            <Col className="col-2 align-items-center d-flex">
-                <p className="mb-0" style={{fontSize: "0.9vw"}}>{user.score}</p>
+            <Col className="col-3 align-items-center d-flex">
+                <p className="mb-0" style={{fontSize: "0.9vw"}}>{user.points}</p>
             </Col>
         </Row>;
 
@@ -73,20 +104,20 @@ const ScoresPanelsList = (props) => {
 
     return (
         <Container>
-            <Row className="mx-4 mt-4">
+            <Row className="mx-1 mt-4">
                 {userPanels}
             </Row>
-            <Row className="mx-4 mt-5 mb-4">
+            <Row className="mx-1 mt-5 mb-4">
                 <Card className="w-100 bg-white mb-3" style={{height: "6vh", minHeight:"50px"}}>
                     <Row className="h-100 px-3">
-                        <Col className="col-2 align-items-center d-flex">
-                            <p className="mb-0" style={{fontSize: "0.8vw"}}>900</p>
+                        <Col className="col-3 align-items-center d-flex">
+                            <p className="mb-0" style={{fontSize: "0.8vw"}}>{userRank}</p>
                         </Col>
-                        <Col className="col-8 align-items-center d-flex">
-                            <p className="mb-0" style={{fontSize: "0.8vw"}}>CURRENT_USER</p>
+                        <Col className="col-6 align-items-center d-flex">
+                            <p className="mb-0" style={{fontSize: "0.8vw"}}>{username}</p>
                         </Col>
-                        <Col className="col-2 align-items-center d-flex">
-                            <p className="mb-0" style={{fontSize: "0.9vw"}}>---</p>
+                        <Col className="col-3 align-items-center d-flex">
+                            <p className="mb-0" style={{fontSize: "0.9vw"}}>{userScore}</p>
                         </Col>
                     </Row>
                 </Card>

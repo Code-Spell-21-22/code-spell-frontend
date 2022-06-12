@@ -40,7 +40,7 @@ const Leaderboards = () => {
 
     useEffect(() => {
         if (chapter && levels) {
-            setFilteredLevels(levels.filter(level => level.chapter === chapter.id));
+            setFilteredLevels(levels.filter(l => l.chapterId === chapter.id));
         }
     }, [chapter, levels]);
 

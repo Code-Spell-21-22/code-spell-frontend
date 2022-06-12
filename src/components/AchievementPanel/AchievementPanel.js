@@ -5,14 +5,14 @@ import {Card, Image} from "react-bootstrap";
 
 const AchievementPanel = (props) => {
 
-    const [language, setLanguage] = useState(props.language);
-    const [title, setTitle] = useState(props.title);
-    const [description, setDescription] = useState(props.description);
-    const [completed, setCompleted] = useState(props.completed);
+    const [language] = useState(props.language);
+    const [title] = useState(props.title);
+    const [description] = useState(props.description);
+    const [completed] = useState(props.completed);
 
     if (!completed) {
         return (
-            <Card className="shadow p-4 mb-3 rounded" style={{opacity: "0.6"}}>
+            <Card className="shadow p-4 mb-3 rounded h-100" style={{opacity: "0.6"}}>
                 <Row className="justify-content-center d-flex">
                     <Image src="/placeholder.png" style={{width: "100%"}}/>
                 </Row>
@@ -23,7 +23,7 @@ const AchievementPanel = (props) => {
         );
     }
     return (
-        <Card className="shadow p-4 mb-3 rounded">
+        <Card className="shadow p-4 mb-3 rounded h-100">
             <Row className="justify-content-center d-flex">
                 <Image src="/python.png" style={{width: "100%"}}/>
             </Row>

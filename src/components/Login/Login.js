@@ -28,6 +28,8 @@ const Login = () => {
         .then((response) => {
             toast.success(response.data.message)
             localStorage.setItem('code_spell_token', response.data.token);
+            localStorage.setItem('user_email', email);
+
             setTimeout(() => window.location.replace("/"), 2000);
         }, (error) => {
             toast.error(JSON.parse(error.request.response)['message']);
