@@ -45,17 +45,6 @@ async function putUserPassword(email, password) {
     });
 }
 
-async function putUserName(email, name) {
-    return axios.put(apiAddress + '/user/' + email + '/name', {
-        new_name: name
-    }, {
-        headers: {
-            'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'application/json'
-        }
-    });
-}
-
 
 async function getLevelLeaderboard(levelId) {
     return axios.get(apiAddress + '/level/' + levelId + '/leaderboards', {
@@ -219,7 +208,7 @@ export {
     getUserAchievements,
     getAllAchievements,
     getUserDetails,
-    putUserName,
+
     putUserPassword,
     getAchievementDetails,
     postFinalSolution,

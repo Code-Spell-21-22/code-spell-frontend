@@ -16,7 +16,6 @@ const Account = () => {
     const progress = useSelector(selectProgress);
     const dispatch = useDispatch();
 
-    const [newUsername, setNewUsername] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [progressPercentage, SetProgressPercentage] = useState(0);
 
@@ -31,32 +30,10 @@ const Account = () => {
         }
     }, [progress]);
 
-    const checkUsername = (username) =>{
-        //from 3 to 20 in length no _ or . at the start/end/consecutive only allows for A-Z Numbers and _ .
-        const testUserName=/^(?=[a-zA-Z0-9._]{3,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/i;
-        return (testUserName.test(username));
-    }
-
     const passwordStrength = (password) => {
         const testPw = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/i;
         return (testPw.test(password));
     };
-
-    const changeUsername = () => {
-
-        let username = newUsername;
-        if(!username || !checkUsername(username)){
-            toast.warning("Please provide an username, only A-Z,0-9 , _ and . are allowed!");
-            return;
-        }
-
-        let email = localStorage.getItem('user_email');
-        putUserName(email, username).then(() => {
-            toast.success("Username changed successfully", {icon: "🚀"});
-        }).catch(err => {
-            toast.error("Something went wrong");
-        });
-    }
 
     const changePassword = () => {
 
@@ -99,22 +76,6 @@ const Account = () => {
                             <Card className="shadow p-4 mb-3 rounded"
                                   style={{border: "none", backgroundColor: "rgb(256, 256, 256, 0.8)"}}>
                                 <Row className="justify-content-start d-flex m-3">
-                                    <p className="mb-2"
-                                       style={{fontSize: "0.9vw", fontWeight: "bold", color: "#1E4172"}}>
-                                        <FontAwesomeIcon icon={faStar}/> Username
-                                    </p>
-                                    <Form className="mb-5">
-                                        <Form.Group className="shadow" controlId="formBasicUsername">
-                                            <Form.Control style={{height: "5vh", minHeight: "40px", border: "none"}}
-                                                          type="username" placeholder="Username" onChange={(event) => setNewUsername(event.target.value)}/>
-                                        </Form.Group>
-                                        <Button className="mt-4 w-50 text-white"
-                                                style={{backgroundColor: "#1e5ebb", border: "none", height: "6vh"}}
-                                                onClick={changeUsername}>
-                                            <span style={{fontSize: "0.8vw"}}>CHANGE USERNAME</span> <FontAwesomeIcon
-                                            icon={faEdit} style={{color: "white"}}/>
-                                        </Button>
-                                    </Form>
                                     <p className="mb-2"
                                        style={{fontSize: "0.9vw", fontWeight: "bold", color: "#1E4172"}}>
                                         <FontAwesomeIcon icon={faStar}/> Password
