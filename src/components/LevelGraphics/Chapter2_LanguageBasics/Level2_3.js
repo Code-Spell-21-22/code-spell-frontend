@@ -209,7 +209,7 @@ const Level2_3 = (props) => {
 
                 clearPopUpChain();
 
-                props.steps[2].args.forEach(response => {
+                props.steps[1].args.forEach(response => {
                     let text = createText(response, 0.5, 0x171717, true, true, 0xffffff);
                     addPopUpToChain(text, scene, player);
                 });
