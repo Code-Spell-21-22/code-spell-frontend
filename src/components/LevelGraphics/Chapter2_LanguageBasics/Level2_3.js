@@ -30,9 +30,13 @@ const Level2_3 = (props) => {
     useEffect(() => {
 
         let onWindowResize = function () {
+
             camera.aspect = window.innerWidth / 3 / (window.innerHeight - window.innerHeight / 5);
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth / 3, window.innerHeight - window.innerHeight / 5);
+
+            restartAnimation();
+
         };
         window.addEventListener('resize', onWindowResize);
 
@@ -58,10 +62,14 @@ const Level2_3 = (props) => {
 
     // When the steps change, we clear the current animation and start again.
     useEffect(() => {
+        restartAnimation();
+    }, [steps, analysisStatus, props.codeId]);
+
+    const restartAnimation = () => {
         clearAnimation();
         renderAnimation();
         startAnimation();
-    }, [steps, analysisStatus, props.codeId]);
+    }
 
     const renderAnimation = () => {
 
