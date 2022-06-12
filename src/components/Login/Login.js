@@ -33,7 +33,7 @@ const Login = () => {
         .then((response) => {
             toast.success(response.data.message)
             localStorage.setItem('code_spell_token', response.data.token);
-            localStorage.setItem('code_spell_expiration', calcExpiration(5, new Date()));
+            localStorage.setItem('code_spell_expiration', calcExpiration(4, new Date()));
             localStorage.setItem('user_email', email);
 
             setTimeout(() => window.location.replace("/"), 2000);
