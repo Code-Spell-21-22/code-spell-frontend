@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import * as THREE from "three";
 
@@ -186,7 +186,7 @@ const Level2_3 = (props) => {
 
                 for (let argIdx in props.steps[2].args) {
 
-                    let arg = this.props.steps[2].args[argIdx];
+                    let arg = props.steps[2].args[argIdx];
 
                     if (argIdx < props.steps[2].args.length-1) {
                         let text = createText(arg, 0.5, 0x171717, true, true, 0xffffff);
