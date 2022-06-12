@@ -19,12 +19,12 @@ const NavbarVertical = (props) => {
 
     return (
         <Col className="col-1">
-            <SquareButton icon={faCheck} click_behaviour={buttonClicked.bind(this, "goals")} is_disabled={props.is_disabled}/>
-            <SquareButton icon={faLightbulb} click_behaviour={buttonClicked.bind(this, "tips")} is_disabled={props.is_disabled}/>
-            <SquareButton icon={faTrophy} click_behaviour={buttonClicked.bind(this, "leaderboard")} is_disabled={props.is_disabled}/>
-            <SquareButton icon={faFile} click_behaviour={buttonClicked.bind(this, "documentation")} is_disabled={props.is_disabled}/>
+            <SquareButton icon={faCheck} click_behaviour={buttonClicked.bind(this, "goals")} is_disabled={props.is_disabled} tooltip={"Goals"} />
+            <SquareButton icon={faLightbulb} click_behaviour={buttonClicked.bind(this, "tips")} is_disabled={props.is_disabled} tooltip={"Tips"}/>
+            <SquareButton icon={faTrophy} click_behaviour={buttonClicked.bind(this, "leaderboard")} is_disabled={props.is_disabled} tooltip={"Leaderboard"}/>
+            <SquareButton icon={faFile} click_behaviour={buttonClicked.bind(this, "documentation")} is_disabled={props.is_disabled} tooltip={"Documentation"}/>
             <Link to="/levels">
-                <SquareButton icon={faSignOut} is_disabled={props.is_disabled}/>
+                <SquareButton icon={faSignOut} is_disabled={props.is_disabled} tooltip={"Exit"}/>
             </Link>
         </Col>
     );
