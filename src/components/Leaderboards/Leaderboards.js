@@ -3,10 +3,10 @@ import Row from "react-bootstrap/Row";
 import {Container} from "react-bootstrap";
 import Navbar from "../Navbar/Navbar";
 import ScoresPanelsList from "../ScoresPanelsList/ScoresPanelsList";
-import ChapterSelect from "../LeaderboardSelects/ChapterSelect";
-import LevelSelect from "../LeaderboardSelects/LevelSelect";
-import CategorySelect from "../LeaderboardSelects/CategorySelect";
-import DifficultySelect from "../LeaderboardSelects/DifficultySelect";
+import ChapterSelect from "../Selects/ChapterSelect";
+import LevelSelect from "../Selects/LevelSelect";
+import CategorySelect from "../Selects/CategorySelect";
+import DifficultySelect from "../Selects/DifficultySelect";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchChapters, selectChapters} from "../../features/chapters/chaptersSlice";
 import {useEffect, useState} from "react";
@@ -40,7 +40,7 @@ const Leaderboards = () => {
 
     useEffect(() => {
         if (chapter && levels) {
-            setFilteredLevels(levels.filter(level => level.chapter === chapter.id));
+            setFilteredLevels(levels.filter(l => l.chapterId === chapter.id));
         }
     }, [chapter, levels]);
 
@@ -75,9 +75,9 @@ const Leaderboards = () => {
                 </Row>
                 <Row className="mx-5 mt-4 mb-5">
                     <CategorySelect on_category_changed={categoryChangedHandler.bind(this)}/>
-                    <ChapterSelect chapters={chapters} on_chapter_changed={chapterChangedHandler.bind(this)} is_disabled={category !== "Chapter" && category !== "Level"}/>
-                    <LevelSelect levels={filteredLevels} on_level_changed={levelChangedHandler.bind(this)} is_disabled={category !== "Level"}/>
-                    <DifficultySelect on_difficulty_changed={difficultyChangedHandler.bind(this)} />
+                    <ChapterSelect chapters={chapters} on_chapter_changed={chapterChangedHandler} is_disabled={category !== "Chapter" && category !== "Level"}/>
+                    <LevelSelect levels={filteredLevels} on_level_changed={levelChangedHandler} is_disabled={category !== "Level"}/>
+                    <DifficultySelect on_difficulty_changed={difficultyChangedHandler} />
                 </Row>
                 <Container className="px-5">
                     {category !== undefined &&

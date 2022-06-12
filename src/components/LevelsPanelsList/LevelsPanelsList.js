@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
+import {fetchUserProgress, selectProgress} from "../../features/userDetails/userDetailsSlice";
 
 const LevelsPanelsList = (props) => {
 
@@ -15,20 +16,15 @@ const LevelsPanelsList = (props) => {
     const [selectedLevel, setSelectedLevel] = useState(undefined);
     const [filteredLevels, setFilteredLevels] = useState([]);
 
-    // TODO: Obtain current level
-    const [currentLevel, setCurrentLevel] = useState(
-        {
-            "id": "2",
-            "title": "Classes",
-            "description": "Description about Classes level.",
-            "language": "JAVA",
-            "skill": "NOVICE",
-            "number": 2.2,
-            "chapter": "89a2183ja126a71er2j"
-        }
-    );
+    const progress = useSelector(selectProgress);
+
+    const [currentLevel, setCurrentLevel] = useState(undefined);
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        setChapter(props.chapter);
+    }, [props.chapter]);
 
     useEffect(() => {
         dispatch(fetchLanguage());
@@ -36,8 +32,10 @@ const LevelsPanelsList = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
-        setChapter(props.chapter);
-    }, [props.chapter]);
+        if (language && difficulty) {
+            dispatch(fetchUserProgress(language, difficulty));
+        }
+    }, [language, difficulty]);
 
     useEffect(() => {
         dispatch(fetchLevels(language, difficulty));
@@ -46,9 +44,19 @@ const LevelsPanelsList = (props) => {
 
     useEffect(() => {
         if (chapter && levels) {
-            setFilteredLevels(levels.filter(level => level.chapter === chapter.id));
+            setFilteredLevels(levels.filter(level => level.chapterId === chapter.id));
         }
     }, [chapter, levels]);
+
+    useEffect(() => {
+
+        if (progress.Completed !== undefined && levels) {
+            if (progress.Completed !== progress.Total)
+                setCurrentLevel(levels[progress.Completed]);
+            else
+                setCurrentLevel(levels[progress.Completed - 1]);
+        }
+    }, [progress, levels]);
 
     const levelPanelClicked = (level) => {
         setSelectedLevel(level);
@@ -63,23 +71,23 @@ const LevelsPanelsList = (props) => {
 
         if (selectedLevel !== undefined && level.id === selectedLevel.id) {
             levelPanels.push(
-                <Card className="shadow p-3 mb-3 rounded text-center"
+                <Card key={levelIdx} className="shadow p-3 mb-3 rounded text-center"
                       style={{backgroundColor: "#4b86e0", border: "none"}}
                       onClick={levelPanelClicked.bind(this, level)}>
-                    <span style={{fontSize: "0.8vw", color: "white"}}>{level.number} {level.title}</span>
+                    <span style={{fontSize: "0.8vw", color: "white"}}>{level.title}</span>
                 </Card>
             )
         } else if (currentLevel !== undefined && level.number > currentLevel.number) {
             levelPanels.push(
-                <Card className="shadow p-3 mb-3 bg-white rounded text-center" style={{opacity: "0.6"}}>
-                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.number} {level.title}</span>
+                <Card key={levelIdx} className="shadow p-3 mb-3 bg-white rounded text-center" style={{opacity: "0.6"}}>
+                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.title}</span>
                 </Card>
             )
 
         } else {
             levelPanels.push(
-                <Card className="shadow p-3 mb-3 bg-white rounded text-center" onClick={levelPanelClicked.bind(this, level)}>
-                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.number} {level.title}</span>
+                <Card key={levelIdx} className="shadow p-3 mb-3 bg-white rounded text-center" onClick={levelPanelClicked.bind(this, level)}>
+                    <span style={{fontSize: "0.8vw", color: "#1E4172"}}>{level.title}</span>
                 </Card>
             )
         }

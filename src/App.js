@@ -19,10 +19,19 @@ import Achievements from "./components/Achievements/Achievements";
 import {Flip, ToastContainer} from "react-toastify";
 import Settings from "./components/Settings/Settings";
 import Account from "./components/Account/Account";
+import Solutions from "./components/Solutions/Solutions";
+import AuthVerify from "./components/AuthVerify/AuthVerify";
 
 function App() {
 
-    let logged_in = localStorage.hasOwnProperty("code_spell_token")
+    const handleExit = () => {
+        localStorage.removeItem('code_spell_token');
+        localStorage.removeItem('user_email');
+        localStorage.removeItem('code_spell_expiration');
+        setTimeout(() => window.location.replace("/"), 2000);
+    }
+
+    let logged_in = localStorage.hasOwnProperty("code_spell_token");
 
     let toastContainer = <ToastContainer
         position="top-right"
@@ -62,14 +71,16 @@ function App() {
               <Router>
                   <Routes>
                       <Route  path="/" element={<Dashboard />}/>
+                      <Route  path="/solutions" element={<Solutions />}/>
                       <Route  path="/levels" element={<Levels />}/>
-                      <Route  path="/levels/:levelNumber" element={<Level />}/>
+                      <Route  path="/levels/:levelId" element={<Level />}/>
                       <Route  path="/leaderboards" element={<Leaderboards />}/>
                       <Route  path="/achievements" element={<Achievements />}/>
                       <Route  path={"/settings"} element={<Settings />}/>
                       <Route  path={"/account"} element={<Account />}/>
                       <Route path="*" element={<Dashboard />}/>
                   </Routes>
+                  <AuthVerify logout={handleExit}/>
               </Router>
           </Row>
           {toastContainer}

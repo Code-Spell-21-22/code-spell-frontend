@@ -12,6 +12,7 @@ import {
     selectLanguage,
     fetchLanguage, fetchDifficulty
 } from "../../features/settings/settingsSlice";
+import {toast} from "react-toastify";
 
 const Settings = () => {
 
@@ -22,6 +23,8 @@ const Settings = () => {
     const [selectedLanguage, setSelectedLanguage] = useState(language);
 
     const dispatch = useDispatch();
+    const notify = (message) => toast(message);
+
 
     useEffect(() => {
         dispatch(fetchLanguage());
@@ -45,7 +48,8 @@ const Settings = () => {
         dispatch(updateDifficulty(selectedDifficulty));
         dispatch(updateLanguage(selectedLanguage));
 
-        // TODO: API Handler
+        notify("Changes saved!");
+        setTimeout(() => window.location.replace("/"), 2000);
     };
 
     const saveButton = () => {
@@ -86,6 +90,7 @@ const Settings = () => {
                 <Row className="my-4 justify-content-center d-flex">
                     <Col>
                         <LanguagePanel
+                            disabled={true}
                             active={selectedLanguage}
                             category={"Coming soon"}
                             title={"Python"}
@@ -95,13 +100,14 @@ const Settings = () => {
                     <Col>
                         <LanguagePanel
                             active={selectedLanguage}
-                            category={"Coming soon"}
+                            category={"First Language"}
                             title={"Java"}
                             on_language_changed={languageChangedHandler.bind(this)}
                         />
                     </Col>
                     <Col>
                         <LanguagePanel
+                            disabled={true}
                             active={selectedLanguage}
                             category={"Coming soon"}
                             title={"Javascript"}
@@ -110,6 +116,7 @@ const Settings = () => {
                     </Col>
                     <Col>
                         <LanguagePanel
+                            disabled={true}
                             active={selectedLanguage}
                             category={"Coming soon"}
                             title={"C"}

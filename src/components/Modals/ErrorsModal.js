@@ -15,7 +15,6 @@ const ErrorModal = (props) => {
 
     const analysisStatus = useSelector(state => state.code.analysisStatus);
     const executionStatus = useSelector(state => state.code.executionStatus);
-    const steps = useSelector(state => state.code.steps);
 
     const errors = useSelector(state => state.code.errors);
     let errorsPanels = [];
@@ -30,30 +29,6 @@ const ErrorModal = (props) => {
             <p className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>---</p>
         );
 
-    let stepsPanels = [];
-
-    console.log(steps)
-    if (steps && steps.length > 0) {
-        for (let step of steps) {
-
-            let args = "---";
-            if (step.args && step.args.length > 0) {
-                args = "";
-                for (let arg of step.args)
-                    args += arg + "; ";
-            }
-
-            stepsPanels.push(<p className="mb-2" style={{fontSize: "0.8vw"}}>
-                {step.id} - {step.successful ? "Success" : "Failed"}<br></br>
-                Args: {args}
-            </p>);
-        }
-    } else {
-        stepsPanels.push(
-            <p className="mb-2" style={{fontSize: "0.8vw"}}>...</p>
-        );
-    }
-
     return (
         <Container>
             <Row className="mx-1 my-4">
@@ -62,10 +37,6 @@ const ErrorModal = (props) => {
             </Row>
             <Row className="mx-1 mb-2">
                 {errorsPanels}
-            </Row>
-            <Row className="mx-1 mt-2">
-                <p className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>Steps</p>
-                {stepsPanels}
             </Row>
             <Row className="mx-1 mt-4">
                 <p className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>Analysis Status</p>

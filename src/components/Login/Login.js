@@ -14,6 +14,11 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const calcExpiration = (nHours, date) => {
+        date.setTime(date.getTime() + nHours * 60 * 60 * 1000);
+        return date;
+    }
+
     const onInputChanged = (state, event) => {
         state(event.target.value);
     };
@@ -28,6 +33,9 @@ const Login = () => {
         .then((response) => {
             toast.success(response.data.message)
             localStorage.setItem('code_spell_token', response.data.token);
+            localStorage.setItem('code_spell_expiration', calcExpiration(4, new Date()));
+            localStorage.setItem('user_email', email);
+
             setTimeout(() => window.location.replace("/"), 2000);
         }, (error) => {
             toast.error(JSON.parse(error.request.response)['message']);

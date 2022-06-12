@@ -8,10 +8,12 @@ import {useState} from "react";
 
 const Navbar = (props) => {
 
-    const [title, setTitle] = useState(props.title);
+    const [title] = useState(props.title);
 
     const handleExit = () => {
         localStorage.removeItem('code_spell_token');
+        localStorage.removeItem('user_email');
+        localStorage.removeItem('code_spell_expiration');
         setTimeout(() => window.location.replace("/"), 2000);
     }
 

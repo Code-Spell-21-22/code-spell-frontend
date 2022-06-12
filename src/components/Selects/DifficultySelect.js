@@ -19,8 +19,8 @@ const DifficultySelect = (props) => {
                                    <FontAwesomeIcon  icon={faStar} style={{color: "#2e78e1"}} /> Difficulty</span>
                 <FormSelect onChange={difficultyUpdated.bind(this)}>
                     <option key={0} value={"Novice"}>Novice</option>
-                    <option key={1} value={"Experienced"}>Experienced</option>
-                    <option key={2} value={"Advanced"}>Advanced</option>
+                    <option style={{backgroundColor: "rgba(0,136,250,0.4)"}} key={1} disabled value={"Experienced"}>Experienced</option>
+                    <option style={{backgroundColor: "rgba(0,136,250,0.4)"}} key={2} disabled value={"Advanced"}>Advanced</option>
                 </FormSelect>
             </Card>
         </Col>

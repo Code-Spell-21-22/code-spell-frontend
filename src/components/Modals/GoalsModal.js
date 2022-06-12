@@ -1,25 +1,50 @@
-import React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faStar, faStarOfLife} from "@fortawesome/free-solid-svg-icons";
+import React, {useEffect} from "react";
 import Row from "react-bootstrap/Row";
-import {Col, Container} from "react-bootstrap";
+import {Container} from "react-bootstrap";
+import {getLevelGoals} from "../../utils/api/apihandler";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchLanguage, selectLanguage} from "../../features/settings/settingsSlice";
 
-const GoalsModal = () => {
+const GoalsModal = (props) => {
+
+    const language = useSelector(selectLanguage);
+    const [level] = React.useState(props.level);
+    const [goals, setGoals] = React.useState([]);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+
+        dispatch(fetchLanguage());
+
+        getLevelGoals(level.id).then(res => {
+            setGoals(res.data);
+        });
+    }, [level]);
+
+    let goalPanels = [];
+    if (goals) {
+        for (let idx in goals) {
+            let goal = goals[idx];
+
+            goalPanels.push(
+                <Row key={idx} className="mx-1 my-2">
+                    <h1 style={{fontSize: "1.7vw"}}>{goal.title}</h1>
+                    <p style={{fontSize: "0.8vw"}}>{goal.description}</p>
+                </Row>
+            );
+        }
+    }
+
     return (
         <Container>
-            <Row className="mx-3 my-5">
-                <span style={{fontSize: "0.7vw"}}>VARIABLES</span>
-                <h1 style={{fontSize: "2vw"}}>Lorem ipsum dolor sit amet</h1>
-
-                <p className="my-4" style={{fontSize: "0.8vw"}}>Lorem ipsum dolor sit amet, consectetur
-                    adipiscing elit. Nullam tincidunt, lacus a dictum tempor, lorem magna venenatis augue, a tempor ante nunc quis est.
-                    Phasellus porta non enim non malesuada. In elementum bibendum dui non laoreet.
-                    Nam aliquam lacus imperdiet lorem vehicula dictum quis id sapien.</p>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A animi atque cumque debitis, eaque eius
-                    eos ex harum ipsam iusto laboriosam perspiciatis quasi, sequi unde ut vero vitae? Repellat,
-                    totam?</p>
+            <Row className="mt-4">
+                <Row className="mx-1">
+                    <span style={{fontSize: "0.7vw"}}>{level.title} - {language}</span>
+                </Row>
+                {goalPanels}
             </Row>
+            {/*
             <Row className="mx-3 my-5">
                 <Col className="col-2 text-center">
                     <FontAwesomeIcon icon={faStarOfLife} />
@@ -38,6 +63,7 @@ const GoalsModal = () => {
                     <h6>30</h6>
                 </Col>
             </Row>
+            */}
         </Container>
     );
 }
