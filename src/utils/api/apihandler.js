@@ -36,7 +36,7 @@ async function getUserAchievements(email) {
 
 async function putUserPassword(email, password) {
     return axios.put(apiAddress + '/user/' + email + '/password', {
-        new_password: password
+        newPassword: password
     }, {
         headers: {
             'Authorization': 'Bearer ' + authToken,
@@ -47,7 +47,23 @@ async function putUserPassword(email, password) {
 
 
 async function getLevelLeaderboard(levelId) {
-    return axios.get(apiAddress + '/level/' + levelId + '/leaderboards', {
+    return axios.get(apiAddress + '/leaderboard/level/' + levelId, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+        }
+    });
+}
+
+async function getChapterLeaderboard(chapterId) {
+    return axios.get(apiAddress + '/leaderboard/chapter/' + chapterId, {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+        }
+    });
+}
+
+async function getOverallLeaderboard() {
+    return axios.get(apiAddress + '/leaderboard', {
         headers: {
             'Authorization': 'Bearer ' + authToken,
         }
@@ -194,6 +210,15 @@ async function putAchievementToUser(email, achievementId) {
     });
 }
 
+async function getCodeProvided(levelId) {
+    return axios.get(apiAddress + '/level/' + levelId + '/code', {
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
+        }
+    });
+}
+
 export {
     postRegister,
     postLogin,
@@ -204,15 +229,17 @@ export {
     postLevelSolution,
     getLevels,
     getLevelLeaderboard,
+    getChapterLeaderboard,
+    getOverallLeaderboard,
     getLevelDocumentation,
     getUserAchievements,
     getAllAchievements,
     getUserDetails,
-
     putUserPassword,
     getAchievementDetails,
     postFinalSolution,
     getAllUserSolutions,
     getAllSolutionsForLevel,
-    putAchievementToUser
+    putAchievementToUser,
+    getCodeProvided
 };

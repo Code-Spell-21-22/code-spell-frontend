@@ -9,7 +9,7 @@ import {getLevelDocumentation} from "../../utils/api/apihandler";
 
 const DocumentationModal = (props) => {
 
-    const [level, setLevel] = React.useState(props.level);
+    const [level] = React.useState(props.level);
     const [documentation, setDocumentation] = React.useState(undefined);
 
     useEffect(() => {

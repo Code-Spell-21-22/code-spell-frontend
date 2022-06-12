@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {fetchUserDetails, fetchUserProgress, selectProgress} from "../../features/userDetails/userDetailsSlice";
-import {putUserName, putUserPassword} from "../../utils/api/apihandler";
+import {putUserPassword} from "../../utils/api/apihandler";
 import {toast} from "react-toastify";
 
 const Account = () => {

@@ -7,11 +7,13 @@ import {useState} from "react";
 
 const Achievements = () => {
 
-    const [language, setLanguage] = useState("Java");
+    const [language] = useState("Java");
 
+    /*
     const updatedLanguage = (event) => {
         setLanguage(event.target.value);
     }
+     */
 
     return (
         <Container>

@@ -12,8 +12,8 @@ const AchievementPanelsList = (props) => {
     const email = useSelector(selectEmail);
     const [language, setLanguage] = useState(props.language);
     const [allAchievements, setAllAchievements] = useState([]);
-    const [userAchievements, setUserAchievements] = useState([]);
-    const [achievementPanels, setAchievementPanels] = useState([]);
+    const [userAchievements, setUserAchievements] = useState(undefined);
+    const [achievementPanels, setAchievementPanels] = useState(undefined);
 
     const dispatch = useDispatch();
 
@@ -32,6 +32,7 @@ const AchievementPanelsList = (props) => {
             });
 
             getAllAchievements().then(res => {
+                console.log(res.data);
                 setAllAchievements(res.data);
             }).catch(err => {
                 console.log(err);
@@ -61,8 +62,6 @@ const AchievementPanelsList = (props) => {
         setAchievementPanels(panels);
 
     }, [userAchievements]);
-
-
 
     return (
         <Row>

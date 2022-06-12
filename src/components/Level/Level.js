@@ -10,7 +10,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
 import {
-    getAllAchievements,
+    getAllAchievements, getCodeProvided,
     getLevel,
     postFinalSolution,
     postLevelSolution,
@@ -24,7 +24,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
 import {connect, isStompClientConnected, updateListenableCodeId} from "../../web_sockets/WebSocket";
 import {
-    selectAnalysisStatus, selectErrors, selectExecutionStatus,
+    selectAnalysisStatus, selectErrors,
     selectId, selectOutput, selectScore,
     selectSteps
 } from "../../features/code/codeSlice";
@@ -44,7 +44,7 @@ const Level = () => {
     const codeReportId = useSelector(selectId);
     const errors = useSelector(selectErrors);
 
-    const initialCode = "//Step 1"+ '\n\n\nclass HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}' + "\n\n\n//Step 2"+"\n\n\n//Step 3";
+    const [initialCode, setInitialCode] = useState('');
 
     const [navbarOpen, setNavbarOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState(undefined);
@@ -76,12 +76,18 @@ const Level = () => {
                 console.log(err)
                 window.location.replace("/levels");
             });
+
+        getCodeProvided(levelId).then(res => {
+            setInitialCode(res.data);
+        }).catch(err => {
+            setInitialCode('');
+        });
     }, []);
 
     useEffect(() => {
         if (currentLevel) {
             getAllAchievements().then(res => {
-                setAchievement(res.data[currentLevel.number - 1]);
+                setAchievement(res.data.find(a => a.levelId === currentLevel.id));
             });
         }
     }, [currentLevel]);
@@ -166,8 +172,9 @@ const Level = () => {
     if (!output) {
         outputPanels.push(<span style={{fontSize: "0.8vw"}}>---</span>)
     } else {
-        for (let o of output) {
-            outputPanels.push(<span style={{fontSize: "0.8vw"}}>{o}</span>);
+        for (let idx in output) {
+            let o = output[idx];
+            outputPanels.push(<span key={idx} style={{fontSize: "0.8vw"}}>{o}</span>);
         }
     }
 
@@ -198,7 +205,7 @@ const Level = () => {
                 <Col className="col-6">
                     <Card className="shadow p-3 mb-3 bg-white" style={{borderRadius: "10px"}}>
                         <Row className="justify-content-start d-flex m-2">
-                            <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>{currentLevel.number}. {currentLevel.title}</span>
+                            <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bold"}}>{currentLevel.title}</span>
                             <span style={{fontSize: "0.8vw"}}>{currentLevel.description}</span>
                         </Row>
                     </Card>
@@ -206,7 +213,7 @@ const Level = () => {
                         <Row className="justify-content-start d-flex">
                             <CodeMirror
                                 height="44vh"
-                                value= {'class HelloWorldApp \{\n\tpublic static void main(String[] args) \{\n\t\tSystem.out.println("Hello World!")\;\n\t\}\n\}'}
+                                value= {initialCode}
                                 extensions={[java()]}
                                 theme={oneDark}
                                 onChange={(value, viewUpdate) => {

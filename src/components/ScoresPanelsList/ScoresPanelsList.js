@@ -1,7 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import Row from "react-bootstrap/Row";
 import {Card, Col, Container} from "react-bootstrap";
-import {getLevelLeaderboard} from "../../utils/api/apihandler";
+import {
+    getChapterLeaderboard,
+    getLevelLeaderboard,
+    getOverallLeaderboard
+} from "../../utils/api/apihandler";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUserDetails, selectUsername} from "../../features/userDetails/userDetailsSlice";
 
@@ -10,6 +14,8 @@ const ScoresPanelsList = (props) => {
     const username = useSelector(selectUsername);
 
     const [level, setLevel] = useState(props.level);
+    const [chapter, setChapter] = useState(props.chapter);
+
     const [scores, setScores] = useState([]);
 
     const [userScore, setUserScore] = useState("---");
@@ -18,8 +24,14 @@ const ScoresPanelsList = (props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setLevel(props.level);
         dispatch(fetchUserDetails());
+    }, []);
+
+    useEffect(() => {
+
+        setLevel(props.level);
+        setChapter(props.chapter);
+
     }, [props]);
 
     useEffect(() => {
@@ -27,8 +39,17 @@ const ScoresPanelsList = (props) => {
             getLevelLeaderboard(level.id).then(res => {
                 setScores(res.data);
             });
+        } else if (chapter) {
+            getChapterLeaderboard(chapter.id).then(res => {
+                console.log(res.data);
+                setScores(res.data);
+            });
+        } else {
+            getOverallLeaderboard().then(res => {
+                setScores(res.data);
+            });
         }
-    }, [level]);
+    }, [level, chapter]);
 
     useEffect(() => {
         if (scores) {

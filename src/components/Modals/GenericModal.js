@@ -33,6 +33,8 @@ const GenericModal = (props) => {
         case "errors":
             content = <ErrorsModal level={props.level}/>;
             break;
+        default:
+            content = <div>No content</div>;
     }
 
     // const fadeIn = selectedOption ? 'fadein' : 'fadein hide';

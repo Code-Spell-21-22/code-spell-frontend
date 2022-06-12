@@ -19,7 +19,7 @@ const Levels = () => {
 
     const [selectedChapter, setSelectedChapter] = useState(undefined);
     const [selectedLevel, setSelectedLevel] = useState(undefined);
-    const [selectedProgress, setSelectedProgress] = useState(undefined);
+    // const [selectedProgress, setSelectedProgress] = useState(undefined);
 
     const dispatch = useDispatch();
 
@@ -35,6 +35,7 @@ const Levels = () => {
         }
     }, [language, difficulty]);
 
+    /*
     useEffect(() => {
         for (let idx in progress) {
             if (progress[idx].language === language.toUpperCase()) {
@@ -42,6 +43,7 @@ const Levels = () => {
             }
         }
     }, [progress]);
+     */
 
     const chapterChangedHandler = (chapter) => {
         setSelectedChapter(chapter);
@@ -53,7 +55,6 @@ const Levels = () => {
     }
 
     // Progress Data
-
     let completed = 0;
     let notCompleted = 0;
     let total = 0;

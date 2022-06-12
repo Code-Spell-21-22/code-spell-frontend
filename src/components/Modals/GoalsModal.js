@@ -1,8 +1,6 @@
 import React, {useEffect} from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faStar, faStarOfLife} from "@fortawesome/free-solid-svg-icons";
 import Row from "react-bootstrap/Row";
-import {Col, Container} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import {getLevelGoals} from "../../utils/api/apihandler";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchLanguage, selectLanguage} from "../../features/settings/settingsSlice";
@@ -10,7 +8,7 @@ import {fetchLanguage, selectLanguage} from "../../features/settings/settingsSli
 const GoalsModal = (props) => {
 
     const language = useSelector(selectLanguage);
-    const [level, setLevel] = React.useState(props.level);
+    const [level] = React.useState(props.level);
     const [goals, setGoals] = React.useState([]);
 
     const dispatch = useDispatch();

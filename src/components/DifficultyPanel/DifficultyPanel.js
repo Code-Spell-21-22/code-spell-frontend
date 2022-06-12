@@ -8,8 +8,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 const DifficultyPanel = (props) => {
 
     const [active, setActive] = React.useState(props.active);
-    const [title, setTitle] = React.useState(props.title);
-    const [description, setDescription] = React.useState(props.description);
+    const [title] = React.useState(props.title);
+    const [description] = React.useState(props.description);
 
     useEffect(() => {
         setActive(props.active);
