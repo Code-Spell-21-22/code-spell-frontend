@@ -80,7 +80,7 @@ const Level = () => {
         });
 
         getCodeProvided(levelId).then(res => {
-            setInitialCode(res.data);
+            setInitialCode(res.data.code);
         }).catch(err => {
             setInitialCode('');
         });
