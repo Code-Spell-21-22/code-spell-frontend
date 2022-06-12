@@ -229,7 +229,7 @@ const Level = () => {
                             </Col>
                             <Col className="text-end">
                                 <span className="mb-2" style={{fontSize: "1.1vw", fontWeight: "bolder"}}>
-                                    Score <span style={{color: "green"}}>{score}</span></span>
+                                    Score <span style={{color: "#2E78E1FF"}}>{score}</span></span>
                             </Col>
 
                             <Row style={{maxHeight: "70px", overflowY: "auto"}}>

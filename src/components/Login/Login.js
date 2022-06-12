@@ -30,7 +30,7 @@ const Login = () => {
             localStorage.setItem('code_spell_token', response.data.token);
             localStorage.setItem('user_email', email);
 
-            setTimeout(() => window.location.replace("/"), 2000);
+            setTimeout(() => window.location.replace("/"), 5000);
         }, (error) => {
             toast.error(JSON.parse(error.request.response)['message']);
             console.log(error);

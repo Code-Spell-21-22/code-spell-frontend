@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchLevels, selectLevels} from "../../features/levels/levelsSlice";
 import {fetchDifficulty, fetchLanguage, selectDifficulty, selectLanguage} from "../../features/settings/settingsSlice";
-import {fetchUserDetails, selectProgress} from "../../features/userDetails/userDetailsSlice";
+import {fetchUserProgress, selectProgress} from "../../features/userDetails/userDetailsSlice";
 
 const LevelsPanelsList = (props) => {
 
@@ -23,14 +23,19 @@ const LevelsPanelsList = (props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        setChapter(props.chapter);
+    }, [props.chapter]);
+
+    useEffect(() => {
         dispatch(fetchLanguage());
         dispatch(fetchDifficulty());
-        dispatch(fetchUserDetails());
     }, [dispatch]);
 
     useEffect(() => {
-        setChapter(props.chapter);
-    }, [props.chapter]);
+        if (language && difficulty) {
+            dispatch(fetchUserProgress(language, difficulty));
+        }
+    }, [language, difficulty]);
 
     useEffect(() => {
         dispatch(fetchLevels(language, difficulty));

@@ -1,8 +1,7 @@
 import Row from "react-bootstrap/Row";
 import {Col, Container} from "react-bootstrap";
 import {
-    faEdit,
-    faGear,
+    faGear, faLock,
     faPlay,
     faRocket,
     faTrophy
@@ -28,8 +27,9 @@ const Dashboard = () => {
                         />
                     </Col>
                     <Col className="col-2 mx-2">
-                        <SquarePanel icon={faEdit}
-                                     title={'CREATE'}
+                        <SquarePanel icon={faLock}
+                                     title={'SOLUTIONS'}
+                                     link="/solutions"
 
                         />
                     </Col>
