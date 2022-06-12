@@ -7,14 +7,14 @@ import {
     transitionColor,
     showObject,
     clearTweenMovements,
-    moveToRight,
-    moveToLeft, moveToFront, resizeMovement
+    moveToFront
 } from '../Builders/tweenMotions';
 import {createScene, createCamera} from '../Builders/createEnvironment';
 import {createDay, createNight} from '../Builders/createSky';
-import {createText, popUpText, showText} from '../Builders/createText';
+import {createText, popUpText} from '../Builders/createText';
 import {createPlayer} from '../Builders/createPlayer';
 import {addPopUpToChain, clearPopUpChain, startPopUpChain} from "../Builders/chainPopupTest";
+import {createFence, createTree} from "../Builders/createItems";
 
 const TWEEN = require('@tweenjs/tween.js')
 
@@ -25,7 +25,6 @@ const Level2_3 = (props) => {
 
     let [analysisStatus, setAnalysisStatus] = useState(undefined);
     let [steps, setSteps] = useState(undefined);
-    let [args, setArgs] = useState('');
 
     // Adding onWindowResize event when the component is mounted
     useEffect(() => {
@@ -45,16 +44,7 @@ const Level2_3 = (props) => {
         let stepsList;
 
         if (props.steps) {
-
             stepsList = [props.steps[0].successful, props.steps[1].successful, props.steps[2].successful];
-
-            let allArgs = []
-            allArgs.push(props.steps[0].args);
-            allArgs.push(props.steps[1].args);
-            allArgs.push(props.steps[2].args);
-
-            setArgs(allArgs);
-
         }
 
         setSteps(stepsList);
@@ -110,9 +100,9 @@ const Level2_3 = (props) => {
         let scene = createScene(0x348C31, true);
 
         // SPOTLIGHT ///////////////////////////
-        const spotLight = new THREE.SpotLight( 0xffffff, 3, -Math.PI );
+        const spotLight = new THREE.SpotLight( 0xffffff, -8, -Math.PI );
 
-        spotLight.position.set( 0, 13, 12 );
+        spotLight.position.set(0, 13, 12);
 
         const targetObject = new THREE.Object3D();
         targetObject.position.set(0, 2, -4)
@@ -122,13 +112,32 @@ const Level2_3 = (props) => {
         scene.add( spotLight );
         /////////////////////////////////////////
 
-        let player = createPlayer();
-        let day = createDay();
+        const player = createPlayer();
+        const day = createDay();
+        const tree1 = createTree();
+        const tree2 = createTree();
+        const tree3 = createTree();
+        const fence1 = createFence();
+
+        tree1.position.set(-4, 0, 6);
+        tree1.rotateY(Math.PI/3)
+
+        tree2.position.set(16, 0, 20);
+        tree2.rotateY(Math.PI/8)
+
+        tree3.position.set(24, 0, -16);
+        tree3.rotateY(Math.PI/8)
+
+        fence1.position.set(7.3,0,-14);
+
+        scene.add(tree1);
+        scene.add(tree2);
+        scene.add(tree3);
+        scene.add(fence1);
 
         player.position.set(0, 2, -11.75);
 
         showObject(scene, player, 1250);
-
 
         if (!steps && !analysisStatus) {
 
@@ -137,7 +146,6 @@ const Level2_3 = (props) => {
             moveToFront(player, 6, () => {
                 let text = createText("Hello!", 0.5, 0x171717, true, true, 0xffffff);
                 popUpText(text, scene, player);
-                targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5)
             });
 
         } else if (!steps && analysisStatus) {
@@ -149,7 +157,6 @@ const Level2_3 = (props) => {
                 let text2 = createText("Maybe you should look for syntax errors?", 0.5, 0x171717, true, true, 0xffffff);
                 popUpText(text1, scene, player, () => {
                     popUpText(text2, scene, player);
-                    targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5)
                 });
             });
 
@@ -176,8 +183,6 @@ const Level2_3 = (props) => {
 
                 startPopUpChain();
 
-                targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5);
-
             });
 
         } else if (steps && steps[0] && steps[1]) {
@@ -203,8 +208,6 @@ const Level2_3 = (props) => {
 
                 startPopUpChain();
 
-                targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5);
-
             });
 
         } else if (steps && steps[0]) {
@@ -222,7 +225,6 @@ const Level2_3 = (props) => {
             moveToFront(player, 6, () => {
                 let text1 = createText("It's night but, is it a starry sky?", 0.5, 0x171717, true, true, 0xffffff);
                 popUpText(text1, scene, player);
-                targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5)
             });
 
         }  else if (steps) {
@@ -232,13 +234,11 @@ const Level2_3 = (props) => {
             moveToFront(player, 6, () => {
                 let text = createText("Your code is not following this level constraints!", 0.4, 0x171717, true, true, 0xffffff);
                 popUpText(text, scene, player);
-                targetObject.position.set(player.position.x+5, player.position.y+2, player.position.z+5)
             });
 
         }
 
         return scene;
-
 
     };
 
