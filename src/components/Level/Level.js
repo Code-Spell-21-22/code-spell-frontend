@@ -9,6 +9,7 @@ import GenericModal from "../Modals/GenericModal";
 import CodeMirror from '@uiw/react-codemirror';
 import {java} from "@codemirror/lang-java";
 import { oneDark } from '@codemirror/theme-one-dark';
+import { autocompletion } from '@codemirror/autocomplete';
 import {
     getAllAchievements, getChapter, getCodeProvided,
     getLevel,
@@ -61,6 +62,37 @@ const Level = () => {
 
     const dispatch = useDispatch();
     const [achievement, setAchievement] = useState(undefined);
+
+    function myCompletions(context) {
+        let word = context.matchBefore(/\w*/)
+        if (word.from === word.to && !context.explicit)
+            return null
+        return {
+            from: word.from,
+            options: [
+                {label: "HelloWorldApp", type: "class", detail: "Required class for level 1_1."},
+                {label: "class", type: "type"},
+                {label: "private", type: "type"},
+                {label: "public", type: "type"},
+                {label: "protected", type: "type"},
+                {label: "void", type: "type"},
+                {label: "static", type: "type"},
+                {label: "String", type: "type"},
+                {label: "int", type: "type"},
+                {label: "double", type: "type"},
+                {label: "float", type: "type"},
+                {label: "boolean", type: "type"},
+                {label: "short", type: "type"},
+                {label: "long", type: "type"},
+                {label: "sout", apply: "System.out.println();", type: "keyword"},
+                {label: "if", apply: "if () {}", type: "keyword"},
+                {label: "else", apply: "else {}", type: "keyword"},
+                {label: "What a starry sky!", type: "text"},
+                {label: "What a beautiful sky!", type: "text"},
+                {label: "So many stars!", type: "text"}
+            ]
+        }
+    }
 
     useEffect(() => {
 
@@ -240,7 +272,7 @@ const Level = () => {
                             <CodeMirror
                                 height="44vh"
                                 value= {initialCode}
-                                extensions={[java()]}
+                                extensions={[java(), autocompletion({override: [myCompletions]})]}
                                 theme={oneDark}
                                 onChange={(value, viewUpdate) => {
                                     setCode(value);
