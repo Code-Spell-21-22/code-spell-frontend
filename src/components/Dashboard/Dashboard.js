@@ -1,21 +1,25 @@
-import React from 'react';
-import {SmallPanel} from "../SmallPanel/SmallPanel";
 import Row from "react-bootstrap/Row";
-import {Button, Card, Col, Container} from "react-bootstrap";
-import {faEdit, faGear, faPlay, faPlug, faPowerOff, faRocket, faTrophy} from "@fortawesome/free-solid-svg-icons";
-import {SquarePanel} from "../SquarePanel/SquarePanel";
-import {UserPanel} from "../UserPanel/UserPanel";
+import {Col, Container} from "react-bootstrap";
+import {
+    faGear, faLock,
+    faPlay,
+    faRocket,
+    faTrophy
+} from "@fortawesome/free-solid-svg-icons";
+import SquarePanel from "../SquarePanel/SquarePanel";
+import UserPanel from "../UserPanel/UserPanel";
+import React from "react";
+import Navbar from "../Navbar/Navbar";
 
-export class Dashboard extends React.Component {
+const Dashboard = () => {
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return(
+    return (
+        <Container>
             <Container className="container-fluid">
-                <Row className="my-5 justify-content-center d-flex">
+                <Row className="justify-content-center d-flex">
+                    <Navbar title={"Dashboard"} />
+                </Row>
+                <Row className="my-4 justify-content-center d-flex">
                     <Col className="col-2 mx-2">
                         <SquarePanel icon={faPlay}
                                      title={'PLAY'}
@@ -23,8 +27,9 @@ export class Dashboard extends React.Component {
                         />
                     </Col>
                     <Col className="col-2 mx-2">
-                        <SquarePanel icon={faEdit}
-                                     title={'CREATE'}
+                        <SquarePanel icon={faLock}
+                                     title={'SOLUTIONS'}
+                                     link="/solutions"
 
                         />
                     </Col>
@@ -47,22 +52,14 @@ export class Dashboard extends React.Component {
                         />
                     </Col>
                 </Row>
-                <Row></Row>
-                <Row className="mt-5 justify-content-center">
-                    <Col className="col-2 mt-4 mx-2">
-                        <Button className="disabled w-100 mb-3">
-                            <span style={{fontSize: "0.9vw"}}>JAVA</span>
-                        </Button>
-                        <Button className="disabled w-100">
-                            <span style={{fontSize: "0.9vw"}}>EXPERIENCED</span>
-                        </Button>
-                    </Col>
-
+                <Row className="justify-content-center d-flex" style={{marginTop: "15vh"}}>
                     <Col className="col-8 ms-5 me-2">
-                        <UserPanel />
+                        <UserPanel/>
                     </Col>
                 </Row>
             </Container>
-        );
-    }
-}
+        </Container>
+    );
+};
+
+export default Dashboard;
