@@ -21,6 +21,8 @@ const ScoresPanelsList = (props) => {
     const [userScore, setUserScore] = useState("---");
     const [userRank, setUserRank] = useState("---");
 
+    const [containsUser, setContainsUser] = useState(false);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -60,6 +62,9 @@ const ScoresPanelsList = (props) => {
                     setUserRank(i + 1);
                 }
             }
+
+            setContainsUser(scores.map(value => value.username).some(value => value === username));
+
         }
     }, [scores]);
 
@@ -107,21 +112,23 @@ const ScoresPanelsList = (props) => {
             <Row className="mx-1 mt-4">
                 {userPanels}
             </Row>
-            <Row className="mx-1 mt-5 mb-4">
-                <Card className="w-100 bg-white mb-3" style={{height: "6vh", minHeight:"50px"}}>
-                    <Row className="h-100 px-3">
-                        <Col className="col-3 align-items-center d-flex">
-                            <p className="mb-0" style={{fontSize: "0.8vw"}}>{userRank}</p>
-                        </Col>
-                        <Col className="col-6 align-items-center d-flex">
-                            <p className="mb-0" style={{fontSize: "0.8vw"}}>{username}</p>
-                        </Col>
-                        <Col className="col-3 align-items-center d-flex">
-                            <p className="mb-0" style={{fontSize: "0.9vw"}}>{userScore}</p>
-                        </Col>
-                    </Row>
-                </Card>
-            </Row>
+            { containsUser &&
+                <Row className="mx-1 mt-5 mb-4">
+                    <Card className="w-100 bg-white mb-3" style={{height: "6vh", minHeight:"50px"}}>
+                        <Row className="h-100 px-3">
+                            <Col className="col-3 align-items-center d-flex">
+                                <p className="mb-0" style={{fontSize: "0.8vw"}}>{userRank}</p>
+                            </Col>
+                            <Col className="col-6 align-items-center d-flex">
+                                <p className="mb-0" style={{fontSize: "0.8vw"}}>{username}</p>
+                            </Col>
+                            <Col className="col-3 align-items-center d-flex">
+                                <p className="mb-0" style={{fontSize: "0.9vw"}}>{userScore}</p>
+                            </Col>
+                        </Row>
+                    </Card>
+                </Row>
+            }
         </Container>
     );
 };
