@@ -29,8 +29,9 @@ export const addPopUpToChain = (text, scene, player) => {
 };
 
 export const startPopUpChain = () => {
-    console.log("Starting Pop up Chain with size" + chainedMovements.length)
-    chainedMovements[0].start();
+    if (chainedMovements.length > 0) {
+        chainedMovements[0].start();
+    }
 }
 
 export const clearPopUpChain = () => {
